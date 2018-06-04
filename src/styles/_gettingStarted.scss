@@ -1,0 +1,15 @@
+.gettingStarted {
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 700px;
+
+  .gladius-card {
+    background: $white;
+  }
+
+  .gladius-tooltip__tooltip {
+    top: 100%;
+    right: 0;
+    left: 0;
+  }
+}

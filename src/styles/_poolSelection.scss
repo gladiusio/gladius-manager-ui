@@ -1,0 +1,17 @@
+@import 'variables';
+
+.pool-selection {
+  min-width: 850px;
+}
+
+.pool-selection__pool-row {
+  cursor: pointer;
+
+  &:hover td {
+    background: $blue-row;
+  }
+}
+
+.pool-selection__pool-row--selected td {
+  background: $blue-row;
+}

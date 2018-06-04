@@ -1,0 +1,12 @@
+.home {
+  &__tos-link {
+    font: 14px Overpass, sans-serif;
+    font-weight: 300;
+    line-height: 1.43;
+    color: $light-grey-text;
+
+    a {
+      color: $grey-text;
+    }
+  }
+}

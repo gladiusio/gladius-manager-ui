@@ -1,0 +1,15 @@
+.star-rating {
+  position: relative;
+  top: 2px;
+}
+
+.star-rating__star {
+  background: transparent url('/assets/images/icon-star-off.svg') no-repeat center center;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.star-rating__star--on {
+  background-image: url('/assets/images/icon-star-on.svg');
+}

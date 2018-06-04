@@ -1,0 +1,21 @@
+.country-list {
+  margin: 0;
+  padding: 0;
+  min-width: 260px;
+}
+
+.country-list__country {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  padding: 0;
+  margin: 0 0 $base 0;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.country-list__checkbox {
+  margin-right: $base;
+}
