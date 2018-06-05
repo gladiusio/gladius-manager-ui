@@ -1,0 +1,16 @@
+.hiddenValueInput {
+  .value-container {
+    position: relative;
+  }
+
+  .view-value {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    cursor: pointer;
+  }
+
+  .sub-text {
+    font-weight: 200;
+  }
+}

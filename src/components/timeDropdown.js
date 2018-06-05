@@ -5,7 +5,7 @@ import bemify from '../util/bemify';
 
 import FakeDropdown from './fakeDropdown';
 import Tooltip from './shared/tooltip';
-import times from '../constants/time';
+import times from '../util/time';
 import noop from '../util/noop';
 
 export default class TimeDropdown extends Component {

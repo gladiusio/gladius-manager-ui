@@ -36,43 +36,41 @@ class BaseGetSecurePage extends Component {
   render() {
     let { disabledContinue, goToNextStep, goToPrevStep, setUserPassphrase } = this.props;
     return (
-      <div className={classnames(bem(), 'row justify-content-center')}>
-        <div className="col-6 mt-5">
-          <div className="row">
-            <div className="mr-2 pl-3">
-              <img
-                className="view-passphrase"
-                src="/assets/images/icon-security.svg"
-              />
-            </div>
-            <h1 className={classnames(onboardingSecondaryHead, 'mb-3')}>
-              Let's get secure
-            </h1>
-          </div>
-          <h2 className={classnames(onboardingSubhead, 'mb-4')}>We'll use the following details to encrypt your data on the blockchain and allow you to be identified</h2>
-          <Card className="p-5">
-            <PassphraseForm
-              onSubmit={setUserPassphrase}
-              onChange={this.onPassphraseChange}
-              ref={this.passphraseForm}
+      <div className={classnames(bem(), 'col-7 mt-5')}>
+        <div className="row justify-content-center">
+          <div className="mr-2 pl-3">
+            <img
+              className="view-passphrase"
+              src="/assets/images/icon-security.svg"
             />
-          </Card>
-          <div className="row justify-content-md-between p-3">
-            <button
-              className="btn btn-text btn-lg mt-2 mb-5"
-              onClick={goToPrevStep}
-            >
-              Back
-            </button>
-            <ExternalSubmitButton
-              formIds={['passphrase']}
-              className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
-              onSubmit={goToNextStep}
-              disabled={!this.state.validForm}
-            >
-              Continue
-            </ExternalSubmitButton>
           </div>
+          <h1 className={classnames(onboardingSecondaryHead, 'mb-3')}>
+            Let's get secure
+          </h1>
+        </div>
+        <h2 className={classnames(onboardingSubhead, 'mb-4')}>We'll use the following details to encrypt your data on the blockchain and allow you to be identified</h2>
+        <Card className="p-5">
+          <PassphraseForm
+            onSubmit={setUserPassphrase}
+            onChange={this.onPassphraseChange}
+            ref={this.passphraseForm}
+          />
+        </Card>
+        <div className="row justify-content-md-between p-3">
+          <button
+            className="btn btn-text btn-lg mt-2 mb-5"
+            onClick={goToPrevStep}
+          >
+            Back
+          </button>
+          <ExternalSubmitButton
+            formIds={['passphrase']}
+            className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
+            onSubmit={goToNextStep}
+            disabled={!this.state.validForm}
+          >
+            Continue
+          </ExternalSubmitButton>
         </div>
       </div>
     );

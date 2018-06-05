@@ -55,8 +55,10 @@ export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });
 }
 
-export function validatePassphrase({ passphrase }) {
-  return passphrase && passphrase.length > 0;
+export function validatePassphrase({passphraseValue, passphraseConfirmation}) {
+  return passphraseValue && passphraseValue.length > 0 &&
+    passphraseConfirmation && passphraseConfirmation.length > 0 &&
+    passphraseValue === passphraseConfirmation;
 }
 
 export default function reducer(state = {}, action = {}) {
@@ -94,7 +96,7 @@ export default function reducer(state = {}, action = {}) {
     case SET_PASSPHRASE:
       return {
         ...state,
-        passphrase: action.payload.passphrase,
+        passphraseValue: action.payload.passphraseValue,
       };
     case SET_WALLET_ADDRESS:
       return {

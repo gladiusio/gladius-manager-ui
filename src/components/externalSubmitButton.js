@@ -22,12 +22,15 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatchSubmit: () => {
       ownProps.formIds.forEach((formId) => {
-        dispatch(submit(formId));
+        dispatch(dispatch(submit(formId)));
       });
-      ownProps.onSubmit();
+
+      // Necessary due to how external submit works for redux-form.
+      // If the onSubmit fires and it changes page, it'll unregister
+      // the form fields because the submit goes through.
+      setTimeout(ownProps.onSubmit);
     },
   };
 }
-
 
 export default connect(null, mapDispatchToProps)(BaseExternalSubmitButton)
