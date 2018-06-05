@@ -81,7 +81,7 @@
     "lint": "eslint .",
     "eclint": "eclint check --block_comment_start '/*' --block_comment '*' --block_comment_end '*/'",
     "verify": "npm-run-all -s clean lint eclint test",
-    "start": "electron ."
+    "start": "npm run build && electron ."
   },
   "author": "",
   "license": "ISC"
