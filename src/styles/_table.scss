@@ -1,0 +1,49 @@
+.table {
+  font-size: 0.9rem;
+  margin: 0 !important;
+  table-layout: fixed;
+
+  thead th {
+    background: $tabular-header;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: $grey-text;
+    font-weight: bold;
+    position: relative;
+    vertical-align: middle !important;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.asc, &.desc {
+      color: $blue-button;
+
+      &:after {
+        display: inline-block;
+        position: relative;
+        content: '';
+        top: 0px;
+        left: 5px;
+        width: 10px;
+        height: 8px;
+      }
+    }
+
+    &.desc:after {
+      background: url('/assets/images/icon-order-down.svg') no-repeat center center;
+    }
+
+    &.asc:after {
+      background: url('/assets/images/icon-order-up.svg') no-repeat center center;
+    }
+  }
+
+  tbody td {
+    height: 52px !important;
+  }
+
+  td {
+    vertical-align: middle !important;
+  }
+}

@@ -1,0 +1,48 @@
+@import 'variables';
+
+.fake-dropdown {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  min-width: 100px;
+  height: 36px;
+  border-radius: 4px;
+  background-image: linear-gradient(to bottom, #ffffff, #f5f9fa);
+  border: 1px solid $grey-border;
+  line-height: 36px;
+  padding-left: $base;
+  padding-right: $base * 3;
+  transition: border-color 0.15s ease-in;
+
+  &:before {
+    position: absolute;
+    right: $base / 2;
+    top: 6px;
+    background: transparent url('/assets/images/icon-caret-down.svg') no-repeat center center;
+    width: 24px;
+    height: 24px;
+    display: block;
+    content: '';
+  }
+
+  &.disabled {
+    opacity: 0.4;
+
+    &:hover {
+      cursor: default;
+    }
+  }
+}
+
+.fake-dropdown:not(.disabled):hover, .fake-dropdown--open {
+  border: 1px solid #a2b5d2;
+}
+
+.fake-dropdown--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  &:before {
+    background-image: url('/assets/images/icon-caret-up.svg');
+  }
+}

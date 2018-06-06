@@ -1,0 +1,32 @@
+@import 'variables';
+
+.drawer-content-split {
+  display: flex;
+}
+
+.drawer-content-split__drawer {
+  flex: 0 0 360px;
+  //temporary until we get the illustration
+  background: linear-gradient(to right, #e6eaf0, #dce0e6);
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    position: absolute;
+    display: block;
+    content: '';
+    width: 780px;
+    height: 780px;
+    right: -85%;
+    top: 0;
+    background-size: cover;
+    background: transparent url('/assets/images/illustration-sidebar.png') no-repeat center center;
+  }
+}
+
+.drawer-content-split__content {
+  flex: 1 1 auto;
+  background: $off-white;
+  box-shadow: -8px 0 16px 0 rgba(0, 0, 0, 0.04);
+  padding: ($base * 4) 0;
+}

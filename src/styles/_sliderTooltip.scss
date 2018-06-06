@@ -1,0 +1,45 @@
+@import 'variables';
+
+.slider-tooltip {
+  width: 275px;
+}
+
+.slider-tooltip__slider {
+  margin-top: 10px;
+  width: calc(100% - 24px);
+}
+
+.rheostat-handle, .slider-handle {
+  width: 24px;
+  height: 24px;
+  background-image: linear-gradient(to bottom, #ffffff, #f5f9fa);
+  box-shadow: 0 2px 2px 0 rgba(16, 36, 82, 0.08);
+  border: 1px solid $blue-button;
+  border-radius: 50%;
+  top: -10px;
+  z-index: 1020 !important;
+  cursor: pointer;
+}
+
+.rheostat-background {
+  width: calc(100% + 24px);
+  height: 4px;
+  border-radius: 4px;
+  background: $grey-border;
+}
+
+.rheostat-progress, .bar.bar-0 {
+  background: $blue-button;
+  position: absolute;
+  height: 4px;
+  top: 0;
+  z-index: 1010;
+  border-radius: 20px;
+}
+
+.bar.bar-1 {
+  height: 4px;
+  border-radius: 4px;
+  background: $grey-border;
+  border-radius: 20px;
+}

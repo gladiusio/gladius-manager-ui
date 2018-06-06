@@ -1,0 +1,36 @@
+.expectedUsage {
+  textarea {
+    height: 150px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid $grey-border;
+    @include shadowed();
+    resize: none;
+
+    &::placeholder {
+      font-style: italic;
+      color: $light-grey-text;
+      font-weight: $light;
+    }
+  }
+
+  .upload-speed-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .upload-speed {
+      font-size: 1.25rem !important;
+      font-weight: $light;
+      color: $grey-text;
+    }
+  }
+
+  .slider-container {
+    height: 10px;
+  }
+
+  .all-day-container {
+    border-left: 1px solid $grey-border;
+  }
+}

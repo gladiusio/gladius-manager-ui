@@ -1,0 +1,88 @@
+@import 'variables';
+
+.funnel-steps {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.funnel-steps__step {
+  color: $blue-text;
+  height: 24px;
+  display: flex;
+  margin-right: 40px;
+  position: relative;
+
+  .funnel-steps__step-text {
+    text-decoration: none;
+  }
+
+  &:last-child {
+    margin-right: 0;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  &:after {
+    display: block;
+    content: '';
+    height: 1px;
+    width: 24px;
+    background: $light-grey-text;
+    position: absolute;
+    top: 50%;
+    right: -32px;
+  }
+}
+
+.funnel-steps__step-number {
+  border-radius: 50%;
+  background: $blue-text;
+  border: 1px solid $blue-text;
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 24px;
+  overflow: hidden;
+  margin-right: $base * 0.75;
+}
+
+.funnel-steps__step--active {
+  &:after {
+    display: block;
+    content: '';
+    height: 1px;
+    width: 24px;
+    background: $blue-text;
+    position: absolute;
+    top: 50%;
+    right: -32px;
+  }
+}
+
+.funnel-steps__step--active ~ .funnel-steps__step {
+  color: $grey-text;
+
+  .funnel-steps__step-number {
+    border: 1px solid $grey-border;
+    background: white;
+    color: $grey-text;
+  }
+}
+
+.funnel-steps__step--completed {
+  color: $light-grey-text;
+
+  .funnel-steps__step-text {
+    text-decoration: line-through;
+  }
+
+  .funnel-steps__step-number {
+    background: $turquoise;
+    border: 1px solid $turquoise;
+  }
+}

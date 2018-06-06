@@ -1,0 +1,75 @@
+@import 'variables';
+
+.input {
+  position: relative;
+  overflow: visible;
+
+  .form-control {
+    box-shadow: inset 0 0 4px 0 rgba(57, 65, 77, 0.16);
+    border: solid 1px $grey-border;
+    height: 36px;
+    font-size: 0.9rem;
+
+    &::placeholder {
+      color: $grey-text;
+      opacity: 0.4;
+    }
+  }
+
+  &:disabled {
+    background-color: $grey;
+    border: solid 1px $grey-border;
+  }
+}
+
+.form-control-lg {
+  height: 52px !important;
+  font-size: 16px !important;
+}
+
+.input__tooltip {
+  position: absolute;
+  background: #f63f47;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(57, 65, 77, 0.32);
+  font-size: 0.8rem;
+  color: white;
+  padding: ($base / 2) $base;
+  height: 31px;
+  top: -43px;
+  left: 50%;
+  transform: translate(-50%,0);
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    margin-left: -12px;
+    left: 50%;
+    bottom: -12px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 12px 0 12px;
+    border-color: #f63f47 transparent transparent transparent;
+  }
+}
+
+select {
+  background-image: linear-gradient(to bottom, #ffffff, #f5f9fa);
+  height: 36px;
+  border: 1px solid $grey-border;
+  color: $black;
+
+  &:focus {
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.16);
+    outline: 0;
+  }
+}
+
+.input__search {
+  padding-left: 32px !important;
+  background-image: url('/assets/images/icon-search.svg') !important;
+  background-repeat: no-repeat;
+  background-position: 6px center;
+}
