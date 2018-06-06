@@ -41,7 +41,7 @@ class BaseGetSecurePage extends Component {
           <div className="mr-2 pl-3">
             <img
               className="view-passphrase"
-              src="/assets/images/icon-security.svg"
+              src="./assets/images/icon-security.svg"
             />
           </div>
           <h1 className={classnames(onboardingSecondaryHead, 'mb-3')}>

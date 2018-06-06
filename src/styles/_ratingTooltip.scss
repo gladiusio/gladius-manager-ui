@@ -39,10 +39,10 @@
   color: white;
 
   .star-rating__star {
-    background-image: url('/assets/images/icon-star-selected-off.svg') !important;
+    background-image: url('./assets/images/icon-star-selected-off.svg') !important;
   }
 
   .star-rating__star--on {
-    background-image: url('/assets/images/icon-star-selected-on.svg') !important;
+    background-image: url('./assets/images/icon-star-selected-on.svg') !important;
   }
 }

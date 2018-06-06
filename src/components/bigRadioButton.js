@@ -9,7 +9,7 @@ const bem = bemify('big-radio-button');
 export default function BigRadioButton(props) {
   return (
     <img
-      src={`/assets/images/icon-${props.isCheckbox ? 'checkbox' : 'radio'}-${props.on ? 'on' : 'off'}.svg`}
+      src={`./assets/images/icon-${props.isCheckbox ? 'checkbox' : 'radio'}-${props.on ? 'on' : 'off'}.svg`}
       alt=""
       className={classnames(props.className, bem(), 'cursor-pointer')}
       onClick={props.onClick}

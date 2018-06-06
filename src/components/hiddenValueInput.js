@@ -56,7 +56,7 @@ export default class HiddenValueInput extends Component {
           {this.renderInput()}
           <img
             className="view-value"
-            src="/assets/images/icon-eye.svg"
+            src="./assets/images/icon-eye.svg"
             onClick={this.toggleVisibility}
           />
         </div>

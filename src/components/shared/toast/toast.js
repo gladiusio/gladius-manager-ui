@@ -34,7 +34,7 @@ export default function Toast(props) {
       onClick={onDismiss}
     >
       {
-        success ? <img src="/assets/images/icon-check-white.svg" alt="Success" /> : null
+        success ? <img src="./assets/images/icon-check-white.svg" alt="Success" /> : null
       }
       <p className={bem('content')}>{text}</p>
     </Element>

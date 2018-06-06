@@ -26,7 +26,7 @@ export function BaseFunnelSteps({ currentOnboardingStepIndex, onboardingSteps })
             {
               (currentOnboardingStepIndex <= index)
                 ? <span className={bem('step-number')}>{index + 1}</span>
-                : <img className={bem('step-number')} src="/assets/images/icon-check-white.svg" alt="" />
+                : <img className={bem('step-number')} src="./assets/images/icon-check-white.svg" alt="" />
             }
             <span className={bem('step-text')}>{step.name}</span>
           </div>
