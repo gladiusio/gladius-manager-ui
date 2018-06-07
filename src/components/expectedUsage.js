@@ -9,6 +9,7 @@ import BigRadioButton from './bigRadioButton';
 import TimeDropdown from './timeDropdown';
 
 import {
+  setStorageAmount,
   setUploadSpeed,
   setReason,
   setUptimeStart,
@@ -18,6 +19,9 @@ import {
 
 const bem = bemify('expectedUsage');
 
+// TODO: show storage?
+const useStorage = false;
+
 const textareaPlaceholder = 'e.g. By using Gladius for a few hours I can finally put my network to good use. I plan to minimize its cost by renting my spare network bandwidth.';
 
 export function ExpectedUsage({
@@ -26,16 +30,37 @@ export function ExpectedUsage({
   uptimeStartValue,
   uptimeEndValue,
   reason,
+  storageAmount,
   uploadSpeed,
+  setStorageAmount,
   setUploadSpeed,
   setUptimeStart,
   setUptimeEnd,
   setReason,
   toggleAllDayUptime,
 }) {
+  let storageSlider = null;
+  if (useStorage) {
+    storageSlider = (
+      <div className="col-12 mb-5">
+        <div className="upload-speed-container mb-3">
+          <span>Storage Amount</span>
+          <span className="upload-speed">{storageAmount} Mb</span>
+        </div>
+        <div className="slider-container">
+          <ReactSlider
+            defaultValue={storageAmount}
+            handleClassName="slider-handle"
+            withBars
+            max={4000}
+            onChange={setStorageAmount} />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={classnames(bem())}>
-      <div className="col-6 mb-5">
+      <div className="col-12 mb-5">
         <div className="upload-speed-container mb-3">
           <span>Upload Speed</span>
           <span className="upload-speed">{uploadSpeed}.0 Mbps</span>
@@ -49,6 +74,7 @@ export function ExpectedUsage({
             onChange={setUploadSpeed} />
         </div>
       </div>
+      {storageSlider}
       <div className="col-12 mb-5">
         <span className="mr-4">Daily Uptime</span>
         <TimeDropdown
@@ -104,6 +130,7 @@ function mapStateToProps(state) {
     uptimeStartValue: expectedUsage.uptimeStart,
     uptimeEndValue: expectedUsage.uptimeEnd,
     reason: expectedUsage.reason,
+    storageAmount: expectedUsage.storageAmount,
     uploadSpeed: expectedUsage.uploadSpeed,
   };
 }
@@ -111,6 +138,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setUploadSpeed: speed => dispatch(setUploadSpeed(speed)),
+    setStorageAmount: storageAmount => dispatch(setStorageAmount(storageAmount)),
     setUptimeStart: uptimeStart => dispatch(setUptimeStart(uptimeStart)),
     setUptimeEnd: uptimeEnd => dispatch(setUptimeEnd(uptimeEnd)),
     setReason: textEvent => dispatch(setReason(textEvent.target.value)),

@@ -31,11 +31,11 @@
     }
 
     &.desc:after {
-      background: url('/assets/images/icon-order-down.svg') no-repeat center center;
+      background: url('./assets/images/icon-order-down.svg') no-repeat center center;
     }
 
     &.asc:after {
-      background: url('/assets/images/icon-order-up.svg') no-repeat center center;
+      background: url('./assets/images/icon-order-up.svg') no-repeat center center;
     }
   }
 
