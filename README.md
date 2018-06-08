@@ -3,8 +3,20 @@
 Gladius Front-end Management UI for nodes
 
 ## Running
+`npm run start`
 
-## Installation
+## Generating Builds
+We are using [Electron Packager](https://github.com/electron-userland/electron-packager) to build the UI for various platforms.
 
-- Download latest release from the [releases](https://github.com/gladiusio/gladius-node/releases) page for [gladiusio/gladius-node](https://github.com/gladiusio/gladius-node)
-- Compile from source using the Running instruction above
+Install Globally, `npm install electron-packager -g`
+
+Building:
+
+Run inside `gladius-manager-ui` directory
+
+- Windows
+  - ``
+- Mac
+  - `electron-packager . Gladius --platform=darwin --arch=x64 --icon="path_to_.icns_file"`
+- Linux
+  - ``
