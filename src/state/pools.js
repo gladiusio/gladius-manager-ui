@@ -2,6 +2,7 @@ import sortBy from 'lodash.sortby';
 import { nameAction, createAction } from '../util/createAction';
 import Market from '../util/contracts/market';
 import Pool from '../util/contracts/pool';
+import { getJSON } from '../backend';
 
 export function makePool(id, name, location, rating, nodeCount, maxBandwidth, speed, price) {
   return {
@@ -31,6 +32,10 @@ function getInitialState() {
   };
 }
 
+function fetchPools() {
+  return getJSON(`${process.env.CONTROL_API}/market/pools`);
+}
+
 export function getAllPoolsError(error) {
   return async dispatch => dispatch(createAction(GET_ALL_POOLS_ERROR, {
     error,
@@ -51,38 +56,15 @@ export function handleSort(col) {
 
 export function getAllPools() {
   return async (dispatch) => {
-    async function getPoolsFromAddresses(result) {
-      if (!result.length) return [];
-      const allPools = [];
-
-      /* eslint-disable no-restricted-syntax */
-      for (const poolAddress of result) {
-        const poolContract = new Pool({ w3: window.web3, address: poolAddress });
-
-        try {
-          /* eslint-disable no-await-in-loop */
-          const response = await poolContract.getPublicData();
-          /* eslint-enable no-await-in-loop */
-
-          allPools.push(...response[poolAddress]);
-        } catch (err) {
-          return dispatch(getAllPoolsError(err));
-        }
-      }
-      /* eslint-enable no-restricted-syntax */
-
-      return dispatch(getAllPoolsSuccess(allPools));
-    }
-
     try {
-      const result = await marketContract.getAllPools();
-      if (result.error) await dispatch(getAllPoolsError(result.error));
+      const pools = await fetchPools();
+      if (pools.error) return dispatch(getAllPoolsError(pools.error));
 
-      return getPoolsFromAddresses(result);
+      return dispatch(getAllPoolsSuccess([]));
     } catch (err) {
       return dispatch(getAllPoolsError(err));
     }
-  };
+  }
 }
 
 function reduceSortPools(state, payload) {
