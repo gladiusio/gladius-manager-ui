@@ -122,7 +122,7 @@ function createNode(passphrase) {
 
 }
 
-function setNodeData(nodeAddress, body) {
+function setNodeData(nodeAddress, passphrase, body) {
   if (mockData) {
     return delayed(() => {
       return {
@@ -199,7 +199,7 @@ export function createAccount() {
     const node = await getNode();
     const nodeAddress = node.response;
 
-    await setNodeData(nodeAddress, {
+    await setNodeData(nodeAddress, passphrase, {
       name,
       email,
       passphrase,
