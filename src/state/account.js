@@ -176,7 +176,8 @@ export function createApplication(poolId) {
 export function createAccount() {
   return async (dispatch, getState) => {
     const { account, expectedUsage } = getState();
-    const { email, name, passphrase } = account;
+    const { email, name, passphraseValue } = account;
+
     const {
       storageAmount,
       uploadSpeed,
@@ -188,21 +189,21 @@ export function createAccount() {
 
     dispatch(setIsLoading(true));
 
-    const wallet = await createWallet(passphrase);
+    const wallet = await createWallet(passphraseValue);
     if (wallet.error) {
       throw new Error('Wallet creation failed!');
     }
     const walletAddress = wallet.response.address;
 
     await createPGPKey(name, email);
-    await createNode(passphrase);
+    await createNode(passphraseValue);
     const node = await getNode();
     const nodeAddress = node.response;
 
-    await setNodeData(nodeAddress, passphrase, {
+    await setNodeData(nodeAddress, passphraseValue, {
       name,
       email,
-      passphrase,
+      passphraseValue,
       storageAmount,
       uploadSpeed,
       reason,
