@@ -31,7 +31,7 @@ const svgCopyConfig = new CopyPlugin([{
 
 const env = new webpack.EnvironmentPlugin({
   NODE_ENV: '',
-  CONTROL_API: 'localhost:3001/api/',
+  CONTROL_API: 'http://localhost:3001/api',
   MARKET_CONTRACT_ADDRESS: '0xaa588d3737b611bafd7bd713445b314bd453a5c8',
   POOL_CONTRACT_ADDRESS: '0xf204a4ef082f5c04bb89f7d5e6568b796096735a',
 });
