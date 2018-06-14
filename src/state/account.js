@@ -3,7 +3,7 @@ import { ErrorState, LoadingState } from '../util/stateValues';
 import { getJSON, postData, delayed } from '../backend';
 
 const namespace = 'account';
-const mockData = true;
+const mockData = process.env.MOCK_DATA === "true";
 
 export const SET_EMAIL_ADDRESS = nameAction(namespace, 'SET_EMAIL_ADDRESS');
 export const SET_EMAIL_ADDRESS_SUCCESS = nameAction(namespace, 'SET_EMAIL_ADDRESS_SUCCESS');
@@ -115,7 +115,7 @@ function createWallet(passphrase) {
   }
 
   return postData(
-    `${process.env.CONTROL_API}/keystore/wallet/create`,
+    `${process.env.CONTROL_API}/keystore/wallet/account/create`,
     { passphrase }
   );
 }

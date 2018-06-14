@@ -5,7 +5,7 @@ import Pool from '../util/contracts/pool';
 import { getJSON, delayed } from '../backend';
 import mockedPoolsResponse from './mockedResponses/pools';
 
-const mockData = true;
+const mockData = process.env.MOCK_DATA === "true";
 
 export function makePool(id, name, location, rating, nodeCount, maxBandwidth, speed, price) {
   return {
