@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setPassphrase, validatePassphrase, createAccount } from '../../state/account';
+import { setPassphrase, validatePassphrase, createUserWallet } from '../../state/account';
 import Card from '../card';
 import ExpectedUsage from '../expectedUsage';
 import PassphraseForm from '../passphraseForm';
@@ -23,13 +23,15 @@ class BaseGetSecurePage extends Component {
     this.onPassphraseChange = this.onPassphraseChange.bind(this);
 
     this.state = {
-      validForm: false
+      validForm: false,
+      continueClicked: false,
     };
+    this.nextClick = this.nextClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.accountCreated) {
-      nextProps.goToNextStep();
+  componentDidUpdate() {
+    if (this.props.walletCreated && this.state.continueClicked) {
+      this.props.goToNextStep();
     }
   }
 
@@ -37,6 +39,10 @@ class BaseGetSecurePage extends Component {
     this.setState({
       validForm: validatePassphrase(passphraseForm)
     });
+  }
+
+  nextClick() {
+    this.setState({continueClicked: true});
   }
 
   render() {
@@ -79,6 +85,7 @@ class BaseGetSecurePage extends Component {
             formIds={['passphrase']}
             className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
             disabled={!this.state.validForm || isLoading}
+            onSubmit={this.nextClick}
           >
             Continue
           </ExternalSubmitButton>
@@ -99,8 +106,8 @@ function mapStateToProps(state) {
   const { account } = state;
 
   return {
-    isLoading: account.loading,
-    accountCreated: account.created,
+    isLoading: account.walletLoading,
+    walletCreated: account.walletCreated,
   };
 }
 
@@ -108,7 +115,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setUserPassphrase: (passphrase) => {
       dispatch(setPassphrase(passphrase));
-      dispatch(createAccount());
+      dispatch(createUserWallet());
     },
     goToNextStep: () => dispatch(nextSignupStep()),
     goToPrevStep: () => dispatch(prevSignupStep()),

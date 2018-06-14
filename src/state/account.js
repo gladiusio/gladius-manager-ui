@@ -3,7 +3,7 @@ import { ErrorState, LoadingState } from '../util/stateValues';
 import { getJSON, postData, delayed } from '../backend';
 
 const namespace = 'account';
-const mockData = false;
+const mockData = true;
 
 export const SET_EMAIL_ADDRESS = nameAction(namespace, 'SET_EMAIL_ADDRESS');
 export const SET_EMAIL_ADDRESS_SUCCESS = nameAction(namespace, 'SET_EMAIL_ADDRESS_SUCCESS');
@@ -17,6 +17,9 @@ export const SET_PASSPHRASE = nameAction(namespace, 'SET_PASSPHRASE');
 
 export const SET_WALLET_ADDRESS = nameAction(namespace, 'SET_WALLET_ADDRESS');
 export const SET_NODE_ADDRESS = nameAction(namespace, 'SET_NODE_ADDRESS');
+
+const SET_WALLET_LOADING = nameAction(namespace, 'SET_WALLET_LOADING');
+const SET_WALLET_SUCCESS = nameAction(namespace, 'SET_WALLET_SUCCESS');
 
 const SET_ACCOUNT_LOADING = nameAction(namespace, 'SET_ACCOUNT_LOADING');
 const SET_ACCOUNT_CREATED = nameAction(namespace, 'SET_ACCOUNT_CREATED');
@@ -70,12 +73,20 @@ export function validatePassphrase({passphraseValue, passphraseConfirmation}) {
     passphraseValue === passphraseConfirmation;
 }
 
-function setIsLoading(accountCreationLoading) {
+function setAccountLoading(accountCreationLoading) {
   return createAction(SET_ACCOUNT_LOADING, { accountCreationLoading });
 }
 
-function setAccountCreated(created) {
-  return createAction(SET_ACCOUNT_CREATED, { created });
+function setWalletIsLoading(walletLoading) {
+  return createAction(SET_WALLET_LOADING, { walletLoading });
+}
+
+function setWalletSuccess(walletCreated) {
+  return createAction(SET_WALLET_SUCCESS, { walletCreated });
+}
+
+function setAccountCreated(accountCreated) {
+  return createAction(SET_ACCOUNT_CREATED, { accountCreated });
 }
 
 function setNodeAddress(nodeAddress) {
@@ -91,6 +102,18 @@ function setApplicationSuccess(poolId) {
 }
 
 function createWallet(passphrase) {
+  if (mockData) {
+    return delayed(() => {
+      return {
+        success: true,
+        error: false,
+        response: {
+          address: "myaddresshere",
+        },
+      };
+    }, 2000);
+  }
+
   return postData(
     `${process.env.CONTROL_API}/keystore/wallet/create`,
     { passphrase }
@@ -98,6 +121,15 @@ function createWallet(passphrase) {
 }
 
 function createPGPKey(name, email) {
+  if (mockData) {
+    return delayed(() => {
+      return {
+        success: true,
+        error: false,
+      };
+    }, 2000);
+  }
+
   return postData(
     `${process.env.CONTROL_API}/keystore/pgp/create`,
     { name, email }
@@ -173,21 +205,12 @@ export function createApplication(poolId) {
   }
 }
 
-export function createAccount() {
-  return async (dispatch, getState) => {
-    const { account, expectedUsage } = getState();
+export function createUserWallet() {
+  return async(dispatch, getState) => {
+    const { account } = getState();
     const { email, name, passphraseValue } = account;
 
-    const {
-      storageAmount,
-      uploadSpeed,
-      reason,
-      uptimeStart,
-      uptimeEnd,
-      allDayUptime,
-    } = expectedUsage;
-
-    dispatch(setIsLoading(true));
+    dispatch(setWalletIsLoading(true));
 
     const wallet = await createWallet(passphraseValue);
     if (wallet.error) {
@@ -195,27 +218,62 @@ export function createAccount() {
     }
     const walletAddress = wallet.response.address;
 
-    await createPGPKey(name, email);
-    await createNode(passphraseValue);
-    const node = await getNode();
-    const nodeAddress = node.response;
+    const pgp = await createPGPKey(name, email);
+    if (pgp.error) {
+      throw new Error('PGP key creation failed!');
+    }
 
-    await setNodeData(nodeAddress, passphraseValue, {
-      name,
-      email,
-      passphraseValue,
-      storageAmount,
-      uploadSpeed,
-      reason,
-      uptimeStart,
-      uptimeEnd,
-      allDayUptime,
-    });
-
+    dispatch(setWalletSuccess(true));
     dispatch(setWalletAddress(walletAddress));
-    dispatch(setNodeAddress(nodeAddress));
-    dispatch(setAccountCreated(true));
-    return dispatch(setIsLoading(false));
+    dispatch(setWalletIsLoading(false));
+  };
+}
+
+export function createAccount() {
+  return async (dispatch, getState) => {
+    dispatch(setAccountLoading(true));
+
+    async function createUserNode() {
+      const { account, expectedUsage } = getState();
+      const { email, name, passphraseValue } = account;
+
+      const {
+        storageAmount,
+        uploadSpeed,
+        reason,
+        uptimeStart,
+        uptimeEnd,
+        allDayUptime,
+      } = expectedUsage;
+
+      const nodeCreation = await createNode(passphraseValue);
+      if (nodeCreation.error) {
+        throw new Error('Node creation failed!');
+      }
+      const node = await getNode();
+      const nodeAddress = node.response;
+
+      const setNode = await setNodeData(nodeAddress, passphraseValue, {
+        name,
+        email,
+        passphraseValue,
+        storageAmount,
+        uploadSpeed,
+        reason,
+        uptimeStart,
+        uptimeEnd,
+        allDayUptime,
+      });
+      if (setNode.error) {
+        throw new Error('Setting node data failed!');
+      }
+
+      dispatch(setNodeAddress(nodeAddress));
+      dispatch(setAccountCreated(true));
+    }
+
+    await createUserNode();
+    return dispatch(setAccountLoading(false));
   }
 }
 
@@ -266,6 +324,16 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         nodeAddress: action.payload.nodeAddress,
       };
+    case SET_WALLET_LOADING:
+      return {
+        ...state,
+        walletLoading: action.payload.walletLoading,
+      };
+    case SET_WALLET_SUCCESS:
+      return {
+        ...state,
+        walletCreated: action.payload.walletCreated,
+      };
     case SET_ACCOUNT_LOADING:
       return {
         ...state,
@@ -274,7 +342,7 @@ export default function reducer(state = {}, action = {}) {
     case SET_ACCOUNT_CREATED:
       return {
         ...state,
-        created: action.payload.created,
+        accountCreated: action.payload.accountCreated,
       };
     case SET_APPLY_POOL_LOADING:
       return {
