@@ -93,8 +93,8 @@ function setNodeAddress(nodeAddress) {
   return createAction(SET_NODE_ADDRESS, { nodeAddress });
 }
 
-function setApplicationLoading(applicationLoading) {
-  return createAction(SET_APPLY_POOL_LOADING, { applicationLoading });
+function setApplicationLoading(applyPoolLoading) {
+  return createAction(SET_APPLY_POOL_LOADING, { applyPoolLoading });
 }
 
 function setApplicationSuccess(poolId) {
@@ -172,6 +172,15 @@ function setNodeData(nodeAddress, passphrase, body) {
 }
 
 function applyToPool(walletAddress, poolId, passphrase) {
+  if (mockData) {
+    return delayed(() => {
+      return {
+        success: true,
+        error: false
+      };
+    }, 3000);
+  }
+
   return postData(
     `${process.env.CONTROL_API}/node/${walletAddress}/apply/${poolId}`,
     {},

@@ -2,7 +2,10 @@ import sortBy from 'lodash.sortby';
 import { nameAction, createAction } from '../util/createAction';
 import Market from '../util/contracts/market';
 import Pool from '../util/contracts/pool';
-import { getJSON } from '../backend';
+import { getJSON, delayed } from '../backend';
+import mockedPoolsResponse from './mockedResponses/pools';
+
+const mockData = true;
 
 export function makePool(id, name, location, rating, nodeCount, maxBandwidth, speed, price) {
   return {
@@ -33,6 +36,12 @@ function getInitialState() {
 }
 
 function fetchPools() {
+  if (mockData) {
+    return delayed(() => {
+      return mockedPoolsResponse;
+    }, 2000);
+  }
+
   return getJSON(`${process.env.CONTROL_API}/market/pools`);
 }
 
@@ -59,8 +68,15 @@ export function getAllPools() {
     try {
       const pools = await fetchPools();
       if (pools.error) return dispatch(getAllPoolsError(pools.error));
+      const allPools = pools.response.map((pool) => {
+        let data = pool.data;
+        return {
+          address: pool.address,
+          ...data,
+        };
+      });
 
-      return dispatch(getAllPoolsSuccess([]));
+      return dispatch(getAllPoolsSuccess(allPools));
     } catch (err) {
       return dispatch(getAllPoolsError(err));
     }

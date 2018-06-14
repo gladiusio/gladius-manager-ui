@@ -13,13 +13,22 @@ const bem = bemify('pool-selection');
 export class BasePoolSelection extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      hasClickedApply: false,
+    };
+    this.applyClick = this.applyClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.hasAppliedToPool) {
+  componentDidUpdate() {
+    if (this.props.hasAppliedToPool && this.state.hasClickedApply) {
       console.log('going to next step!');
-      // nextProps.goToNextStep();
     }
+  }
+
+  applyClick(poolId) {
+    this.setState({hasClickedApply: true});
+    this.props.applyToPool(this.poolId);
   }
 
   render() {
@@ -33,13 +42,13 @@ export class BasePoolSelection extends Component {
         <h2 className={classnames(onboardingSubhead, 'mb-5')}>
           Select a pool that perfectly fits your price, location, and availability
         </h2>
-        <PoolTable onRowClick={(poolId) => { props.choosePool(poolId); }} />
+        <PoolTable onRowClick={(poolId) => { props.selectPool(poolId); }} />
         <div className="d-flex flex-row justify-content-between">
           <a onClick={() => props.goToPrevStep()} className="btn btn-text btn-lg">
             Back
           </a>
           <button
-            onClick={() => console.log('done.')}
+            onClick={this.applyClick}
             disabled={!props.poolId || props.loading}
             className="btn btn-primary btn-chunky btn-lg"
           >
