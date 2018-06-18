@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { submit } from 'redux-form';
+import noop from '../util/noop';
 
 const BaseExternalSubmitButton = ({ className, children, disabled, dispatchSubmit }) => (
   <button
@@ -18,11 +19,16 @@ BaseExternalSubmitButton.propTypes = {
   dispatchSubmit: PropTypes.func,
 };
 
+
+BaseExternalSubmitButton.defaultProps = {
+  onSubmit: noop,
+};
+
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatchSubmit: () => {
       ownProps.formIds.forEach((formId) => {
-        dispatch(dispatch(submit(formId)));
+        dispatch(submit(formId));
       });
 
       // Necessary due to how external submit works for redux-form.

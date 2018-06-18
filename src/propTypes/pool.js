@@ -9,6 +9,6 @@ export default PropTypes.shape({
   rating: PropTypes.string.isRequired,
   nodeCount: PropTypes.string.isRequired,
   maxBandwidth: PropTypes.string.isRequired,
-  speed: shapePropType.isRequired,
-  price: pricePropType.isRequired,
+  speed: shapePropType,
+  price: pricePropType,
 });

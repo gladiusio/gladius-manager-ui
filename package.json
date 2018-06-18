@@ -73,6 +73,7 @@
     "test:single": "./build/test-single.sh",
     "livereload": "livereload dist -d",
     "local": "NODE_ENV=development npm-run-all -p js:watch style:watch livereload",
+    "local-mocked": "MOCK_DATA=true npm run local",
     "js:watch": "webpack-dev-server",
     "js:build": "webpack",
     "build": "npm run clean && NODE_ENV=production npm-run-all -p js:build style:build",

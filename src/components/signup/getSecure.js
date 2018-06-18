@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setPassphrase, validatePassphrase } from '../../state/account';
+import { setPassphrase, validatePassphrase, createUserWallet } from '../../state/account';
 import Card from '../card';
 import ExpectedUsage from '../expectedUsage';
 import PassphraseForm from '../passphraseForm';
@@ -23,8 +23,16 @@ class BaseGetSecurePage extends Component {
     this.onPassphraseChange = this.onPassphraseChange.bind(this);
 
     this.state = {
-      validForm: false
+      validForm: false,
+      continueClicked: false,
     };
+    this.nextClick = this.nextClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.props.walletCreated && this.state.continueClicked) {
+      this.props.goToNextStep();
+    }
   }
 
   onPassphraseChange(passphraseForm) {
@@ -33,8 +41,18 @@ class BaseGetSecurePage extends Component {
     });
   }
 
+  nextClick() {
+    this.setState({continueClicked: true});
+  }
+
   render() {
-    let { disabledContinue, goToNextStep, goToPrevStep, setUserPassphrase } = this.props;
+    let {
+      disabledContinue,
+      goToNextStep,
+      goToPrevStep,
+      isLoading,
+      setUserPassphrase
+    } = this.props;
     return (
       <div className={classnames(bem(), 'col-7 mt-5')}>
         <div className="row justify-content-center">
@@ -66,8 +84,8 @@ class BaseGetSecurePage extends Component {
           <ExternalSubmitButton
             formIds={['passphrase']}
             className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
-            onSubmit={goToNextStep}
-            disabled={!this.state.validForm}
+            disabled={!this.state.validForm || isLoading}
+            onSubmit={this.nextClick}
           >
             Continue
           </ExternalSubmitButton>
@@ -84,12 +102,24 @@ BaseGetSecurePage.propTypes = {
   goToPrevStep: PropTypes.func,
 };
 
+function mapStateToProps(state) {
+  const { account } = state;
+
+  return {
+    isLoading: account.walletLoading,
+    walletCreated: account.walletCreated,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
-    setUserPassphrase: passphrase => dispatch(setPassphrase(passphrase)),
+    setUserPassphrase: (passphrase) => {
+      dispatch(setPassphrase(passphrase));
+      dispatch(createUserWallet());
+    },
     goToNextStep: () => dispatch(nextSignupStep()),
     goToPrevStep: () => dispatch(prevSignupStep()),
   };
 }
 
-export default connect(null, mapDispatchToProps)(BaseGetSecurePage);
+export default connect(mapStateToProps, mapDispatchToProps)(BaseGetSecurePage);

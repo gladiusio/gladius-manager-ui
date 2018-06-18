@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router';
 import GettingStarted from './signup/gettingStarted';
 import GetSecure from './signup/getSecure';
+import AddEther from './signup/addEther';
 import FunnelSteps from './signup/funnelSteps';
 import PoolSelection from './signup/poolSelection';
 import LockedRoute from './lockedRoute';
@@ -37,8 +38,16 @@ export function BaseSignup({ currentOnboardingStepIndex, onboardingStepIndexByPa
             />
             <LockedRoute
               path="/signup/get-secure"
-              redirectTo="/signup/choose-pool"
+              redirectTo="/signup/add-ether"
               component={GetSecure}
+              isAllowed={({ path }) => (
+                currentOnboardingStepIndex === onboardingStepIndexByPath[path]
+              )}
+            />
+            <LockedRoute
+              path="/signup/add-ether"
+              redirectTo="/signup/choose-pool"
+              component={AddEther}
               isAllowed={({ path }) => (
                 currentOnboardingStepIndex === onboardingStepIndexByPath[path]
               )}

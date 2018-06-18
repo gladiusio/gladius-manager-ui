@@ -5,7 +5,7 @@ import bemify from '../util/bemify';
 import { onboardingField } from '../sharedClassNames';
 import { isEmailAddress } from '../util/validators';
 
-const bem = bemify('home');
+const bem = bemify('email');
 // eslint-disable-next-line react/prop-types
 const EmailField = ({ input, type, meta: { touched, error } }) => (
   <div key="emailInputField" className="input form-group">

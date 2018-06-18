@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+
 import { setEmailAddressAndName } from '../state/account';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
 import EmailForm from './emailForm';
+import bemify from '../util/bemify';
+
+const bem = bemify('home');
 
 export class BaseHome extends Component {
   renderEmail() {
@@ -28,9 +33,9 @@ export class BaseHome extends Component {
   render() {
     return (
       <MastheadContentSplit masthead={<Masthead />}>
-        <div className="container-fluid pb-5">
+        <div className={classnames(bem(), 'container-fluid pb-5')}>
           <div className="row justify-content-center">
-            <div className="col-6">
+            <div className="email-container col-6">
               {this.renderEmail()}
             </div>
           </div>

@@ -172,7 +172,7 @@ export class BasePoolTable extends Component {
                   <Table.Cell>{p.nodeCount}</Table.Cell>
                   <Table.Cell>
                     <img src="./assets/images/icon-logo-small.svg" alt="" className="mr-2" />
-                    {p.price.value} GLA<span className="text-muted">/GB</span>
+                    {p.earnings} GLA<span className="text-muted">/GB</span>
                   </Table.Cell>
                 </Table.Row>
               ))}
