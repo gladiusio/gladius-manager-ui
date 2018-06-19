@@ -1,0 +1,40 @@
+@import './variables';
+
+.dashboard-navigation__list {
+  margin: 0;
+}
+
+.dashboard-navigation__item {
+  display: inline-block;
+  margin-right: $base;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.dashboard-navigation__link {
+  padding: 20px 10px 20px 40px;
+  display: block;
+  color: $grey-text;
+}
+
+.dashboard-navigation__link:hover, .dashboard-navigation__link--active {
+  color: $blue-text;
+  border-bottom: 3px solid $blue-text;
+  padding-bottom: 17px;
+  text-decoration: none;
+}
+
+$links: (dashboard, transactions, settings);
+
+@each $link in $links {
+  .dashboard-navigation__link-#{$link} {
+    background: transparent url('/assets/images/icon-#{$link}-off.svg') no-repeat 10px center;
+
+    &.dashboard-navigation__link--active,
+    &:hover {
+      background-image: url('/assets/images/icon-#{$link}-on.svg');
+    }
+  }
+}

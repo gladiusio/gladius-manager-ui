@@ -215,25 +215,28 @@ export function createApplication(poolId) {
 }
 
 export function createUserWallet() {
-  return async(dispatch, getState) => {
+  return async (dispatch, getState) => {
+    async function createWalletAndKey(passphrase) {
+      const wallet = await createWallet(passphrase);
+      if (wallet.error) {
+        throw new Error('Wallet creation failed!');
+      }
+      const walletAddress = wallet.response.address;
+
+      const pgp = await createPGPKey(name, email);
+      if (pgp.error) {
+        throw new Error('PGP key creation failed!');
+      }
+
+      dispatch(setWalletSuccess(true));
+      dispatch(setWalletAddress(walletAddress));
+    }
+
     const { account } = getState();
     const { email, name, passphraseValue } = account;
 
     dispatch(setWalletIsLoading(true));
-
-    const wallet = await createWallet(passphraseValue);
-    if (wallet.error) {
-      throw new Error('Wallet creation failed!');
-    }
-    const walletAddress = wallet.response.address;
-
-    const pgp = await createPGPKey(name, email);
-    if (pgp.error) {
-      throw new Error('PGP key creation failed!');
-    }
-
-    dispatch(setWalletSuccess(true));
-    dispatch(setWalletAddress(walletAddress));
+    createWalletAndKey(passphraseValue);
     dispatch(setWalletIsLoading(false));
   };
 }
