@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Home from './home';
 import Signup from './signup';
+import Dashboard from './dashboard/dashboard';
 
 export default function App() {
   /*
@@ -14,6 +15,7 @@ export default function App() {
       {window.location.pathname.includes('index.html') && <Redirect to="/" />}
       <Route exact path="/" component={Home} />
       <Route path="/signup" component={Signup} />
+      <Route path="/dashboard" component={Dashboard} />
     </Switch>
   );
 }

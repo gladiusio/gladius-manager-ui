@@ -31,7 +31,7 @@ export default function Masthead(props = {}) {
     >
       <div className="container-fluid">
         <div className="row align-items-center justify-content-start">
-          <div className="col-sm-auto">
+          <div className={classnames(props.containerClass, 'col-sm-auto')}>
             <h1
               className={classnames(
                 bem('logo'),
@@ -52,11 +52,13 @@ export default function Masthead(props = {}) {
 }
 
 Masthead.defaultProps = {
+  containerClass: '',
   children: null,
   dark: false,
 };
 
 Masthead.propTypes = {
+  containerClass: PropTypes.string,
   children: PropTypes.node,
   dark: PropTypes.bool,
 };

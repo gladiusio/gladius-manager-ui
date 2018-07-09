@@ -11,19 +11,23 @@
 @import 'funnelSteps';
 @import 'getSecure';
 @import 'gettingStarted';
+@import 'halfCard';
 @import 'hiddenValueInput';
 @import 'home';
 @import 'masthead';
 @import 'mastheadContentSplit';
+@import 'navigation';
 @import 'onboardingField';
 @import 'onboardingHead';
 @import 'onboardingSubhead';
 @import 'passphraseForm';
 @import 'poolSelection';
+@import 'poolStatusTable';
 @import 'poolTable';
 @import 'ratingTooltip';
 @import 'sliderTooltip';
 @import 'starRating';
+@import 'statusCard';
 @import 'table';
 @import 'timeDropdown';
 @import 'tooltip';
@@ -107,4 +111,20 @@ body {
     background-color: #fa9200;
     color: $black;
   }
+}
+
+.gla {
+  color: white;
+  background: #31c7c3;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 10px;
+}
+
+.hide {
+  display: none;
+}
+
+.absolute {
+  position: absolute !important;
 }
