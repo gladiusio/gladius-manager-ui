@@ -29,6 +29,15 @@ export default function SubNavigation() {
         </li>
         <li className={bem('item')}>
           <NavLink
+            to="/dashboard/marketplace"
+            activeClassName={bem('link', 'active')}
+            className={classnames(bem('link'), bem('link-marketplace'))}
+          >
+            Marketplace
+          </NavLink>
+        </li>
+        <li className={bem('item')}>
+          <NavLink
             to="/dashboard/settings"
             activeClassName={bem('link', 'active')}
             className={classnames(bem('link'), bem('link-settings'))}

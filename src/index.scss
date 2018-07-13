@@ -2,6 +2,8 @@
 
 @import 'buttons';
 @import 'card';
+@import 'confirmationPage';
+@import 'copyText';
 @import 'countryList';
 @import 'countryTooltip';
 @import 'drawerContentSplit';
@@ -14,6 +16,8 @@
 @import 'halfCard';
 @import 'hiddenValueInput';
 @import 'home';
+@import 'manageBalance';
+@import 'marketplace';
 @import 'masthead';
 @import 'mastheadContentSplit';
 @import 'navigation';
@@ -31,6 +35,8 @@
 @import 'table';
 @import 'timeDropdown';
 @import 'tooltip';
+@import 'transactionsTable';
+@import 'walletBalance';
 
 html, body, #root {
   height: 100%;
@@ -72,7 +78,7 @@ body {
   }
 }
 
-.app__toasts {
+.toasts {
   position: absolute;
   opacity: 0.96;
   width: 100%;
@@ -108,8 +114,8 @@ body {
   }
 
   .warning {
-    background-color: #fa9200;
-    color: $black;
+    background-color: #f63f47;
+    color: $white;
   }
 }
 

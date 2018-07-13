@@ -2,16 +2,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router';
+
 import GettingStarted from './signup/gettingStarted';
 import GetSecure from './signup/getSecure';
-import AddEther from './signup/addEther';
+import ConfirmationPage from './signup/confirmationPage';
 import FunnelSteps from './signup/funnelSteps';
 import PoolSelection from './signup/poolSelection';
 import LockedRoute from './lockedRoute';
 import MastheadContentSplit from './mastheadContentSplit';
 import Masthead from './masthead';
+import Toasts from './toasts';
 
-export function BaseSignup({ currentOnboardingStepIndex, onboardingStepIndexByPath }) {
+export function BaseSignup({
+  onboardingDone,
+  currentOnboardingStepIndex,
+  onboardingStepIndexByPath
+}) {
+  if (onboardingDone) {
+    return <Redirect to="/dashboard/home" />;
+  }
+
   return (
     <MastheadContentSplit
       masthead={
@@ -24,6 +34,7 @@ export function BaseSignup({ currentOnboardingStepIndex, onboardingStepIndexByPa
         </Masthead>
       }
     >
+      <Toasts></Toasts>
       <div className="container pb-5">
         <div className="row justify-content-center">
           <Switch>
@@ -38,16 +49,16 @@ export function BaseSignup({ currentOnboardingStepIndex, onboardingStepIndexByPa
             />
             <LockedRoute
               path="/signup/get-secure"
-              redirectTo="/signup/add-ether"
+              redirectTo="/signup/confirmation"
               component={GetSecure}
               isAllowed={({ path }) => (
                 currentOnboardingStepIndex === onboardingStepIndexByPath[path]
               )}
             />
             <LockedRoute
-              path="/signup/add-ether"
+              path="/signup/confirmation"
               redirectTo="/signup/choose-pool"
-              component={AddEther}
+              component={ConfirmationPage}
               isAllowed={({ path }) => (
                 currentOnboardingStepIndex === onboardingStepIndexByPath[path]
               )}
@@ -72,10 +83,11 @@ BaseSignup.propTypes = {
   onboardingStepIndexByPath: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
-function mapStateToProps({ signup }) {
+function mapStateToProps({ account, signup }) {
   return {
     currentOnboardingStepIndex: signup.currentStep.index,
     onboardingStepIndexByPath: signup.steps.byPath,
+    onboardingDone: !!account.nodeAddress && !!account.accountCreated,
   };
 }
 

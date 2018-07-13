@@ -1,0 +1,171 @@
+.manage-balance__select {
+  height: 52px !important;
+}
+
+.manage-balance__tabs {
+  .gladius-card {
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .gladius-card__content {
+    padding: 3.3rem !important;
+  }
+
+  .tab-menu {
+    width: 100%;
+  }
+
+  .tab-menu__item {
+    padding: 1rem 0;
+    background-color: $off-white;
+    color: $grey-text !important;
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+    border-bottom: 1px solid #E0E7F1;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .tab-menu__item.active {
+    color: $blue-button !important;
+    border-top: 3px solid $blue-button;
+    background-color: $white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-left: 1px solid #E0E7F1;
+    border-right: 1px solid #E0E7F1;
+    border-bottom: 1px solid $white;
+  }
+}
+
+.manage-balance__wallet-row {
+  display: table;
+  width: 100%;
+  padding: 0 1rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.manage-balance__wallet-row--transfer,
+.manage-balance__wallet-row--to,
+.manage-balance__wallet-row--gladius-balance {
+  display: inline-block;
+  vertical-align: middle;
+
+  p {
+    display: inline-block;
+    margin: 0;
+  }
+}
+
+.manage-balance__wallet-row--transfer {
+  .form-group {
+    display: inline-block;
+    margin-left: 0.6rem;
+    margin-bottom: 0;
+  }
+
+  .form-control {
+    height: 52px;
+    margin-bottom: 0;
+  }
+}
+
+.manage-balance__wallet-row--to {
+  margin: 0 1.3rem;
+  position: relative;
+
+  p {
+    position: relative;
+    top: 2px;
+    color: $grey-text;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  img {
+    position: relative;
+    bottom: 2px;
+    display: block;
+  }
+}
+
+.manage-balance__wallet-row--gladius-balance {
+  padding: 0.7rem;
+  border-radius: 4px;
+  background-color: #FAFCFF;
+  border: 1px solid #E0E7F1;
+
+  img {
+    margin-right: 0.7rem;
+  }
+}
+
+.manage-balance__wallet-button {
+  width: 100%;
+
+  button {
+    width: 100%;
+  }
+}
+
+.manage-balance__progress-buttons {
+  margin-top: 1rem;
+  display: table;
+  width: 100%;
+}
+
+.manage-balance.balance-header {
+  text-align: left;
+}
+
+.manage-balance__progress-buttons--back,
+.manage-balance__progress-buttons--next {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.manage-balance__wallet-withdraw {
+  display: table;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  border-radius: 4px;
+  background-color: $white;
+  box-shadow: inset 0 0 4px 0 rgba(57, 65, 77, 0.16);
+  border: 1px solid #E0E7F1;
+
+  img, p {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+  }
+
+  img {
+    margin-right: 1rem;
+  }
+}
+
+.manage-balance__wallet-withdraw--gladius {
+  color: #3E4259;
+  font-weight: 600;
+}
+
+.manage-balance__wallet-withdraw--amount {
+  text-align: right;
+  color: $grey-text;
+  float: right;
+}
+
+.manage-balance__wallet-withdraw--wallets {
+  display: inline-block;
+  width: 25%;
+
+  .form-group {
+    display: inline-block;
+  }
+}

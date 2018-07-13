@@ -2,6 +2,7 @@ import { createAction, nameAction } from '../util/createAction';
 
 const namespace = 'expectedUsage';
 
+export const SET_EXPECTED_USAGE = nameAction(namespace, 'SET_EXPECTED_USAGE');
 export const SET_STORAGE_AMOUNT = nameAction(namespace, 'SET_STORAGE_AMOUNT');
 export const SET_UPLOAD_SPEED = nameAction(namespace, 'SET_UPLOAD_SPEED');
 export const SET_REASON = nameAction(namespace, 'SET_REASON');
@@ -37,6 +38,9 @@ export function validExpectedUsage(expectedUsage) {
     expectedUsage.allDayUptime !== undefined;
 }
 
+export function setExpectedUsage(expectedUsage) {
+  return createAction(SET_EXPECTED_USAGE, expectedUsage)
+}
 
 function getInitialState() {
   return {
@@ -51,6 +55,8 @@ function getInitialState() {
 
 export default function reducer(state = getInitialState(), action = {}) {
   switch (action.type) {
+    case SET_EXPECTED_USAGE:
+      return action.payload;
     case SET_STORAGE_AMOUNT:
       return {
         ...state,

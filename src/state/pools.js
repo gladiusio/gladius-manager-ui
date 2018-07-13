@@ -27,11 +27,20 @@ const SORT_POOLS = nameAction(namespace, 'SORT_POOLS');
 const GET_ALL_POOLS_ERROR = nameAction(namespace, 'GET_ALL_POOLS_ERROR');
 const GET_ALL_POOLS_SUCCESS = nameAction(namespace, 'GET_ALL_POOLS_SUCCESS');
 
+const SET_LOCATION_FILTER = nameAction(namespace, 'SET_LOCATION_FILTER');
+const SET_RATING_FILTER = nameAction(namespace, 'SET_RATING_FILTER');
+const SET_NODE_COUNT_FILTER = nameAction(namespace, 'SET_NODE_COUNT_FILTER');
+const SET_EARNINGS_FILTER = nameAction(namespace, 'SET_EARNINGS_FILTER');
+
 function getInitialState() {
   return {
     availablePools: [],
     sortDirection: 'desc',
     sortColumn: 'name',
+    locationFilter: [],
+    ratingFilter: 1,
+    nodeCountFilter: [0, 100],
+    earningsFilter: [0, 100]
   };
 }
 
@@ -63,12 +72,36 @@ export function handleSort(col) {
   });
 }
 
+export function setLocationFilter(locationFilter) {
+  return createAction(SET_LOCATION_FILTER, {
+    locationFilter,
+  });
+}
+
+export function setRatingFilter(ratingFilter) {
+  return createAction(SET_RATING_FILTER, {
+    ratingFilter,
+  });
+}
+
+export function setNodeCountFilter(nodeCountFilter) {
+  return createAction(SET_NODE_COUNT_FILTER, {
+    nodeCountFilter,
+  });
+}
+
+export function setEarningsFilter(earningsFilter) {
+  return createAction(SET_EARNINGS_FILTER, {
+    earningsFilter,
+  });
+}
+
 export function getAllPools() {
   return async (dispatch) => {
     try {
       const pools = await fetchPools();
       if (pools.error) return dispatch(getAllPoolsError(pools.error));
-      const allPools = pools.response.map((pool) => {
+      const allPools = pools.response.pools.map((pool) => {
         let data = pool.data;
         return {
           address: pool.address,
@@ -117,6 +150,34 @@ function reduceGetAllPoolsError(state) {
   };
 }
 
+function reduceSetLocationFilter(state, payload) {
+  return {
+    ...state,
+    locationFilter: payload.locationFilter,
+  };
+}
+
+function reduceSetRatingFilter(state, payload) {
+  return {
+    ...state,
+    ratingFilter: payload.ratingFilter,
+  };
+}
+
+function reduceSetNodeCountFilter(state, payload) {
+  return {
+    ...state,
+    nodeCountFilter: payload.nodeCountFilter,
+  };
+}
+
+function reduceSetEarningsFilter(state, payload) {
+  return {
+    ...state,
+    earningsFilter: payload.earningsFilter,
+  };
+}
+
 export default function poolReducer(state = getInitialState(), action = {}) {
   switch (action.type) {
     case SORT_POOLS:
@@ -125,6 +186,14 @@ export default function poolReducer(state = getInitialState(), action = {}) {
       return reduceGetAllPoolsSuccess(state, action.payload);
     case GET_ALL_POOLS_ERROR:
       return reduceGetAllPoolsError(state, action.payload);
+    case SET_LOCATION_FILTER:
+      return reduceSetLocationFilter(state, action.payload);
+    case SET_RATING_FILTER:
+      return reduceSetRatingFilter(state, action.payload);
+    case SET_NODE_COUNT_FILTER:
+      return reduceSetNodeCountFilter(state, action.payload);
+    case SET_EARNINGS_FILTER:
+      return reduceSetEarningsFilter(state, action.payload);
     default:
       return state;
   }

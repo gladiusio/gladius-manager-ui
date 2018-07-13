@@ -3,7 +3,8 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setPassphrase, validatePassphrase, createUserWallet } from '../../state/account';
+import { setPassphrase, validatePassphrase } from '../../state/account';
+import { createUserWallet } from '../../state/wallet';
 import Card from '../card';
 import ExpectedUsage from '../expectedUsage';
 import PassphraseForm from '../passphraseForm';
@@ -103,11 +104,11 @@ BaseGetSecurePage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { account } = state;
+  const { account, wallet } = state;
 
   return {
-    isLoading: account.walletLoading,
-    walletCreated: account.walletCreated,
+    isLoading: wallet.walletLoading,
+    walletCreated: wallet.walletCreated,
   };
 }
 
