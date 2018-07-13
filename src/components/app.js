@@ -11,11 +11,11 @@ export default function App() {
     See here: https://stackoverflow.com/questions/36505404/how-to-use-react-router-with-electron
   */
   return (
-      <Switch>
-        {window.location.pathname.includes('index.html') && <Redirect to="/" />}
-        <Route exact path="/" component={Home} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/dashboard" component={Dashboard} />
-      </Switch>
+    <Switch>
+      {window.location.pathname.includes('index.html') && <Redirect to="/" />}
+      <Route exact path="/" component={Home} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/dashboard" component={Dashboard} />
+    </Switch>
   );
 }
