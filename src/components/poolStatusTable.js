@@ -167,11 +167,8 @@ export class BasePoolStatusTable extends Component {
   render() {
     const {
       className,
-      sortDirection,
-      sortColumn,
       pools,
       rejectedPools,
-      selectedPoolId,
     } = this.props;
 
     return (

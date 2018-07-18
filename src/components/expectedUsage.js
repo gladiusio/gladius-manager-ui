@@ -1,4 +1,5 @@
 import React from 'react';
+import { Field, reduxForm } from 'redux-form';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,7 +25,48 @@ const useStorage = false;
 
 const textareaPlaceholder = 'e.g. By using Gladius for a few hours I can finally put my network to good use. I plan to minimize its cost by renting my spare network bandwidth.';
 
-export function ExpectedUsage({
+const SliderField = ({ max, input, type, meta: { touched, error } }) => (
+  <div key="sliderInputField" className="input form-group">
+    <ReactSlider
+      handleClassName="slider-handle"
+      withBars
+      max={max}
+      {...input}
+    />
+  </div>
+);
+
+const TimeDropdownField = ({ disableTimeDropdown, input }) => (
+  <TimeDropdown
+    {...input}
+    disabled={disableTimeDropdown}
+  />
+);
+
+const CheckboxField = ({ input }) => {
+  return (
+    <BigRadioButton
+      isCheckbox={true}
+      on={input.value}
+      className="mr-2"
+      onClick={() => input.onChange(!input.value)}
+    />
+  );
+};
+
+const TextareaField = ({ input }) => {
+  return (
+    <textarea
+      className="p-2"
+      placeholder={textareaPlaceholder}
+      {...input}
+    />
+  );
+};
+
+export function BaseExpectedUsage({
+  onSubmit,
+  handleSubmit,
   disableTimeDropdown,
   allDayValue,
   uptimeStartValue,
@@ -48,67 +90,71 @@ export function ExpectedUsage({
           <span className="upload-speed">{storageAmount} Mb</span>
         </div>
         <div className="slider-container">
-          <ReactSlider
-            defaultValue={storageAmount}
+          <Field
+            name="storageAmount"
             handleClassName="slider-handle"
-            withBars
             max={4000}
-            onChange={setStorageAmount} />
+            component={SliderField}
+          />
         </div>
       </div>
     );
   }
+
   return (
-    <div className={classnames(bem())}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classnames(bem())}>
       <div className="col-12 mb-5">
         <div className="upload-speed-container mb-3">
           <span>Upload Speed</span>
           <span className="upload-speed">{uploadSpeed}.0 Mbps</span>
         </div>
         <div className="slider-container">
-          <ReactSlider
-            defaultValue={uploadSpeed}
+          <Field
+            name="uploadSpeed"
             handleClassName="slider-handle"
-            withBars
             max={1000}
-            onChange={setUploadSpeed} />
+            component={SliderField}
+          />
         </div>
       </div>
       {storageSlider}
       <div className="col-12 mb-5">
         <span className="mr-4">Daily Uptime</span>
-        <TimeDropdown
-          value={uptimeStartValue}
+        <Field
+          name="uptimeStart"
           disabled={disableTimeDropdown}
-          onChange={setUptimeStart} />
+          component={TimeDropdownField}
+        />
         <span className="ml-2 mr-2">—</span>
-        <TimeDropdown
-          value={uptimeEndValue}
-          className="mr-4"
+        <Field
+          name="uptimeEnd"
           disabled={disableTimeDropdown}
-          onChange={setUptimeEnd} />
+          component={TimeDropdownField}
+        />
         <span className="all-day-container pl-4">
-          <BigRadioButton
-            isCheckbox={true}
-            on={allDayValue}
-            className="mr-2"
-            onClick={toggleAllDayUptime} />
+          <Field
+            name="allDayUptime"
+            component={CheckboxField}
+          />
           All Day
         </span>
       </div>
       <div className="col-12">
         <div className="mb-2">Tell us why you want to join us</div>
-        <textarea
-          className="p-2"
-          placeholder={textareaPlaceholder}
-          value={reason}
-          onChange={setReason} />
+        <Field
+          name="reason"
+          component={TextareaField}
+        />
       </div>
-    </div>
+    </form>
   );
 }
 
-ExpectedUsage.propTypes = {
+BaseExpectedUsage.defaultProps = {
+  onSubmit: () => {},
+};
+
+BaseExpectedUsage.propTypes = {
   disableTimeDropdown: PropTypes.bool,
   allDayValue: PropTypes.bool,
   uptimeStartValue: PropTypes.number,
@@ -123,15 +169,17 @@ ExpectedUsage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  let { expectedUsage } = state;
+  let { expectedUsage, form } = state;
+
   return {
+    initialValues: expectedUsage,
     disableTimeDropdown: expectedUsage.allDayUptime,
     allDayValue: expectedUsage.allDayUptime,
     uptimeStartValue: expectedUsage.uptimeStart,
     uptimeEndValue: expectedUsage.uptimeEnd,
     reason: expectedUsage.reason,
     storageAmount: expectedUsage.storageAmount,
-    uploadSpeed: expectedUsage.uploadSpeed,
+    uploadSpeed: form.expectedUsage && form.expectedUsage.values.uploadSpeed,
   };
 }
 
@@ -146,4 +194,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpectedUsage);
+BaseExpectedUsage = reduxForm({
+  form: 'expectedUsage',
+})(BaseExpectedUsage);
+
+BaseExpectedUsage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BaseExpectedUsage);
+
+export default BaseExpectedUsage;

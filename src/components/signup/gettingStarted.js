@@ -6,15 +6,16 @@ import { setEmailAddress } from '../../state/account';
 import MastheadContentSplit from '../mastheadContentSplit';
 import Masthead from '../masthead';
 import Card from '../card';
+import ExternalSubmitButton from '../externalSubmitButton';
 import ExpectedUsage from '../expectedUsage';
-import { validExpectedUsage } from '../../state/expectedUsage';
+import { validExpectedUsage, setExpectedUsage } from '../../state/expectedUsage';
 import { nextSignupStep } from '../../state/actions';
 import { onboardingField, onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import bemify from '../../util/bemify';
 
 const bem = bemify('gettingStarted');
 
-export function BaseGettingStarted({ disabledContinue, goToNextStep }) {
+export function BaseGettingStarted({ disabledContinue, goToNextStep, setExpectedUsage }) {
   return (
     <div className={classnames(bem(), 'col-7 mt-5')}>
       <h1 className={classnames(onboardingSecondaryHead, 'mb-3')}>Get started with Gladius</h1>
@@ -22,16 +23,17 @@ export function BaseGettingStarted({ disabledContinue, goToNextStep }) {
       <div className="row justify-content-center">
         <div className="col-12 justify-content-center">
           <Card className="p-5">
-            <ExpectedUsage></ExpectedUsage>
+            <ExpectedUsage onSubmit={setExpectedUsage}></ExpectedUsage>
           </Card>
         </div>
-        <button
+        <ExternalSubmitButton
           className="btn btn-primary btn-chunky btn-lg mt-4 mb-5"
-          disabled={disabledContinue}
-          onClick={goToNextStep}
+          // disabled={disabledContinue}
+          onSubmit={goToNextStep}
+          formIds={['expectedUsage']}
         >
           Continue
-        </button>
+        </ExternalSubmitButton>
       </div>
     </div>
   );
@@ -51,6 +53,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     goToNextStep: () => dispatch(nextSignupStep()),
+    setExpectedUsage: (expectedUsage) => {
+      dispatch(setExpectedUsage(expectedUsage));
+    },
   }
 }
 

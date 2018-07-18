@@ -1,14 +1,14 @@
 @import 'variables';
 
-.pool-selection {
+.marketplace {
   min-width: 850px;
 
-  .onboarding-secondary-head, .onboarding-subhead {
+  /*.onboarding-secondary-head, .onboarding-subhead {
     text-align: left;
-  }
+  }*/
 }
 
-.pool-selection__pool-row {
+.marketplace__pool-row {
   cursor: pointer;
 
   &:hover td {
@@ -16,6 +16,6 @@
   }
 }
 
-.pool-selection__pool-row--selected td {
+.marketplace__pool-row--selected td {
   background: $blue-row;
 }

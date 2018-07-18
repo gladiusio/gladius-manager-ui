@@ -3,7 +3,12 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Masthead from '../masthead';
 import MastheadContentSplit from '../mastheadContentSplit';
 import DashboardHome from './dashboardHome';
+import Marketplace from './marketplace';
+import ManageBalance from './manageBalance';
+import Settings from './settings';
+import Transactions from './transactions';
 import Navigation from './navigation';
+import Toasts from '../toasts';
 import bemify from '../../util/bemify';
 
 const bem = bemify('dashboard');
@@ -15,6 +20,7 @@ export default function Dashboard() {
         <Navigation />
       </Masthead>
     }>
+      <Toasts></Toasts>
       <div className="container pb-5">
         <div className="row justify-content-center">
           <Switch>
@@ -22,6 +28,10 @@ export default function Dashboard() {
               () => <Redirect to="/dashboard/home" />
             } />
             <Route path="/dashboard/home" component={DashboardHome} />
+            <Route path="/dashboard/transactions" component={Transactions} />
+            <Route path="/dashboard/marketplace" component={Marketplace} />
+            <Route path="/dashboard/settings" component={Settings} />
+            <Route path="/dashboard/balance" component={ManageBalance} />
           </Switch>
         </div>
       </div>

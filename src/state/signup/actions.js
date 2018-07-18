@@ -4,6 +4,6 @@ export {
   SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS,
 } from './currentStep';
 export {
-  choosePool,
   CHOOSE_POOL_SUCCESS,
-} from './poolId';
+  toggleSelectedPool,
+} from './poolIds';

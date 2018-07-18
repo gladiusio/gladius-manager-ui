@@ -5,8 +5,8 @@ const steps = [{
   path: '/signup/get-secure',
   name: 'Protect your data',
 }, {
-  path: '/signup/add-ether',
-  name: 'Add ether',
+  path: '/signup/confirmation',
+  name: 'Confirm',
 }, {
   path: '/signup/choose-pool',
   name: 'Choose pool',

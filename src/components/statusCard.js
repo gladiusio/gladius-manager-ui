@@ -47,7 +47,7 @@ class BaseStatusCard extends Component {
         <TooltipWrapper
           className={classnames(bem('tooltip'), 'ml-2')}
           content="hello there how are you doing">
-          <img src="/assets/images/icon-info.svg" alt="Info" />
+          <img src="./assets/images/icon-info.svg" alt="Info" />
         </TooltipWrapper>
       </div>
     );
@@ -60,7 +60,7 @@ class BaseStatusCard extends Component {
     return (
       <div>
         <div className={bem('icon')}>
-          <img src={`/assets/images/icon-status-${icon}-big.svg`} alt="" />
+          <img src={`./assets/images/icon-status-${icon}-big.svg`} alt="" />
         </div>
         <div className={bem('content')}>
           <h1>{text}</h1>

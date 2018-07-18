@@ -30,11 +30,11 @@ $links: (dashboard, transactions, settings);
 
 @each $link in $links {
   .dashboard-navigation__link-#{$link} {
-    background: transparent url('/assets/images/icon-#{$link}-off.svg') no-repeat 10px center;
+    background: transparent url('./assets/images/icon-#{$link}-off.svg') no-repeat 10px center;
 
     &.dashboard-navigation__link--active,
     &:hover {
-      background-image: url('/assets/images/icon-#{$link}-on.svg');
+      background-image: url('./assets/images/icon-#{$link}-on.svg');
     }
   }
 }
