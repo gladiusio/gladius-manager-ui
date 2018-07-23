@@ -267,7 +267,7 @@ export class BasePoolTable extends Component {
             </Tooltip>
           </div>
         </div>
-        <Card noPadding className="mb-4">
+        <Card noPadding>
           <Table className="table">
             {this.renderTableHeader()}
             <Table.Body>

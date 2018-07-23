@@ -2,6 +2,7 @@
 
 @import 'buttons';
 @import 'card';
+@import 'comingSoon';
 @import 'confirmationPage';
 @import 'copyText';
 @import 'countryList';
@@ -16,10 +17,12 @@
 @import 'halfCard';
 @import 'hiddenValueInput';
 @import 'home';
+@import 'manualPoolApply';
 @import 'manageBalance';
 @import 'marketplace';
 @import 'masthead';
 @import 'mastheadContentSplit';
+@import 'modal';
 @import 'navigation';
 @import 'onboardingField';
 @import 'onboardingHead';
@@ -36,6 +39,7 @@
 @import 'timeDropdown';
 @import 'tooltip';
 @import 'transactionsTable';
+@import 'typeToConfirmModal';
 @import 'walletBalance';
 
 html, body, #root {
@@ -73,6 +77,7 @@ body {
   }
 
   .invalid-feedback {
+    display: inline;
     max-height: 1rem;
     margin: 0.5rem 0;
   }
@@ -133,4 +138,8 @@ body {
 
 .absolute {
   position: absolute !important;
+}
+
+.sub-text {
+  font-weight: 200;
 }

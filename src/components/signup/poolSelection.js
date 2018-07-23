@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import historyPropType from '../../propTypes/history';
 import PoolTable from '../poolTable';
+import ComingSoon from '../comingSoon';
+import ManualPoolApply from '../manualPoolApply';
 import bemify from '../../util/bemify';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import { toggleSelectedPool, nextSignupStep, prevSignupStep } from '../../state/actions';
@@ -30,7 +32,7 @@ export class BasePoolSelection extends Component {
 
   applyClick(poolIds) {
     this.setState({hasClickedApply: true});
-    this.props.applyToPools(this.props.poolIds);
+    return this.props.applyToPools(poolIds);
   }
 
   render() {
@@ -39,24 +41,37 @@ export class BasePoolSelection extends Component {
     return (
       <div className={classnames(bem(), 'col-10')}>
         <h1 className={classnames(onboardingSecondaryHead, 'mt-5')}>
-          Finally, select a pool to contribute
+          Finally, input a pool address to contribute
         </h1>
         <h2 className={classnames(onboardingSubhead, 'mb-5')}>
           You will contribute with your bandwidth, small amounts of storage, and processing power
         </h2>
-        <PoolTable onRowClick={(poolId) => { props.selectPool(poolId); }} />
-        <div className="d-flex flex-row justify-content-between">
-          <a onClick={() => props.goToPrevStep()} className="btn btn-text btn-lg">
-            Back
-          </a>
-          <button
-            onClick={this.applyClick}
-            disabled={!props.poolIds || props.loading}
-            className="btn btn-primary btn-chunky btn-lg"
-          >
-            Continue
-          </button>
-        </div>
+        <h5 className={classnames(bem('pool-input-title'))}>
+          Paste in a pool address to apply to a pool.
+        </h5>
+        <ManualPoolApply
+          className="row justify-content-start mb-5 pl-3 pr-3"
+          inputClass={classnames(bem('pool-input'))}
+          disabled={props.loading}
+          onSubmit={(poolId) => this.applyClick([poolId.poolAddress]) }
+          placeholder="Pool address. Example: 0xDAcd582..."
+          buttonText="Apply to Pool"
+        />
+        <ComingSoon className="mb-4 p-4">
+          <PoolTable
+            className="mb-4"
+            onRowClick={(poolId) => { props.selectPool(poolId); }}
+          />
+          <div className="d-flex flex-row justify-content-end">
+            <button
+              onClick={this.applyClick}
+              disabled={!props.poolIds || props.loading}
+              className="btn btn-primary btn-chunky btn-lg"
+            >
+              Continue
+            </button>
+          </div>
+        </ComingSoon>
       </div>
     );
   }

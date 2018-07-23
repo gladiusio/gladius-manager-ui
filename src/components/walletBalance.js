@@ -40,7 +40,7 @@ export default class WalletBalance extends PureComponent {
               left: '-6.6rem',
             }}
           >
-            <img src="/assets/images/icon-info.svg" alt="Info" />
+            <img src="./assets/images/icon-info.svg" alt="Info" />
           </TooltipWrapper>
         </div>
         <div className={bem('balance-bottom', 'content')}>
@@ -61,13 +61,28 @@ export default class WalletBalance extends PureComponent {
     );
   }
 
+  renderNoBalanceWarning() {
+    return (
+      <div className={bem('balance', 'warning')}>
+        <p>
+          You don&apos;t have GLA on your Gladius Balance. Transfer GLA from your
+          MetaMask wallet to start using Gladius.
+        </p>
+      </div>
+    );
+  }
+
   render() {
-    const { walletBalance } = this.props;
+    let { walletBalance } = this.props;
+    if (typeof walletBalance !== 'number') {
+      walletBalance = '-';
+    }
+
     return (
       <div className={bem('balance')}>
         <div className={bem('balance', 'top')}>
           <div className={bem('balance-top', 'header')}>
-            <img src="/assets/images/icon-logo-small.svg" alt="Logo" />
+            <img src="./assets/images/icon-logo-small.svg" alt="Logo" />
             <p>Gladius Balance</p>
           </div>
           <div className={bem('balance-top', 'content')}>
@@ -77,18 +92,6 @@ export default class WalletBalance extends PureComponent {
             <div className={bem('balance', 'gla')}>
               <p>GLA</p>
             </div>
-            {
-              Number(walletBalance) === 0
-                ? (
-                  <div className={bem('balance', 'warning')}>
-                    <p>
-                      You don&apos;t have GLA on your Gladius Balance. Transfer GLA from your
-                      MetaMask wallet to start using Gladius.
-                    </p>
-                  </div>
-                )
-                : null
-            }
           </div>
         </div>
         {this.renderProcessingBalance()}

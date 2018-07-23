@@ -1,3 +1,5 @@
+import { SubmissionError } from 'redux-form';
+
 import { createAction, nameAction } from '../util/createAction';
 import { ErrorState, LoadingState } from '../util/stateValues';
 import { getJSON, postData, delayed } from '../backend';
@@ -44,9 +46,11 @@ export const SET_NAME_FAILURE = nameAction(namespace, 'SET_NAME_FAILURE');
 
 export const SET_PASSPHRASE = nameAction(namespace, 'SET_PASSPHRASE');
 export const SET_NODE_ADDRESS = nameAction(namespace, 'SET_NODE_ADDRESS');
+export const SET_IP_ADDRESS = nameAction(namespace, 'SET_IP_ADDRESS');
 
 const SET_ACCOUNT_LOADING = nameAction(namespace, 'SET_ACCOUNT_LOADING');
 const SET_ACCOUNT_CREATED = nameAction(namespace, 'SET_ACCOUNT_CREATED');
+const SET_ACCOUNT_INFO_SAVED = nameAction(namespace, 'SET_ACCOUNT_INFO_SAVED');
 
 const SET_APPLY_POOL_LOADING = nameAction(namespace, 'SET_APPLY_POOL_LOADING');
 const SET_APPLICATION_SUCCESS = nameAction(namespace, 'SET_APPLICATION_SUCCESS');
@@ -87,6 +91,10 @@ export function setPassphrase(passphrase) {
   return createAction(SET_PASSPHRASE, passphrase);
 }
 
+export function setIPAddress(ipData) {
+  return createAction(SET_IP_ADDRESS, { ip: ipData.ip });
+}
+
 export function validatePassphrase({passphraseValue, passphraseConfirmation}) {
   return passphraseValue && passphraseValue.length > 0 &&
     passphraseConfirmation && passphraseConfirmation.length > 0 &&
@@ -99,6 +107,10 @@ function setAccountLoading(accountCreationLoading) {
 
 function setAccountCreated(accountCreated) {
   return createAction(SET_ACCOUNT_CREATED, { accountCreated });
+}
+
+function setAccountInfoSaved(accountInfoSaved) {
+  return createAction(SET_ACCOUNT_INFO_SAVED, { accountInfoSaved });
 }
 
 function setNodeAddress(nodeAddress) {
@@ -152,6 +164,7 @@ function applyToPool(walletAddress, poolId, passphrase) {
         txHash: {
           value: '0x92312312',
         },
+        success: true,
       };
     }, 3000);
   }
@@ -189,6 +202,7 @@ export function createApplications(poolIds) {
           poolIds[i],
           passphraseValue
         );
+
         if (result.success) {
           applicationSuccessful = true;
           await waitForTransaction(result.txHash.value);
@@ -196,20 +210,25 @@ export function createApplications(poolIds) {
       }
     }
 
-    dispatch(setApplicationLoading(true));
-    await applyToPools(poolIds);
-    dispatch(setApplicationLoading(false));
+    return new Promise(async (resolve, reject) => {
+      dispatch(setApplicationLoading(true));
+      await applyToPools(poolIds);
+      dispatch(setApplicationLoading(false));
 
-    if (applicationSuccessful) {
-      return dispatch(setApplicationSuccess(poolIds));
-    }
+      if (applicationSuccessful) {
+        dispatch(setApplicationSuccess(poolIds));
+        resolve();
+      } else {
+        reject();
+      }
+    });
   }
 }
 
 export function setUserNodeData() {
   return async (dispatch, getState) => {
     const { account, expectedUsage, wallet } = getState();
-    const { email, name, passphraseValue, nodeAddress } = account;
+    const { email, name, passphraseValue, nodeAddress, ip } = account;
     const { walletAddress } = wallet;
     const {
       storageAmount,
@@ -230,6 +249,7 @@ export function setUserNodeData() {
       uptimeStart,
       uptimeEnd,
       allDayUptime,
+      ip,
     });
 
     if (setNode.error) {
@@ -255,13 +275,16 @@ export function getNodeInfo() {
       }
 
       const nodeAddress = nodeRequest.response.address;
+      const nodeData = nodeRequest.response.data;
+      if (nodeData) {
+        if (nodeData.email && nodeData.name) {
+          dispatch(setAccountCreated(true));
+          dispatch(setEmailAddressAndName(nodeData.email, nodeData.name));
+        }
 
-      if (
-        nodeRequest.response.data &&
-        nodeRequest.response.data.email &&
-        nodeRequest.response.data.name
-      ) {
-        dispatch(setAccountCreated(true));
+        if (nodeData.ip) {
+          dispatch(setIPAddress(nodeData.ip));
+        }
       }
       dispatch(setNodeAddress(nodeAddress));
       resolve(nodeAddress);
@@ -279,16 +302,19 @@ export function createAccount() {
       const { passphraseValue } = account;
       const { walletAddress } = wallet;
 
-      const nodeCreation = await createNode(passphraseValue);
-      if (nodeCreation.error) {
-        throw new Error('Node creation failed!');
-      }
+      if (!account.accountCreated) {
+        const nodeCreation = await createNode(passphraseValue);
+        if (nodeCreation.error) {
+          throw new Error('Node creation failed!');
+        }
 
-      await waitForTransaction(nodeCreation.txHash.value);
+        await waitForTransaction(nodeCreation.txHash.value);
+        dispatch(setAccountCreated(true));
+      }
 
       return dispatch(getNodeInfo()).then(() => {
         return dispatch(setUserNodeData()).then(() => {
-          dispatch(setAccountCreated(true));
+          dispatch(setAccountInfoSaved(true));
         });
       }, () => {
         accountCreationFailure = true;
@@ -305,7 +331,7 @@ export function createAccount() {
 
     return new Promise((resolve, error) => {
       if (accountCreationFailure) {
-        error();
+        error(getState().account.accountCreated);
       } else {
         resolve();
       }
@@ -355,6 +381,11 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         nodeAddress: action.payload.nodeAddress,
       };
+    case SET_IP_ADDRESS:
+      return {
+        ...state,
+        ip: action.payload.ip,
+      };
     case SET_ACCOUNT_LOADING:
       return {
         ...state,
@@ -364,6 +395,11 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         accountCreated: action.payload.accountCreated,
+      };
+    case SET_ACCOUNT_INFO_SAVED:
+      return {
+        ...state,
+        accountInfoSaved: action.payload.accountInfoSaved,
       };
     case SET_APPLY_POOL_LOADING:
       return {

@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { setPassphrase, validatePassphrase } from '../../state/account';
-import { createUserWallet } from '../../state/wallet';
+import { createUserWallet, setWalletSuccess } from '../../state/wallet';
 import Card from '../card';
 import ExpectedUsage from '../expectedUsage';
 import PassphraseForm from '../passphraseForm';
 import ExternalSubmitButton from '../externalSubmitButton';
 import { validExpectedUsage } from '../../state/expectedUsage';
+import { addToast } from '../../state/toasts';
 import { nextSignupStep, prevSignupStep } from '../../state/actions';
 import { onboardingField, onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import bemify from '../../util/bemify';
@@ -28,6 +29,10 @@ class BaseGetSecurePage extends Component {
       continueClicked: false,
     };
     this.nextClick = this.nextClick.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.resetWallet();
   }
 
   componentDidUpdate() {
@@ -85,7 +90,7 @@ class BaseGetSecurePage extends Component {
           <ExternalSubmitButton
             formIds={['passphrase']}
             className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
-            disabled={!this.state.validForm || isLoading}
+            disabled={isLoading || !this.state.validForm}
             onSubmit={this.nextClick}
           >
             Continue
@@ -116,7 +121,15 @@ function mapDispatchToProps(dispatch) {
   return {
     setUserPassphrase: (passphrase) => {
       dispatch(setPassphrase(passphrase));
-      dispatch(createUserWallet());
+      dispatch(createUserWallet()).catch((e) => {
+        dispatch(addToast({
+          text: 'There was a problem creating your wallet. Please try again.',
+          warning: true
+        }));
+      });
+    },
+    resetWallet: () => {
+      dispatch(setWalletSuccess(false));
     },
     goToNextStep: () => dispatch(nextSignupStep()),
     goToPrevStep: () => dispatch(prevSignupStep()),

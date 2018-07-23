@@ -57,7 +57,7 @@ export default class CopyText extends Component {
           key="text"
           ref={this.textElement}
           className={classnames(bem('text'), textareaClass)}
-          value={value}
+          value={value || ''}
           readOnly
         />
         {this.renderButton()}

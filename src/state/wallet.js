@@ -18,12 +18,12 @@ export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });
 }
 
-function setWalletIsLoading(walletLoading) {
-  return createAction(SET_WALLET_LOADING, { walletLoading });
+export function setWalletSuccess(walletCreated) {
+  return createAction(SET_WALLET_SUCCESS, { walletCreated });
 }
 
-function setWalletSuccess(walletCreated) {
-  return createAction(SET_WALLET_SUCCESS, { walletCreated });
+function setWalletIsLoading(walletLoading) {
+  return createAction(SET_WALLET_LOADING, { walletLoading });
 }
 
 function setGlaBalanceIsLoading(glaBalanceLoading) {
@@ -115,9 +115,17 @@ export function createUserWallet() {
     const { account } = getState();
     const { email, name, passphraseValue } = account;
 
-    dispatch(setWalletIsLoading(true));
-    createWalletAndKey(passphraseValue, email, name);
-    dispatch(setWalletIsLoading(false));
+    return new Promise(async (resolve, reject) => {
+      dispatch(setWalletIsLoading(true));
+      try {
+        await createWalletAndKey(passphraseValue, email, name);
+        dispatch(setWalletIsLoading(false));
+        resolve();
+      } catch (e) {
+        dispatch(setWalletIsLoading(false));
+        reject();
+      }
+    });
   };
 }
 
@@ -179,7 +187,7 @@ export default function reducer(state = getInitialState(), action = {}) {
     case SET_GLA_BALANCE_LOADING:
       return {
         ...state,
-        glaBalanceLoading: action.payload.walletLoading,
+        glaBalanceLoading: action.payload.glaBalanceLoading,
       };
     case SET_GLA_BALANCE_SUCCESS:
       return {

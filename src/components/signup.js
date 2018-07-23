@@ -14,14 +14,9 @@ import Masthead from './masthead';
 import Toasts from './toasts';
 
 export function BaseSignup({
-  onboardingDone,
   currentOnboardingStepIndex,
   onboardingStepIndexByPath
 }) {
-  if (onboardingDone) {
-    return <Redirect to="/dashboard/home" />;
-  }
-
   return (
     <MastheadContentSplit
       masthead={
@@ -87,7 +82,6 @@ function mapStateToProps({ account, signup }) {
   return {
     currentOnboardingStepIndex: signup.currentStep.index,
     onboardingStepIndexByPath: signup.steps.byPath,
-    onboardingDone: !!account.nodeAddress && !!account.accountCreated,
   };
 }
 

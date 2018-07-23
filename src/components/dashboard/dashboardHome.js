@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import StatusCard from '../statusCard';
 import EarningsCard from '../earningsCard';
+import ComingSoon from '../comingSoon';
 import PoolStatusTable from '../poolStatusTable';
 import bemify from '../../util/bemify';
 
@@ -22,7 +23,9 @@ class BaseDashboardHome extends Component {
           <StatusCard className="col-6" />
           <EarningsCard className="col-6" />
         </div>
-        <PoolStatusTable />
+        <ComingSoon className="mt-4">
+          <PoolStatusTable />
+        </ComingSoon>
       </div>
     );
   }
