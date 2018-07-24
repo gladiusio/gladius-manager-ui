@@ -1,19 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { submit } from 'redux-form';
 
-import { setUserNodeData, setEmailAddressAndName } from '../../state/account';
+import {
+  setUserNodeData,
+  setEmailAddressAndName,
+  setIPAddress,
+  getNodeInfo,
+} from '../../state/account';
 import { setExpectedUsage } from '../../state/expectedUsage';
 import { fetchGLABalance } from '../../state/wallet';
-
+import { addToast } from '../../state/toasts';
 import Card from '../card';
+import IPAddressForm from '../ipAddressForm';
+import TypeToConfirmModal from '../typeToConfirmModal';
 import WalletBalance from '../walletBalance';
 import EmailForm from '../emailForm';
 import ExpectedUsage from '../expectedUsage';
 import ExternalSubmitButton from '../externalSubmitButton';
 import bemify from '../../util/bemify';
+import externalFormSubmit from '../../util/externalFormSubmit';
 
 const bem = bemify('settings');
 
@@ -23,9 +32,11 @@ class BaseSettings extends Component {
 
     this.state = {
       loading: false,
+      isShowingConfirm: false,
     };
 
     this.onSave = this.onSave.bind(this);
+    this.submitAllForms = this.submitAllForms.bind(this);
   }
 
   componentWillMount() {
@@ -33,24 +44,62 @@ class BaseSettings extends Component {
   }
 
   onSave() {
-    this.setState({loading: true});
-    this.props.setNodeData().then(() => {
-      this.setState({loading: false});
-    }, () => {
-      this.setState({loading: false});
-    });
+    this.submitAllForms().then(() => {
+      this.setState({loading: true});
+      this.props.setNodeData().then(() => {
+        this.props.dispatch(getNodeInfo());
+        this.setState({loading: false, isShowingConfirm: false});
+      }, () => {
+        this.props.dispatch(addToast({
+          text: 'There was a problem saving your settings. Please try again later.',
+          warning: true
+        }));
+        this.setState({loading: false, isShowingConfirm: false});
+      });
+    })
+
+  }
+
+  submitAllForms() {
+    return externalFormSubmit(
+      this.props.dispatch,
+      ['emailAddress', 'expectedUsage', 'ipAddress']
+    );
+  }
+
+  renderConfirmationModal() {
+    if (!this.state.isShowingConfirm) {
+      return null;
+    }
+
+    return (
+      <TypeToConfirmModal
+        action={this.onSave}
+        actionName="I want to change Settings"
+        content={(
+          <Fragment>
+            This action will trigger a blockchain transaction which will cost 1 GLA.
+          </Fragment>
+        )}
+        confirmString="I want to change"
+        disabled={this.state.loading}
+        onClose={() => this.setState({isShowingConfirm: false})}
+        title="Change Settings"
+      />
+    );
   }
 
   render() {
     const {
       setExpectedUsage,
       setEmailAddressAndName,
+      setIPAddress,
       setNodeData,
       glaBalance
     } = this.props;
 
     return (
-      <div className={classnames(bem(), 'col-7 pt-5')}>
+      <div className={classnames(bem(), 'col-8 pt-5')}>
         <Card className="mb-4" title="Balance Information">
           <div className="row justify-content-between align-items-center">
             <div className="col-6">
@@ -58,7 +107,7 @@ class BaseSettings extends Component {
             </div>
             <div className="col-sm-auto">
               <Link
-                to="/dashboard/balance"
+                to="/dashboard/settings/balance"
                 className="btn-alternate btn-alternate--inverse m-4"
               >
                 Manage your balance
@@ -74,18 +123,19 @@ class BaseSettings extends Component {
           />
         </Card>
         <Card title="Node Information">
+          <IPAddressForm className="col-12" onSubmit={setIPAddress} />
           <ExpectedUsage onSubmit={setExpectedUsage} />
         </Card>
         <div className="row flex-lg-row-reverse p-3">
-          <ExternalSubmitButton
-            formIds={['emailAddress', 'expectedUsage']}
+          <button
             className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
             disabled={this.state.loading}
-            onSubmit={this.onSave}
+            onClick={() => this.setState({isShowingConfirm: true})}
           >
             Save changes
-          </ExternalSubmitButton>
+          </button>
         </div>
+        {this.renderConfirmationModal()}
       </div>
     );
   }
@@ -109,10 +159,14 @@ function mapDispatchToProps(dispatch) {
     setExpectedUsage: (expectedUsage) => {
       dispatch(setExpectedUsage(expectedUsage));
     },
+    setIPAddress: (ip) => {
+      dispatch(setIPAddress(ip));
+    },
     setNodeData: () => {
       return dispatch(setUserNodeData());
     },
-    fetchBalance: () => dispatch(fetchGLABalance())
+    fetchBalance: () => dispatch(fetchGLABalance()),
+    dispatch,
   };
 }
 

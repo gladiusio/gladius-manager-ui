@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { setEmailAddressAndName } from '../state/account';
+import { getNodeInfo, setEmailAddressAndName } from '../state/account';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
@@ -13,6 +14,10 @@ import bemify from '../util/bemify';
 const bem = bemify('home');
 
 export class BaseHome extends Component {
+  componentDidMount() {
+    this.props.getNodeInfo();
+  }
+
   renderEmail() {
     return (
       <Fragment>
@@ -31,6 +36,10 @@ export class BaseHome extends Component {
   }
 
   render() {
+    if (this.props.onboardingDone) {
+      return <Redirect to="/dashboard/home" />;
+    }
+
     return (
       <MastheadContentSplit masthead={<Masthead />}>
         <div className={classnames(bem(), 'container-fluid pb-5')}>
@@ -50,12 +59,21 @@ BaseHome.propTypes = {
   setEmailAddressAndName: PropTypes.func.isRequired,
 };
 
+function mapStateToProps({ account }) {
+  return {
+    onboardingDone: !!account.nodeAddress,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     setEmailAddressAndName: (email, name) => {
       return dispatch(setEmailAddressAndName(email, name));
     },
+    getNodeInfo: () => {
+      return dispatch(getNodeInfo());
+    },
   };
 }
 
-export default connect(null, mapDispatchToProps)(BaseHome);
+export default connect(mapStateToProps, mapDispatchToProps)(BaseHome);

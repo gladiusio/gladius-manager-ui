@@ -51,4 +51,8 @@
   .fake-dropdown {
     min-width: 200px;
   }
+
+  &__transaction-hash {
+    overflow: hidden;
+  }
 }

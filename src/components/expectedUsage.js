@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -36,10 +36,10 @@ const SliderField = ({ max, input, type, meta: { touched, error } }) => (
   </div>
 );
 
-const TimeDropdownField = ({ disableTimeDropdown, input }) => (
+const TimeDropdownField = ({ disabled, input }) => (
   <TimeDropdown
     {...input}
-    disabled={disableTimeDropdown}
+    disabled={disabled}
   />
 );
 
@@ -168,12 +168,13 @@ BaseExpectedUsage.propTypes = {
   toggleAllDayUptime: PropTypes.func,
 };
 
+const selector = formValueSelector('expectedUsage');
 function mapStateToProps(state) {
   let { expectedUsage, form } = state;
 
   return {
     initialValues: expectedUsage,
-    disableTimeDropdown: expectedUsage.allDayUptime,
+    disableTimeDropdown: selector(state, 'allDayUptime'),
     allDayValue: expectedUsage.allDayUptime,
     uptimeStartValue: expectedUsage.uptimeStart,
     uptimeEndValue: expectedUsage.uptimeEnd,

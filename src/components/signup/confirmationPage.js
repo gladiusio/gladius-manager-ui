@@ -29,14 +29,14 @@ export class BaseConfirmationPage extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.accountCreated && this.state.createAccountClicked) {
+    if (this.props.accountInfoSaved && this.state.createAccountClicked) {
       this.props.goToNextStep();
     }
   }
 
   nextClick() {
     this.setState({createAccountClicked: true});
-    if (!this.props.accountCreated) {
+    if (!this.props.accountInfoSaved) {
       this.props.createNode();
     }
   }
@@ -95,16 +95,25 @@ export class BaseConfirmationPage extends Component {
   }
 
   renderNodeCost() {
+    const { accountCreated, accountInfoSaved } = this.props;
+    let buttonText = 'I am ready to create my Node';
+    let headerText = 'Once the creation of your Node begins, your wallet will be charged ETH.'
+
+    if (accountCreated && !accountInfoSaved) {
+      buttonText = 'Retry saving node info';
+      headerText = 'Your information was not saved successfully. Retrying will not cost any ETH.';
+    }
+
     return (
       <div className="row justify-content-center">
         <h1 className={classnames(onboardingSecondaryHead, 'mb-3')}>
-          Once the creation of your Node begins, your wallet will be charged ETH.
+          {headerText}
         </h1>
         <button
           className="btn btn-primary btn-chunky btn-lg mt-4 mb-2"
           onClick={this.nextClick}
         >
-          I am ready to create my Node
+          {buttonText}
         </button>
       </div>
     );
@@ -143,6 +152,7 @@ function mapStateToProps(state) {
   return {
     walletAddress: state.wallet.walletAddress,
     accountCreated: state.account.accountCreated,
+    accountInfoSaved: state.account.accountInfoSaved,
     accountLoading: state.account.accountCreationLoading,
   };
 }
@@ -152,9 +162,14 @@ function mapDispatchToProps(dispatch) {
     goToNextStep: () => dispatch(nextSignupStep()),
     goToPrevStep: () => dispatch(prevSignupStep()),
     createNode: () => {
-      dispatch(createAccount()).catch(() => {
+      dispatch(createAccount()).catch((accountCreated) => {
+        let text = 'There was a problem creating your account. Please try again later.';
+        if (accountCreated) {
+          text = 'Your account was created, but we weren\'t able to save your node info. Please try again';
+        }
+
         dispatch(addToast({
-          text: 'There was a problem creating your account. Please try again later.',
+          text,
           warning: true
         }));
       });

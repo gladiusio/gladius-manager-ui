@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { submit } from 'redux-form';
+
 import noop from '../util/noop';
+import externalFormSubmit from '../util/externalFormSubmit';
 
 const BaseExternalSubmitButton = ({ className, children, disabled, dispatchSubmit }) => (
   <button
@@ -27,14 +28,9 @@ BaseExternalSubmitButton.defaultProps = {
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatchSubmit: () => {
-      ownProps.formIds.forEach((formId) => {
-        dispatch(submit(formId));
+      externalFormSubmit(dispatch, ownProps.formIds).then(() => {
+        ownProps.onSubmit();
       });
-
-      // Necessary due to how external submit works for redux-form.
-      // If the onSubmit fires and it changes page, it'll unregister
-      // the form fields because the submit goes through.
-      setTimeout(ownProps.onSubmit);
     },
   };
 }

@@ -76,6 +76,13 @@ export class BaseTransactionsTable extends Component {
   }
 
   getTableHeader() {
+    // TODO: add type.
+    // <Table.HeaderCell
+    //   className={classnames(bem('header-cell'), 'type')}
+    //   sorted="">
+    //   Type
+    // </Table.HeaderCell>
+
     return (
       <Table.Header>
         <Table.Row>
@@ -83,11 +90,6 @@ export class BaseTransactionsTable extends Component {
             className={classnames(bem('header-cell'), 'id')}
             sorted="">
             Transactions Id
-          </Table.HeaderCell>
-          <Table.HeaderCell
-            className={classnames(bem('header-cell'), 'type')}
-            sorted="">
-            Type
           </Table.HeaderCell>
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'date')}
@@ -111,15 +113,49 @@ export class BaseTransactionsTable extends Component {
   }
 
   getTransactionsRow(transaction) {
+    // TODO: add type.
+    // <Table.Cell>{this.renderType(transaction.type)}</Table.Cell>
+    const date = new Date(Number(transaction.timeStamp));
+
     return (
       <Table.Row
         key={transaction.hash}
         className={classnames(bem('transaction-row'))}
       >
-        <Table.Cell>{transaction.hash}</Table.Cell>
-        <Table.Cell>{this.renderType(transaction.type)}</Table.Cell>
-        <Table.Cell>{transaction.date}GB</Table.Cell>
+        <Table.Cell className={bem('transaction-hash')}>
+          <span title={transaction.hash}>{transaction.hash}</span>
+        </Table.Cell>
+        <Table.Cell>{date.toLocaleString()}</Table.Cell>
       </Table.Row>
+    );
+  }
+
+  renderFilters() {
+    const {
+      typeFilter,
+    } = this.props;
+    let filterDisplay = 'Transaction Type';
+    const filterType = transactionTypes.find((t) => t.type === typeFilter);
+    if (filterType) {
+      filterDisplay = filterType.display;
+    }
+
+    return (
+      <div className="row mb-3 align-items-center">
+        <div className="col-3">
+          <span className="font-italic">
+            <span className="text-muted">
+              Showing</span>&nbsp;
+              { filterDisplay || 'all transactions' }
+          </span>
+        </div>
+        <div className="col-9 text-right">
+          <span className="text-muted mr-3">Filter by:</span>
+          <Tooltip tooltip={this.renderTransactionTypes}>
+            <FakeDropdown value={filterDisplay} />
+          </Tooltip>
+        </div>
+      </div>
     );
   }
 
@@ -130,29 +166,8 @@ export class BaseTransactionsTable extends Component {
       typeFilter,
     } = this.props;
 
-    let filterDisplay = 'Transaction Type';
-    const filterType = transactionTypes.find((t) => t.type === typeFilter);
-    if (filterType) {
-      filterDisplay = filterType.display;
-    }
-
     return (
       <div className={classnames(bem(), className)}>
-        <div className="row mb-3 align-items-center">
-          <div className="col-3">
-            <span className="font-italic">
-              <span className="text-muted">
-                Showing</span>&nbsp;
-                { filterDisplay || 'all transactions' }
-            </span>
-          </div>
-          <div className="col-9 text-right">
-            <span className="text-muted mr-3">Filter by:</span>
-            <Tooltip tooltip={this.renderTransactionTypes}>
-              <FakeDropdown value={filterDisplay} />
-            </Tooltip>
-          </div>
-        </div>
         <Card noPadding className="mb-4 mt-4">
           {this.getTable(transactions)}
         </Card>
@@ -175,9 +190,7 @@ function mapStateToProps(state, ownProps) {
   const typeFilter = state.transactions.typeFilter;
 
   return {
-    transactions: state.transactions.transactions.filter(
-      t => !typeFilter || t.type === typeFilter
-    ),
+    transactions: state.transactions.transactions,
     typeFilter,
   };
 }

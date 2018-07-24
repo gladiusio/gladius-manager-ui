@@ -28,34 +28,36 @@ const STATUS_DISPLAY = {
 };
 
 class BaseStatusCard extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-  };
-
-  static defaultProps = {
-    className: null,
-  };
-
   constructor(props) {
     super(props);
   }
 
   renderTitle() {
+    // <TooltipWrapper
+    //   className={classnames(bem('tooltip'), 'ml-2')}
+    //   content="hello there how are you doing">
+    //   <img src="./assets/images/icon-info.svg" alt="Info" />
+    // </TooltipWrapper>
+
     return (
       <div className={classnames(bem('title'))}>
         Node status
-        <TooltipWrapper
-          className={classnames(bem('tooltip'), 'ml-2')}
-          content="hello there how are you doing">
-          <img src="./assets/images/icon-info.svg" alt="Info" />
-        </TooltipWrapper>
       </div>
     );
   }
 
   renderStatusContent() {
     const {status} = this.props;
-    const {text, icon} = STATUS_DISPLAY[status];
+    let text, icon;
+
+    if (!status) {
+      text = 'N/A';
+      icon = 'inactive';
+    } else {
+      let statusDisplay = STATUS_DISPLAY[status];
+      text = statusDisplay.text;
+      icon = statusDisplay.icon;
+    }
 
     return (
       <div>
@@ -84,10 +86,12 @@ class BaseStatusCard extends Component {
 }
 
 BaseStatusCard.defaultProps = {
-  status: 'active',
+  status: null,
+  className: null,
 };
 
 BaseStatusCard.propTypes = {
+  className: PropTypes.string,
 };
 
 function mapStateToProps(state) {

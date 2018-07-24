@@ -10,16 +10,28 @@ import bemify from '../util/bemify';
 const bem = bemify('earnings-card');
 
 class BaseEarningsCard extends Component {
-  render() {
-    const { className, status } = this.props;
+  renderEarnings() {
+    const { earnings } = this.props;
+    if (typeof earnings !== 'number') {
+      return (
+        <h1 className="m-0">N/A</h1>
+      );
+    }
 
+    return (
+      <h1 className="m-0">{earnings}</h1>
+    );
+  }
+  render() {
+    const { className } = this.props;
     return (
       <HalfCard
         title="Total estimated earnings"
         highlight="none"
         className={className}>
+
         <div className="col-12 row align-content-center mb-2">
-          <h1 className="m-0">55</h1>
+          {this.renderEarnings()}
           <div className="gla ml-2">
             GLA
           </div>
@@ -30,7 +42,7 @@ class BaseEarningsCard extends Component {
 }
 
 BaseEarningsCard.defaultProps = {
-  status: 'active',
+  earnings: null,
 };
 
 BaseEarningsCard.propTypes = {

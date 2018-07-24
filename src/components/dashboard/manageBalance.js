@@ -26,7 +26,7 @@ export class BaseManageBalance extends Component {
   renderWallets() {
     const { availableWallets, walletAddress } = this.props;
     if (!availableWallets.length) {
-      return null;
+      return <span>No available wallet.</span>;
     }
 
     if (availableWallets.length === 1) {
@@ -67,7 +67,7 @@ export class BaseManageBalance extends Component {
             <Card>
               <div className="p-3">
                 <div className={bem('wallet-withdraw')}>
-                  <img src="/assets/images/icon-logo-small.svg" alt="Logo" />
+                  <img src="./assets/images/icon-logo-small.svg" alt="Logo" />
                   <p className={bem('wallet-withdraw', 'gladius')}>Gladius Balance</p>
                   <p className={bem('wallet-withdraw', 'amount')}>{walletBalance} GLA</p>
                 </div>
@@ -77,7 +77,7 @@ export class BaseManageBalance extends Component {
                   </div>
                   <div className={bem('wallet-row', 'to')}>
                     <p>TO</p>
-                    <img src="/assets/images/icon-arrow-big.svg" alt="Arrow" />
+                    <img src="./assets/images/icon-arrow-big.svg" alt="Arrow" />
                   </div>
                   <div className={bem('wallet-withdraw', 'wallets')}>
                     {this.renderWallets()}

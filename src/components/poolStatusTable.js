@@ -173,7 +173,7 @@ export class BasePoolStatusTable extends Component {
 
     return (
       <div className={classnames(bem(), className)}>
-        <Card noPadding className="mb-4 mt-4">
+        <Card noPadding>
           {this.getTable(pools)}
           {this.getRejectedSection(rejectedPools)}
         </Card>

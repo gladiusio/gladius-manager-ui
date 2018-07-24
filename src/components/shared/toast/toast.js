@@ -37,6 +37,7 @@ export default function Toast(props) {
         success ? <img src="./assets/images/icon-check-white.svg" alt="Success" /> : null
       }
       <p className={bem('content')}>{text}</p>
+      <img src="./assets/images/icon-close.svg" alt="Close" className="ml-3" />
     </Element>
   );
 }

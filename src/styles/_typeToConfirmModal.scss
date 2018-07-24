@@ -1,0 +1,37 @@
+.type-to-confirm-modal {
+  &__wrapper {
+    width: 555px;
+    background-color: $white;
+    border-radius: 4px;
+    border: 1px solid rgba($blue-button, 0.2);
+    display: flex;
+    flex-flow: column nowrap;
+    box-shadow: 0 0 8px 4px rgba($true-black, 0.15);
+
+    h1 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    border-top: 1px solid rgba($blue-button, 0.2);
+    background: $off-white;
+  }
+
+  &__confirm {
+    width: 100%;
+  }
+
+  &__primary-buttons {
+    width: 100%;
+  }
+}

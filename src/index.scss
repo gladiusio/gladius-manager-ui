@@ -2,6 +2,7 @@
 
 @import 'buttons';
 @import 'card';
+@import 'comingSoon';
 @import 'confirmationPage';
 @import 'copyText';
 @import 'countryList';
@@ -16,10 +17,12 @@
 @import 'halfCard';
 @import 'hiddenValueInput';
 @import 'home';
+@import 'manualPoolApply';
 @import 'manageBalance';
 @import 'marketplace';
 @import 'masthead';
 @import 'mastheadContentSplit';
+@import 'modal';
 @import 'navigation';
 @import 'onboardingField';
 @import 'onboardingHead';
@@ -36,6 +39,7 @@
 @import 'timeDropdown';
 @import 'tooltip';
 @import 'transactionsTable';
+@import 'typeToConfirmModal';
 @import 'walletBalance';
 
 html, body, #root {
@@ -65,7 +69,7 @@ body {
   margin-bottom: 0 !important;
 
   input, textarea {
-    margin-bottom: 1.25rem;
+    margin-bottom: 32px;
 
     &.is-invalid {
       margin-bottom: 0;
@@ -73,18 +77,20 @@ body {
   }
 
   .invalid-feedback {
+    display: inline;
     max-height: 1rem;
     margin: 0.5rem 0;
   }
 }
 
 .toasts {
-  position: absolute;
+  position: fixed;
   opacity: 0.96;
   width: 100%;
   display: table;
   text-align: center;
   top: 0;
+  z-index: 99999999999;
 
   &:hover {
     cursor: pointer;
@@ -133,4 +139,8 @@ body {
 
 .absolute {
   position: absolute !important;
+}
+
+.sub-text {
+  font-weight: 200;
 }

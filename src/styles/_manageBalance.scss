@@ -162,7 +162,8 @@
 }
 
 .manage-balance__wallet-withdraw--wallets {
-  display: inline-block;
+  display: inline;
+  vertical-align: center;
   width: 25%;
 
   .form-group {

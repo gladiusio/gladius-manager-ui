@@ -51,7 +51,11 @@ function fetchPools() {
     }, 2000);
   }
 
-  return getJSON(`${process.env.CONTROL_API}/market/pools`);
+  return new Promise((resolve, reject) => {
+    resolve(mockedPoolsResponse);
+  });
+  // TODO: make the actual call to pools.
+  // return getJSON(`${process.env.CONTROL_API}/market/pools`);
 }
 
 export function getAllPoolsError(error) {

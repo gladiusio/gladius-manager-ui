@@ -15,7 +15,7 @@ class BaseTransactions extends Component {
 
   render() {
     return (
-      <div className={classnames(bem(), 'col-9 pt-5')}>
+      <div className={classnames(bem(), 'col-10 pt-5')}>
         <div className="row justify-content-between">
           <TransactionsTable />
         </div>
