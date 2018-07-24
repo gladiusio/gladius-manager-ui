@@ -69,7 +69,7 @@ body {
   margin-bottom: 0 !important;
 
   input, textarea {
-    margin-bottom: 1.25rem;
+    margin-bottom: 32px;
 
     &.is-invalid {
       margin-bottom: 0;
@@ -84,12 +84,13 @@ body {
 }
 
 .toasts {
-  position: absolute;
+  position: fixed;
   opacity: 0.96;
   width: 100%;
   display: table;
   text-align: center;
   top: 0;
+  z-index: 99999999999;
 
   &:hover {
     cursor: pointer;

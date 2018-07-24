@@ -22,6 +22,20 @@ const PoolAddressField = ({ input, type, placeholder, wrapperClassName, classNam
 );
 
 class ManualPoolApply extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleOnSubmit = this.handleOnSubmit.bind(this);
+  }
+
+  handleOnSubmit(values) {
+    return this.props.onSubmit(values).catch(() => {
+      throw new SubmissionError({
+        poolAddress: 'Application failed. Are you sure the address is correct?'
+      });
+    });
+  }
+
   render() {
     const {
       className,
@@ -34,9 +48,7 @@ class ManualPoolApply extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit((values) => { return onSubmit(values).catch(() => {
-        throw new SubmissionError({poolAddress: 'Application failed!'})
-      })})} className={classnames(bem(), className)}>
+      <form onSubmit={handleSubmit(this.handleOnSubmit)} className={classnames(bem(), className)}>
         <Field
           name="poolAddress"
           component={PoolAddressField}

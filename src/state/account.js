@@ -239,26 +239,25 @@ export function setUserNodeData() {
       allDayUptime,
     } = expectedUsage;
 
-    const setNode = await setNodeData(nodeAddress, passphraseValue, {
-      name,
-      email,
-      passphrase: passphraseValue,
-      storageAmount,
-      uploadSpeed,
-      reason,
-      uptimeStart,
-      uptimeEnd,
-      allDayUptime,
-      ip,
-    });
+    return new Promise(async (resolve, reject) => {
+      const setNode = await setNodeData(nodeAddress, passphraseValue, {
+        name,
+        email,
+        passphrase: passphraseValue,
+        storageAmount,
+        uploadSpeed,
+        reason,
+        uptimeStart,
+        uptimeEnd,
+        allDayUptime,
+        ip,
+      });
 
-    if (setNode.error) {
-      throw new Error('Setting node data failed!');
-    }
+      if (setNode.error) {
+        return reject();
+      }
 
-    await waitForTransaction(setNode.txHash.value);
-
-    return new Promise((resolve, reject) => {
+      await waitForTransaction(setNode.txHash.value);
       resolve();
     });
   }

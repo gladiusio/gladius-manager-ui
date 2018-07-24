@@ -30,8 +30,8 @@ export default function Dashboard() {
             <Route path="/dashboard/home" component={DashboardHome} />
             <Route path="/dashboard/transactions" component={Transactions} />
             <Route path="/dashboard/marketplace" component={Marketplace} />
+            <Route path="/dashboard/settings/balance" component={ManageBalance} />
             <Route path="/dashboard/settings" component={Settings} />
-            <Route path="/dashboard/balance" component={ManageBalance} />
           </Switch>
         </div>
       </div>

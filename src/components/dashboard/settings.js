@@ -13,7 +13,7 @@ import {
 } from '../../state/account';
 import { setExpectedUsage } from '../../state/expectedUsage';
 import { fetchGLABalance } from '../../state/wallet';
-
+import { addToast } from '../../state/toasts';
 import Card from '../card';
 import IPAddressForm from '../ipAddressForm';
 import TypeToConfirmModal from '../typeToConfirmModal';
@@ -49,7 +49,11 @@ class BaseSettings extends Component {
       this.props.setNodeData().then(() => {
         this.props.dispatch(getNodeInfo());
         this.setState({loading: false, isShowingConfirm: false});
-      }, (e) => {
+      }, () => {
+        this.props.dispatch(addToast({
+          text: 'There was a problem saving your settings. Please try again later.',
+          warning: true
+        }));
         this.setState({loading: false, isShowingConfirm: false});
       });
     })
@@ -103,7 +107,7 @@ class BaseSettings extends Component {
             </div>
             <div className="col-sm-auto">
               <Link
-                to="/dashboard/balance"
+                to="/dashboard/settings/balance"
                 className="btn-alternate btn-alternate--inverse m-4"
               >
                 Manage your balance
