@@ -4,7 +4,8 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { getNodeInfo, setEmailAddressAndName } from '../state/account';
+import { setEmailAddressAndName } from '../state/account';
+import { getApplications } from '../state/applications';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
@@ -15,7 +16,7 @@ const bem = bemify('home');
 
 export class BaseHome extends Component {
   componentDidMount() {
-    this.props.getNodeInfo();
+    this.props.getApplications();
   }
 
   renderEmail() {
@@ -59,9 +60,10 @@ BaseHome.propTypes = {
   setEmailAddressAndName: PropTypes.func.isRequired,
 };
 
-function mapStateToProps({ account }) {
+function mapStateToProps({ applications }) {
   return {
-    onboardingDone: !!account.nodeAddress,
+    onboardingDone: applications.applications.length !== 0 &&
+      !(applications.length === 1 && applications[0] === null),
   };
 }
 
@@ -70,8 +72,8 @@ function mapDispatchToProps(dispatch) {
     setEmailAddressAndName: (email, name) => {
       return dispatch(setEmailAddressAndName(email, name));
     },
-    getNodeInfo: () => {
-      return dispatch(getNodeInfo());
+    getApplications: () => {
+      return dispatch(getApplications());
     },
   };
 }

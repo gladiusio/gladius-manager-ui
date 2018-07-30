@@ -5,7 +5,6 @@ import { Redirect, Route, Switch } from 'react-router';
 
 import GettingStarted from './signup/gettingStarted';
 import GetSecure from './signup/getSecure';
-import ConfirmationPage from './signup/confirmationPage';
 import FunnelSteps from './signup/funnelSteps';
 import PoolSelection from './signup/poolSelection';
 import LockedRoute from './lockedRoute';
@@ -44,16 +43,8 @@ export function BaseSignup({
             />
             <LockedRoute
               path="/signup/get-secure"
-              redirectTo="/signup/confirmation"
-              component={GetSecure}
-              isAllowed={({ path }) => (
-                currentOnboardingStepIndex === onboardingStepIndexByPath[path]
-              )}
-            />
-            <LockedRoute
-              path="/signup/confirmation"
               redirectTo="/signup/choose-pool"
-              component={ConfirmationPage}
+              component={GetSecure}
               isAllowed={({ path }) => (
                 currentOnboardingStepIndex === onboardingStepIndexByPath[path]
               )}

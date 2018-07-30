@@ -9,7 +9,12 @@ export async function postData(url, data, headers = {}, method = 'POST') {
     headers,
     method,
   });
-  return res.json();
+
+  try {
+    return res.json();
+  } catch(e) {
+    return res;
+  }
 }
 
 export async function delayed(cb, time = 100) {

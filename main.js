@@ -26,8 +26,8 @@ else if (platform == 'win32') {
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 800,
+    width: 2000,
+    height: 1200,
     icon: iconPath
   })
 

@@ -7,6 +7,7 @@ import Card from './card';
 import Table from './shared/table';
 import Tooltip from './shared/tooltip/tooltip';
 import FakeDropdown from './fakeDropdown';
+import TooltipWrapper from './tooltipWrapper';
 import {
   getAllTransactions,
   setFilterType,
@@ -23,7 +24,13 @@ export class BaseTransactionsTable extends Component {
   }
 
   componentWillMount() {
-    this.props.getAllTransactions();
+    this.requestInteral = setInterval(() => {
+      this.props.getAllTransactions();
+    }, 4000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.requestInteral);
   }
 
   onFilterClick(close, type) {
@@ -89,7 +96,18 @@ export class BaseTransactionsTable extends Component {
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'id')}
             sorted="">
+            <TooltipWrapper
+            content="Your transactions show deposits and withdrawals from your wallet."
+            tooltipStyle={{
+              width: '242px',
+              maxWidth: '242px',
+              top: '-3rem',
+              left: '8px',
+            }}
+          >
             Transactions Id
+            <img className="ml-2" src="./assets/images/icon-info.svg" alt="Info" />
+          </TooltipWrapper>
           </Table.HeaderCell>
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'date')}
@@ -99,6 +117,18 @@ export class BaseTransactionsTable extends Component {
         </Table.Row>
       </Table.Header>
     );
+  }
+
+  getEmptyRow(transactions) {
+    if (!transactions || transactions.length === 0) {
+      return (
+        <div className="text-center text-muted p-3">
+          There are currently no transactions.
+        </div>
+      );
+    }
+
+    return null;
   }
 
   getTable(transactions) {
@@ -115,7 +145,7 @@ export class BaseTransactionsTable extends Component {
   getTransactionsRow(transaction) {
     // TODO: add type.
     // <Table.Cell>{this.renderType(transaction.type)}</Table.Cell>
-    const date = new Date(Number(transaction.timeStamp));
+    const date = new Date(Number(transaction.timeStamp * 1000));
 
     return (
       <Table.Row
@@ -170,6 +200,7 @@ export class BaseTransactionsTable extends Component {
       <div className={classnames(bem(), className)}>
         <Card noPadding className="mb-4 mt-4">
           {this.getTable(transactions)}
+          {this.getEmptyRow(transactions)}
         </Card>
       </div>
     );

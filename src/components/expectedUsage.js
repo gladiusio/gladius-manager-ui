@@ -8,10 +8,11 @@ import ReactSlider from 'react-slider';
 import bemify from '../util/bemify';
 import BigRadioButton from './bigRadioButton';
 import TimeDropdown from './timeDropdown';
+import ComingSoon from './comingSoon';
 
 import {
   setStorageAmount,
-  setUploadSpeed,
+  setEstimatedSpeed,
   setReason,
   setUptimeStart,
   setUptimeEnd,
@@ -25,12 +26,13 @@ const useStorage = false;
 
 const textareaPlaceholder = 'e.g. By using Gladius for a few hours I can finally put my network to good use. I plan to minimize its cost by renting my spare network bandwidth.';
 
-const SliderField = ({ max, input, type, meta: { touched, error } }) => (
+const SliderField = ({ max, step, input, type, meta: { touched, error } }) => (
   <div key="sliderInputField" className="input form-group">
     <ReactSlider
       handleClassName="slider-handle"
       withBars
       max={max}
+      step={step}
       {...input}
     />
   </div>
@@ -73,9 +75,9 @@ export function BaseExpectedUsage({
   uptimeEndValue,
   reason,
   storageAmount,
-  uploadSpeed,
+  estimatedSpeed,
   setStorageAmount,
-  setUploadSpeed,
+  setEstimatedSpeed,
   setUptimeStart,
   setUptimeEnd,
   setReason,
@@ -93,7 +95,8 @@ export function BaseExpectedUsage({
           <Field
             name="storageAmount"
             handleClassName="slider-handle"
-            max={4000}
+            max={100}
+            step={5}
             component={SliderField}
           />
         </div>
@@ -106,41 +109,46 @@ export function BaseExpectedUsage({
       <div className="col-12 mb-5">
         <div className="upload-speed-container mb-3">
           <span>Upload Speed</span>
-          <span className="upload-speed">{uploadSpeed}.0 Mbps</span>
+          <span className="upload-speed">
+            {estimatedSpeed + (estimatedSpeed >= 100 ? '+' : '')} Mbps
+          </span>
         </div>
         <div className="slider-container">
           <Field
-            name="uploadSpeed"
+            name="estimatedSpeed"
             handleClassName="slider-handle"
-            max={1000}
+            max={100}
+            step={5}
             component={SliderField}
           />
         </div>
       </div>
       {storageSlider}
-      <div className="col-12 mb-5">
-        <span className="mr-4">Daily Uptime</span>
-        <Field
-          name="uptimeStart"
-          disabled={disableTimeDropdown}
-          component={TimeDropdownField}
-        />
-        <span className="ml-2 mr-2">—</span>
-        <Field
-          name="uptimeEnd"
-          disabled={disableTimeDropdown}
-          component={TimeDropdownField}
-        />
-        <span className="all-day-container pl-4">
+      <ComingSoon className="mt-5 mb-5 pt-5 pb-3" textTop>
+        <div className="col-12">
+          <span className="mr-4">Daily Uptime</span>
           <Field
-            name="allDayUptime"
-            component={CheckboxField}
+            name="uptimeStart"
+            disabled={disableTimeDropdown}
+            component={TimeDropdownField}
           />
-          All Day
-        </span>
-      </div>
+          <span className="ml-2 mr-2">—</span>
+          <Field
+            name="uptimeEnd"
+            disabled={disableTimeDropdown}
+            component={TimeDropdownField}
+          />
+          <span className="all-day-container pl-4">
+            <Field
+              name="allDayUptime"
+              component={CheckboxField}
+            />
+            All Day
+          </span>
+        </div>
+      </ComingSoon>
       <div className="col-12">
-        <div className="mb-2">Tell us why you want to join us</div>
+        <div className="mb-2">Your default biography for applications</div>
         <Field
           name="reason"
           component={TextareaField}
@@ -160,8 +168,8 @@ BaseExpectedUsage.propTypes = {
   uptimeStartValue: PropTypes.number,
   uptimeEndValue: PropTypes.number,
   reason: PropTypes.string,
-  uploadSpeed: PropTypes.number,
-  setUploadSpeed: PropTypes.func,
+  estimatedSpeed: PropTypes.number,
+  setEstimatedSpeed: PropTypes.func,
   setUptimeStart: PropTypes.func,
   setUptimeEnd: PropTypes.func,
   setReason: PropTypes.func,
@@ -180,13 +188,13 @@ function mapStateToProps(state) {
     uptimeEndValue: expectedUsage.uptimeEnd,
     reason: expectedUsage.reason,
     storageAmount: expectedUsage.storageAmount,
-    uploadSpeed: form.expectedUsage && form.expectedUsage.values.uploadSpeed,
+    estimatedSpeed: form.expectedUsage && form.expectedUsage.values.estimatedSpeed,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    setUploadSpeed: speed => dispatch(setUploadSpeed(speed)),
+    setEstimatedSpeed: speed => dispatch(setEstimatedSpeed(speed)),
     setStorageAmount: storageAmount => dispatch(setStorageAmount(storageAmount)),
     setUptimeStart: uptimeStart => dispatch(setUptimeStart(uptimeStart)),
     setUptimeEnd: uptimeEnd => dispatch(setUptimeEnd(uptimeEnd)),

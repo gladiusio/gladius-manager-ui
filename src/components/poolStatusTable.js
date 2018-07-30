@@ -7,8 +7,14 @@ import Card from './card';
 import Table from './shared/table';
 import poolPropType from '../propTypes/pool';
 import {
-  getAllPools,
-} from '../state/pools';
+  getApplications,
+  getPendingApplications,
+  getRejectedApplications,
+  getAcceptedApplications,
+  isPending,
+  isRejected,
+  isAccepted
+} from '../state/applications';
 import bemify from '../util/bemify';
 
 const bem = bemify('pool-status-table');
@@ -25,35 +31,101 @@ export class BasePoolStatusTable extends Component {
   }
 
   componentWillMount() {
-    this.props.getAllPools();
+    this.requestInterval = setInterval(() => {
+      this.props.getApplications();
+    }, 4000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.requestInterval);
   }
 
   setShowRejected(show) {
     this.setState({showRejected: show});
   }
 
-  renderStatus(status) {
+  renderStatus(application) {
     let text = '—';
+    let status;
 
-    if (status === 'connected') {
-      text = 'Connected';
-    }
-
-    if (status === 'accepted') {
+    if (isAccepted(application)) {
       text = 'Accepted';
+      status = 'accepted';
     }
 
-    if (status === 'rejected') {
+    if (isRejected(application)) {
       text = 'Rejected';
+      status = 'rejected';
     }
 
-    if (status === 'pending') {
+    if (isPending(application)) {
       text = 'Pending';
+      status = 'pending';
     }
 
     return (
       <span className={classnames(bem('status'), status)}>
         {text}
+      </span>
+    );
+  }
+
+  renderEmptyValue() {
+    return (
+      <span>—</span>
+    );
+  }
+
+  renderJoinButton(application) {
+    if (isAccepted(application)) {
+      return (
+        <button className="btn btn-primary">Join</button>
+      );
+    }
+
+    return null;
+  }
+
+  renderName(application) {
+    const { name } = application.pool;
+
+    if (!name) {
+      return this.renderEmptyValue();
+    }
+
+    return name;
+  }
+
+  renderBandwidth(application) {
+    const { bandwidth } = application.pool;
+    if (!bandwidth && isNaN(bandwidth)) {
+      return this.renderEmptyValue();
+    }
+
+    return (
+      <span>{application.pool.bandwidthUse}GB</span>
+    );
+  }
+
+  renderNodeCount(application) {
+    const { nodeCount } = application.pool;
+    if (!nodeCount && isNaN(nodeCount)) {
+      return this.renderEmptyValue();
+    }
+
+    return nodeCount;
+  }
+
+  renderEarnings(application) {
+    const { earnings } = application.pool;
+    if (!earnings) {
+      return this.renderEmptyValue();
+    }
+
+    return (
+      <span>
+        <img src="./assets/images/icon-logo-small.svg" alt="" className="mr-2" />
+        {application.pool.earnings} GLA
       </span>
     );
   }
@@ -70,17 +142,17 @@ export class BasePoolStatusTable extends Component {
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'status')}
             sorted="">
-            { hideHead ? null : 'Status' }
+            { hideHead ? null : 'Application' }
           </Table.HeaderCell>
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'bandwidth')}
             sorted="">
-            { hideHead ? null : 'Bandwidth Use' }
+            { hideHead ? null : 'Bandwidth' }
           </Table.HeaderCell>
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'nodes')}
             sorted="">
-            { hideHead ? null : 'Nodes Connected' }
+            { hideHead ? null : 'Nodes' }
           </Table.HeaderCell>
           <Table.HeaderCell
             className={classnames(bem('header-cell'), 'earnings')}
@@ -92,41 +164,50 @@ export class BasePoolStatusTable extends Component {
     );
   }
 
-  getTable(pools, hideHead) {
+  getTable(applications, hideHead) {
     return (
       <Table className="table">
         {this.getTableHeader(hideHead)}
         <Table.Body>
-          {pools.map(p => this.getPoolRow(p))}
+          {applications.map(p => this.getPoolRow(p))}
         </Table.Body>
       </Table>
     );
   }
 
-  getRejectedPools(pools) {
+  getRejectedApplications(applications) {
     if (this.state.showRejected) {
-      return this.getTable(pools, true);
+      return this.getTable(applications, true);
     }
 
     return null;
   }
 
-  getPoolRow(pool) {
+  getPoolRow(application) {
     return (
       <Table.Row
-        key={pool.address}
+        key={application.pool.address}
         className={classnames(bem('pool-row'))}
       >
-        <Table.Cell>{pool.name}</Table.Cell>
-        <Table.Cell>{this.renderStatus(pool.status)}</Table.Cell>
-        <Table.Cell>{pool.bandwidthUse}GB</Table.Cell>
-        <Table.Cell>{pool.nodeCount}</Table.Cell>
-        <Table.Cell>
-          <img src="./assets/images/icon-logo-small.svg" alt="" className="mr-2" />
-          {pool.earnings} GLA
-        </Table.Cell>
+        <Table.Cell>{this.renderName(application)}</Table.Cell>
+        <Table.Cell>{this.renderStatus(application)}</Table.Cell>
+        <Table.Cell>{this.renderBandwidth(application)}</Table.Cell>
+        <Table.Cell>{this.renderNodeCount(application)}</Table.Cell>
+        <Table.Cell>{this.renderEarnings(application)}</Table.Cell>
       </Table.Row>
     );
+  }
+
+  getEmptyRow(applications) {
+    if (!applications || applications.length === 0) {
+      return (
+        <div className="text-center text-muted p-3">
+          You currently have no applications.
+        </div>
+      );
+    }
+
+    return null;
   }
 
   getShowButton() {
@@ -151,15 +232,15 @@ export class BasePoolStatusTable extends Component {
     );
   }
 
-  getRejectedSection(rejectedPools) {
-    if (!rejectedPools || rejectedPools.length === 0) {
+  getRejectedSection(rejectedApplications) {
+    if (!rejectedApplications || rejectedApplications.length === 0) {
       return null;
     }
 
     return (
       <div className={classnames(bem('rejected-container'))}>
         {this.getShowButton()}
-        {this.getRejectedPools(rejectedPools)}
+        {this.getRejectedApplications(rejectedApplications)}
       </div>
     );
   }
@@ -167,15 +248,16 @@ export class BasePoolStatusTable extends Component {
   render() {
     const {
       className,
-      pools,
-      rejectedPools,
+      applications,
+      rejectedApplications,
     } = this.props;
 
     return (
       <div className={classnames(bem(), className)}>
         <Card noPadding>
-          {this.getTable(pools)}
-          {this.getRejectedSection(rejectedPools)}
+          {this.getTable(applications)}
+          {this.getEmptyRow(applications)}
+          {this.getRejectedSection(rejectedApplications)}
         </Card>
       </div>
     );
@@ -189,20 +271,23 @@ BasePoolStatusTable.defaultProps = {
 /* eslint react/no-unused-prop-types: "off" */
 BasePoolStatusTable.propTypes = {
   className: PropTypes.string,
-  getAllPools: PropTypes.func.isRequired,
-  pools: PropTypes.arrayOf(poolPropType).isRequired,
+  getApplications: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
+  const applications = state.applications.applications;
   return {
-    pools: state.pools.availablePools.filter(pool => pool.status !== 'rejected'),
-    rejectedPools: state.pools.availablePools.filter(pool => pool.status === 'rejected')
+    applications: [
+      ...getAcceptedApplications(applications),
+      ...getPendingApplications(applications)
+    ],
+    rejectedApplications: getRejectedApplications(applications),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllPools: () => dispatch(getAllPools()),
+    getApplications: () => dispatch(getApplications()),
   };
 }
 

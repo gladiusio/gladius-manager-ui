@@ -76,8 +76,8 @@ function fetchBalance(walletAddress, balanceType="gla") {
         success: true,
         error: false,
         response: {
-          Value: 200,
-          Symbol: 'gla',
+          value: 200,
+          symbol: 'gla',
         },
       };
     }, 2000);
@@ -103,13 +103,8 @@ export function createUserWallet() {
       }
       const walletAddress = wallet.response.address;
 
-      const pgp = await createPGPKey(name, email);
-      if (pgp.error) {
-        throw new Error('PGP key creation failed!');
-      }
-
-      dispatch(setWalletSuccess(true));
       dispatch(setWalletAddress(walletAddress));
+      dispatch(setWalletSuccess(true));
     }
 
     const { account } = getState();
@@ -136,7 +131,7 @@ export function fetchGLABalance() {
       if (request.error) {
         throw new Error('GLA fetch balance failed!');
       }
-      const glaBalance = request.response.Value;
+      const glaBalance = request.response.value;
 
       dispatch(setGlaBalanceSuccess(glaBalance));
     }

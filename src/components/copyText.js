@@ -40,7 +40,9 @@ export default class CopyText extends Component {
 
     return (
       <button
-        className={classnames(bem('copy-button'), 'btn btn-secondary ml-2')}
+        className={
+          classnames(bem('copy-button'), 'btn btn-secondary', this.props.buttonClass)
+        }
         onClick={this.onCopy}
       >
         {text}
@@ -69,11 +71,13 @@ export default class CopyText extends Component {
 CopyText.defaultProps = {
   className: '',
   textareaClass: '',
+  buttonClass: '',
   value: '',
 };
 
 CopyText.propTypes = {
   className: PropTypes.string,
   textareaClass: PropTypes.string,
+  buttonClass: PropTypes.string,
   value: PropTypes.string,
 };

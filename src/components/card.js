@@ -28,6 +28,7 @@ export default function Card(props) {
   const names = classnames(bem('content'), {
     'p-4': !props.noPadding,
     [bem(null, 'borderless')]: props.noBorder,
+    [props.contentClass]: props.contentClass,
   });
 
   return (
@@ -44,6 +45,7 @@ Card.defaultProps = {
   noPadding: false,
   noBorder: false,
   className: null,
+  contentClass: null,
   title: null,
 };
 
@@ -52,5 +54,6 @@ Card.propTypes = {
   noBorder: PropTypes.bool,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  contentClass: PropTypes.string,
   title: PropTypes.string,
 };

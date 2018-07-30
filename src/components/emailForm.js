@@ -61,6 +61,14 @@ class BaseEmailForm extends Component {
     );
   }
 
+  renderTos() {
+    return (
+      <p className={bem('tos-link')}>
+        By signing up, you accept our <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>.
+      </p>
+    );
+  }
+
   renderSubmit() {
     const { hideInfo, submitting } = this.props;
     if (hideInfo) {
@@ -72,9 +80,6 @@ class BaseEmailForm extends Component {
         <button type="submit" disabled={submitting} className="btn btn-primary btn-chunky btn-lg w-100 mb-4">
             Create account
         </button>
-        <p className={bem('tos-link')}>
-            By signing up, you accept our <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>.
-        </p>
       </div>
     );
   }
@@ -85,10 +90,14 @@ class BaseEmailForm extends Component {
       onSubmit,
       showLabels,
       hideInfo,
+      className
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(onSubmit)} className={bem('email')}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={classnames(bem('email'), className)}
+      >
         {this.renderTitle()}
         <div className="form-group">
           <Field
@@ -119,11 +128,12 @@ BaseEmailForm = reduxForm({
 })(BaseEmailForm);
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   let { account } = state;
 
   return {
     initialValues: { email: account.email, name: account.name },
+    className: ownProps.className,
   };
 }
 

@@ -15,6 +15,10 @@
     opacity: .7;
   }
 
+  &__cover-top {
+    opacity: .45;
+  }
+
   &__text-container {
     position: absolute;
     top: 0;
@@ -27,7 +31,16 @@
     z-index: 100;
   }
 
+  &__container-top {
+    align-items: flex-start;
+  }
+
   &__text {
     color: white;
+  }
+
+  &__text-top {
+    font-size: 24px;
+    margin-top: 8px;
   }
 }

@@ -8,16 +8,16 @@ import Input from './input';
 
 const bem = bemify('manual-pool-apply');
 
-const PoolAddressField = ({ input, type, placeholder, wrapperClassName, className, meta: {error } }) => (
+const PoolAddressField = ({ input, type, placeholder, wrapperClassName, className, meta: {touched, error } }) => (
   <div key="poolAddress-container-input" className={classnames(wrapperClassName, 'input form-group')}>
     <input
       key="poolAddress-input"
-      className={classnames(className, 'form-control')}
+      className={classnames(className, 'form-control', {'is-invalid': touched && error})}
       {...input}
       placeholder={placeholder}
       type={type}
     />
-    {error && <span className="invalid-feedback">{error}</span>}
+    <div className="invalid-feedback">{error || ''}</div>
   </div>
 );
 
@@ -54,7 +54,6 @@ class ManualPoolApply extends Component {
           component={PoolAddressField}
           placeholder={placeholder}
           wrapperClassName={classnames(bem('input'), inputClass)}
-          className="m-0"
         />
         <button
           className={classnames(bem('submit'), 'btn btn-secondary ml-2')}

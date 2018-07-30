@@ -22,6 +22,10 @@ export function removeToast(text) {
 }
 
 function reduceAddToast(state, payload) {
+  if (state.indexOf(payload) > -1) {
+    return state;
+  }
+
   return [
     payload,
     ...state,

@@ -18,7 +18,7 @@ function renderChildren(children) {
 }
 
 export default function Masthead(props = {}) {
-  return (
+  return [
     <header
       className={
         classnames(
@@ -47,8 +47,9 @@ export default function Masthead(props = {}) {
           {renderChildren(props.children)}
         </div>
       </div>
-    </header>
-  );
+    </header>,
+    <div className={bem('holder')}></div>
+  ];
 }
 
 Masthead.defaultProps = {
