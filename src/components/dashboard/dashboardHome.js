@@ -23,9 +23,7 @@ class BaseDashboardHome extends Component {
           <StatusCard className="col-6" />
           <EarningsCard className="col-6" />
         </div>
-        <ComingSoon className="mt-4">
-          <PoolStatusTable />
-        </ComingSoon>
+        <PoolStatusTable className="mt-4" />
       </div>
     );
   }

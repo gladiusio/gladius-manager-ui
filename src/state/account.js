@@ -3,6 +3,7 @@ import { SubmissionError } from 'redux-form';
 import { createAction, nameAction } from '../util/createAction';
 import { ErrorState, LoadingState } from '../util/stateValues';
 import { getJSON, postData, delayed } from '../backend';
+import { addToast } from './toasts';
 
 function wait(delay) {
   return new Promise((resolve, reject) => {
@@ -157,7 +158,7 @@ function setNodeData(nodeAddress, passphrase, body) {
   );
 }
 
-function applyToPool(walletAddress, poolId, passphrase) {
+function applyToPool(poolId, body) {
   if (mockData) {
     return delayed(() => {
       return {
@@ -170,9 +171,8 @@ function applyToPool(walletAddress, poolId, passphrase) {
   }
 
   return postData(
-    `${process.env.CONTROL_API}/node/${walletAddress}/apply/${poolId}`,
-    {},
-    { 'X-Authorization': passphrase }
+    `${process.env.CONTROL_API}/node/applications/${poolId}/new`,
+    body
   );
 }
 
@@ -189,36 +189,55 @@ function getNode(walletAddress) {
 
 export function createApplications(poolIds) {
   return async (dispatch, getState) => {
+    const { account, expectedUsage } = getState();
     const {
-      passphraseValue,
-      nodeAddress
-    } = getState().account;
-    let applicationSuccessful = false;
+      email,
+      name
+    } = account;
+    const {
+      reason,
+      estimatedSpeed,
+    } = expectedUsage;
 
     async function applyToPools(poolIds) {
       for(var i = 0; i < poolIds.length; i++) {
-        let result = await applyToPool(
-          nodeAddress,
-          poolIds[i],
-          passphraseValue
-        );
+        let application;
+        try {
+          application = await applyToPool(
+            poolIds[i],
+            {
+              email,
+              name,
+              reason,
+              estimatedSpeed,
+            }
+          );
+        } catch(e) {}
 
-        if (result.success) {
-          applicationSuccessful = true;
-          await waitForTransaction(result.txHash.value);
+        if (application && application.error) {
+          return application;
         }
       }
     }
 
     return new Promise(async (resolve, reject) => {
       dispatch(setApplicationLoading(true));
-      await applyToPools(poolIds);
-      dispatch(setApplicationLoading(false));
 
-      if (applicationSuccessful) {
+      try {
+        const application = await applyToPools(poolIds);
+        dispatch(setApplicationLoading(false));
+        if (application && application.error) {
+          return reject();
+        }
+
+        dispatch(addToast({
+          text: 'You have successfully applied to a pool!',
+          success: true,
+        }));
         dispatch(setApplicationSuccess(poolIds));
         resolve();
-      } else {
+      } catch (e) {
+        dispatch(setApplicationLoading(false));
         reject();
       }
     });
@@ -232,7 +251,7 @@ export function setUserNodeData() {
     const { walletAddress } = wallet;
     const {
       storageAmount,
-      uploadSpeed,
+      estimatedSpeed,
       reason,
       uptimeStart,
       uptimeEnd,
@@ -245,7 +264,7 @@ export function setUserNodeData() {
         email,
         passphrase: passphraseValue,
         storageAmount,
-        uploadSpeed,
+        estimatedSpeed,
         reason,
         uptimeStart,
         uptimeEnd,
@@ -323,7 +342,6 @@ export function createAccount() {
     try {
       await createUserNode();
     } catch(e) {
-      console.log(e);
       accountCreationFailure = true;
     }
     dispatch(setAccountLoading(false));

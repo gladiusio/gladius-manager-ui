@@ -73,23 +73,23 @@ class BaseGetSecurePage extends Component {
           </h1>
         </div>
         <h2 className={classnames(onboardingSubhead, 'mb-4')}>We'll use the following details to encrypt your data on the blockchain and allow you to be identified</h2>
-        <Card className="p-5">
+        <Card className="p-5 mb-5">
           <PassphraseForm
             onSubmit={setUserPassphrase}
             onChange={this.onPassphraseChange}
             ref={this.passphraseForm}
           />
         </Card>
-        <div className="row justify-content-md-between p-3">
+        <div className="fixed-bottom row justify-content-md-between p-3">
           <button
-            className="btn btn-text btn-lg mt-2 mb-5"
+            className="btn btn-text btn-lg mt-2 mb-5 ml-5"
             onClick={goToPrevStep}
           >
             Back
           </button>
           <ExternalSubmitButton
             formIds={['passphrase']}
-            className="btn btn-primary btn-chunky btn-lg mt-2 mb-5"
+            className="btn btn-primary btn-chunky btn-lg mt-2 mb-5 mr-5"
             disabled={isLoading || !this.state.validForm}
             onSubmit={this.nextClick}
           >

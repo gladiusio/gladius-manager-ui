@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import historyPropType from '../../propTypes/history';
 import PoolTable from '../poolTable';
@@ -41,7 +42,7 @@ export class BasePoolSelection extends Component {
     return (
       <div className={classnames(bem(), 'col-10')}>
         <h1 className={classnames(onboardingSecondaryHead, 'mt-5')}>
-          Finally, input a pool address to contribute
+          Input a pool address you wish to join
         </h1>
         <h2 className={classnames(onboardingSubhead, 'mb-5')}>
           You will contribute with your bandwidth, small amounts of storage, and processing power
@@ -49,14 +50,22 @@ export class BasePoolSelection extends Component {
         <h5 className={classnames(bem('pool-input-title'))}>
           Paste in a pool address to apply to a pool.
         </h5>
-        <ManualPoolApply
-          className="row justify-content-start mb-5 pl-3 pr-3"
-          inputClass={classnames(bem('pool-input'))}
-          disabled={props.loading}
-          onSubmit={(poolId) => this.applyClick([poolId.poolAddress]) }
-          placeholder="Pool address. Example: 0xDAcd582..."
-          buttonText="Apply to Pool"
-        />
+        <div className="row justify-content-start align-items-lg-start pl-3">
+          <ManualPoolApply
+            className="row justify-content-start align-items-md-start mb-4 pl-3 pr-3"
+            inputClass={classnames(bem('pool-input'))}
+            disabled={props.loading}
+            onSubmit={(poolId) => this.applyClick([poolId.poolAddress]) }
+            placeholder="Pool address. Example: 0xDAcd582..."
+            buttonText="Apply to Pool"
+          />
+          <Link
+            to="/dashboard/home"
+            className="btn btn-text btn-md mt-2 ml-3"
+          >
+            Skip this step
+          </Link>
+        </div>
         <ComingSoon className="mb-4 p-4">
           <PoolTable
             className="mb-4"

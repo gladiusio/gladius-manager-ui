@@ -7,6 +7,7 @@
 @import 'copyText';
 @import 'countryList';
 @import 'countryTooltip';
+@import 'dashboardHome';
 @import 'drawerContentSplit';
 @import 'email';
 @import 'expectedUsage';
@@ -38,6 +39,7 @@
 @import 'table';
 @import 'timeDropdown';
 @import 'tooltip';
+@import 'transactions';
 @import 'transactionsTable';
 @import 'typeToConfirmModal';
 @import 'walletBalance';
@@ -143,4 +145,22 @@ body {
 
 .sub-text {
   font-weight: 200;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+}
+
+.fixed-bottom-row {
+  background: white;
+  box-shadow: 0 -1px 10px rgba(0,0,0,0.10);
+
+  button {
+    margin-bottom: 20px !important;
+  }
 }

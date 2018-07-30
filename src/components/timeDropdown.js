@@ -46,7 +46,7 @@ export default class TimeDropdown extends Component {
         disabled={props.disabled}
       >
         <FakeDropdown
-          value={currentSelected.display}
+          value={currentSelected && currentSelected.display || 0}
           className={classnames({ disabled: props.disabled })}
         />
       </Tooltip>

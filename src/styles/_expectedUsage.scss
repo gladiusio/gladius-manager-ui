@@ -6,6 +6,7 @@
     border: 1px solid $grey-border;
     @include shadowed();
     resize: none;
+    color: #495057;
 
     &::placeholder {
       font-style: italic;

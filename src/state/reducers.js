@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+export { default as applications } from './applications';
 export { default as account } from './account';
 export { default as onboarding } from './onboarding';
 export { default as expectedUsage } from './expectedUsage';
