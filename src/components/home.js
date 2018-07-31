@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import { setEmailAddressAndName } from '../state/account';
 import { getAccount } from '../state/authorization';
+import { getApplications } from '../state/ducks/applications/actions';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';

@@ -1,12 +1,11 @@
 import { combineReducers } from 'redux';
 
-export { default as applications } from './applications';
+export { default as applications } from './ducks/applications';
 export { default as account } from './account';
-export { default as onboarding } from './onboarding';
 export { default as expectedUsage } from './expectedUsage';
-export { default as pools } from './pools';
+export { default as pools } from './ducks/pools';
 export { default as toasts } from './toasts';
-export { default as transactions } from './transactions';
+export { default as transactions } from './ducks/transactions';
 export { default as wallet } from './wallet';
 export { default as authorization } from './authorization';
 export { reducer as form } from 'redux-form';

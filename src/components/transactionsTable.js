@@ -11,7 +11,7 @@ import TooltipWrapper from './tooltipWrapper';
 import {
   getAllTransactions,
   setFilterType,
-} from '../state/transactions';
+} from '../state/ducks/transactions/actions';
 import transactionTypes from '../util/transactionTypes';
 import bemify from '../util/bemify';
 

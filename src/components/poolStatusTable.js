@@ -7,14 +7,16 @@ import Card from './card';
 import Table from './shared/table';
 import poolPropType from '../propTypes/pool';
 import {
-  getApplications,
   getPendingApplications,
   getRejectedApplications,
   getAcceptedApplications,
   isPending,
   isRejected,
   isAccepted
-} from '../state/applications';
+} from '../state/ducks/applications/selectors';
+import {
+  getApplications,
+} from '../state/ducks/applications/actions';
 import bemify from '../util/bemify';
 
 const bem = bemify('pool-status-table');
