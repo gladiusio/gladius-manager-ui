@@ -1,4 +1,5 @@
-import { nameAction, createAction } from '../util/createAction';
+import { nameAction, createAction, createApiAction } from '../util/createAction';
+import { authorizeUser } from './authorization';
 import { getJSON, postData, delayed } from '../backend';
 
 const namespace = 'wallet';
@@ -13,6 +14,7 @@ const SET_WALLET_SUCCESS = nameAction(namespace, 'SET_WALLET_SUCCESS');
 const SET_GLA_BALANCE_LOADING = nameAction(namespace, 'SET_GLA_BALANCE_LOADING');
 const SET_GLA_BALANCE_SUCCESS = nameAction(namespace, 'SET_GLA_BALANCE_SUCCESS');
 
+const API_FETCH_BALANCE = nameAction(namespace, 'API_FETCH_BALANCE');
 
 export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });
@@ -83,9 +85,12 @@ function fetchBalance(walletAddress, balanceType="gla") {
     }, 2000);
   }
 
-  return getJSON(
-    `${process.env.CONTROL_API}/account/${walletAddress}/balance/${balanceType}`
-  );
+  return async (dispatch) => {
+    return await dispatch(createApiAction(API_FETCH_BALANCE, {}, {
+      path: `/account/${walletAddress}/balance/${balanceType}`,
+      method: 'GET'
+    }));
+  };
 }
 
 export function setProcessingBalance(balance) {
@@ -102,7 +107,7 @@ export function createUserWallet() {
         throw new Error('Wallet creation failed!');
       }
       const walletAddress = wallet.response.address;
-
+      await authorizeUser(passphrase);
       dispatch(setWalletAddress(walletAddress));
       dispatch(setWalletSuccess(true));
     }
@@ -127,7 +132,7 @@ export function createUserWallet() {
 export function fetchGLABalance() {
   return async (dispatch, getState) => {
     async function requestBalance(walletAddress) {
-      const request = await fetchBalance(walletAddress);
+      const request = await dispatch(fetchBalance(walletAddress));
       if (request.error) {
         throw new Error('GLA fetch balance failed!');
       }

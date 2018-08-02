@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { setEmailAddressAndName } from '../state/account';
-import { getApplications } from '../state/applications';
+import { getAccount } from '../state/authorization';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
@@ -16,7 +16,7 @@ const bem = bemify('home');
 
 export class BaseHome extends Component {
   componentDidMount() {
-    this.props.getApplications();
+    this.props.getAccount();
   }
 
   renderEmail() {
@@ -60,10 +60,9 @@ BaseHome.propTypes = {
   setEmailAddressAndName: PropTypes.func.isRequired,
 };
 
-function mapStateToProps({ applications }) {
+function mapStateToProps({ authorization }) {
   return {
-    onboardingDone: applications.applications.length !== 0 &&
-      !(applications.length === 1 && applications[0] === null),
+    onboardingDone: authorization.hasAccount,
   };
 }
 
@@ -72,8 +71,8 @@ function mapDispatchToProps(dispatch) {
     setEmailAddressAndName: (email, name) => {
       return dispatch(setEmailAddressAndName(email, name));
     },
-    getApplications: () => {
-      return dispatch(getApplications());
+    getAccount: () => {
+      return dispatch(getAccount());
     },
   };
 }

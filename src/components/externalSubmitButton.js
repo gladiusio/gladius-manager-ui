@@ -29,7 +29,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatchSubmit: () => {
       externalFormSubmit(dispatch, ownProps.formIds).then(() => {
-        ownProps.onSubmit();
+        return ownProps.onSubmit && ownProps.onSubmit();
       });
     },
   };

@@ -1,4 +1,4 @@
-import { nameAction, createAction } from '../util/createAction';
+import { nameAction, createAction, createApiAction } from '../util/createAction';
 import { getJSON, delayed } from '../backend';
 import mockedApplicationsResponse from './mockedResponses/applications';
 
@@ -8,6 +8,8 @@ const namespace = 'applications';
 
 const GET_ALL_APPLICATIONS_ERROR = nameAction(namespace, 'GET_ALL_APPLICATIONS_ERROR');
 const GET_ALL_APPLICATIONS_SUCCESS = nameAction(namespace, 'GET_ALL_APPLICATIONS_SUCCESS');
+
+const API_FETCH_APPLICATIONS = nameAction(namespace, 'API_FETCH_APPLICATIONS');
 
 function getInitialState() {
   return {
@@ -22,41 +24,46 @@ function fetchApplications() {
     }, 2000);
   }
 
-  return getJSON(`${process.env.CONTROL_API}/node/applications`);
+  return async (dispatch) => {
+    return await dispatch(createApiAction(API_FETCH_APPLICATIONS, {}, {
+      path: '/node/applications',
+      method: 'GET'
+    }));
+  };
 }
 
 export function getPendingApplications(applications) {
   return applications.filter((application) => {
-    return application && !application.profile.accepted.Valid;
+    return application && !application.profile.approved;
   });
 }
 
 export function getAcceptedApplications(applications) {
   return applications.filter((application) => {
-    return application && application.profile.accepted.Valid &&
-      application.profile.accepted.Bool;
+    return application && application.profile.approved &&
+      application.profile.pending;
   });
 }
 
 export function getRejectedApplications(applications) {
   return applications.filter((application) => {
-    return application && application.profile.accepted.Valid &&
-      !application.profile.accepted.Bool;
+    return application && application.profile.approved &&
+      !application.profile.pending;
   });
 }
 
 export function isPending(application) {
-  return application && !application.profile.accepted.Valid;
+  return application && !application.profile.approved;
 }
 
 export function isRejected(application) {
-  return application && application.profile.accepted.Valid &&
-    !application.profile.accepted.Bool;
+  return application && application.profile.approved &&
+    !application.profile.pending;
 }
 
 export function isAccepted(application) {
-  return application && application.profile.accepted.Valid &&
-    application.profile.accepted.Bool;
+  return application && application.profile.approved &&
+    application.profile.pending;
 }
 
 export function getAllApplicationsError(error) {
@@ -74,7 +81,7 @@ export function getAllApplicationsSuccess(applications) {
 export function getApplications() {
   return async (dispatch) => {
     try {
-      const applicationsResponse = await fetchApplications();
+      const applicationsResponse = await dispatch(fetchApplications());
       if (applicationsResponse.error) {
         return dispatch(getAllApplicationsError(applicationsResponse.error));
       }

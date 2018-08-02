@@ -8,7 +8,6 @@ import ManageBalance from './manageBalance';
 import Settings from './settings';
 import Transactions from './transactions';
 import Navigation from './navigation';
-import Toasts from '../toasts';
 import bemify from '../../util/bemify';
 
 const bem = bemify('dashboard');
@@ -20,7 +19,6 @@ export default function Dashboard() {
         <Navigation />
       </Masthead>
     }>
-      <Toasts></Toasts>
       <div className="container pb-5">
         <div className="row justify-content-center">
           <Switch>

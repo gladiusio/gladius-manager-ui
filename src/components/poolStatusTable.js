@@ -31,6 +31,7 @@ export class BasePoolStatusTable extends Component {
   }
 
   componentWillMount() {
+    this.props.getApplications();
     this.requestInterval = setInterval(() => {
       this.props.getApplications();
     }, 4000);

@@ -3,6 +3,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import * as reducers from './reducers';
 import * as ls from '../util/localStorage';
+import { apiService } from './middlewares';
 
 const stateKey = 'state-1';
 function loadState() {
@@ -22,7 +23,7 @@ const composeEnhancers = process.env.NODE_ENV !== 'production' && devtoolsInstal
 export const storeFactory = (state = loadState(), history) => createStore(
   combineReducers(reducers),
   state,
-  composeEnhancers(applyMiddleware(thunk, routerMiddleware(history))),
+  composeEnhancers(applyMiddleware(apiService, thunk, routerMiddleware(history))),
 );
 
 export default storeFactory();

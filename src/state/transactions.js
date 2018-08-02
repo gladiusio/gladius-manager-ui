@@ -1,5 +1,5 @@
 import sortBy from 'lodash.sortby';
-import { nameAction, createAction } from '../util/createAction';
+import { nameAction, createAction, createApiAction } from '../util/createAction';
 import Market from '../util/contracts/market';
 import Pool from '../util/contracts/pool';
 import { getJSON, postData, delayed } from '../backend';
@@ -11,6 +11,7 @@ const namespace = 'transactions';
 const SET_TRANSACTION_FILTER = nameAction(namespace, 'SET_TRANSACTION_FILTER');
 const GET_ALL_TRANSACTIONS_ERROR = nameAction(namespace, 'GET_ALL_TRANSACTIONS_ERROR');
 const GET_ALL_TRANSACTIONS_SUCCESS = nameAction(namespace, 'GET_ALL_TRANSACTIONS_SUCCESS');
+const API_FETCH_TRANSACTIONS = nameAction(namespace, 'API_FETCH_TRANSACTIONS');
 
 function getInitialState() {
   return {
@@ -26,9 +27,12 @@ function fetchTransactions(walletAddress) {
     }, 2000);
   }
 
-  return postData(
-    `${process.env.CONTROL_API}/account/${walletAddress}/transactions`
-  );
+  return async (dispatch) => {
+    return dispatch(createApiAction(API_FETCH_TRANSACTIONS, {}, {
+      path: `/account/${walletAddress}/transactions`,
+      method: 'POST',
+    }));
+  };
 }
 
 export function getAllTransactionsError(error) {
@@ -53,11 +57,11 @@ export function getAllTransactions() {
   return async (dispatch, getState) => {
     const { walletAddress } = getState().wallet;
     if (!walletAddress) {
-      return dispatch(getAllTransactionsError(err));
+      return dispatch(getAllTransactionsError());
     }
 
     try {
-      const transactions = await fetchTransactions(walletAddress);
+      const transactions = await dispatch(fetchTransactions(walletAddress));
       if (transactions.error) {
         return dispatch(getAllTransactionsError(transactions.error));
       }

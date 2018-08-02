@@ -10,9 +10,18 @@ function getInitialState() {
 }
 
 export function addToast(options = {}) {
-  return createAction(ADD_TOAST, {
-    ...options,
-  });
+  return (dispatch) => {
+    const { text } = options;
+    if (text) {
+      setTimeout(() => {
+        dispatch(removeToast(text));
+      }, 5000);
+    }
+
+    return dispatch(createAction(ADD_TOAST, {
+      ...options,
+    }));
+  }
 }
 
 export function removeToast(text) {

@@ -1,6 +1,6 @@
 import { SubmissionError } from 'redux-form';
 
-import { createAction, nameAction } from '../util/createAction';
+import { createAction, nameAction, createApiAction } from '../util/createAction';
 import { ErrorState, LoadingState } from '../util/stateValues';
 import { getJSON, postData, delayed } from '../backend';
 import { addToast } from './toasts';
@@ -55,6 +55,9 @@ const SET_ACCOUNT_INFO_SAVED = nameAction(namespace, 'SET_ACCOUNT_INFO_SAVED');
 
 const SET_APPLY_POOL_LOADING = nameAction(namespace, 'SET_APPLY_POOL_LOADING');
 const SET_APPLICATION_SUCCESS = nameAction(namespace, 'SET_APPLICATION_SUCCESS');
+
+const API_APPLY_TO_POOL = nameAction(namespace, 'API_APPLY_TO_POOL');
+const API_SET_NODE_DATA = nameAction(namespace, 'API_SET_NODE_DATA');
 
 export function setEmailAddressFailure(error) {
   return createAction(SET_EMAIL_ADDRESS_FAILURE, null, error);
@@ -151,11 +154,14 @@ function setNodeData(nodeAddress, passphrase, body) {
     }, 3000);
   }
 
-  return postData(
-    `${process.env.CONTROL_API}/node/${nodeAddress}/data`,
-    body,
-    { 'X-Authorization': passphrase }
-  );
+  return async (dispatch) => {
+    return await dispatch(createApiAction(API_SET_NODE_DATA, {}, {
+      path: `/node/${nodeAddress}/data`,
+      method: 'POST',
+      body,
+      headers: { 'X-Authorization': passphrase },
+    }));
+  };
 }
 
 function applyToPool(poolId, body) {
@@ -170,10 +176,13 @@ function applyToPool(poolId, body) {
     }, 3000);
   }
 
-  return postData(
-    `${process.env.CONTROL_API}/node/applications/${poolId}/new`,
-    body
-  );
+  return async (dispatch) => {
+    return await dispatch(createApiAction(API_APPLY_TO_POOL, {}, {
+      path: `/node/applications/${poolId}/new`,
+      method: 'POST',
+      body,
+    }));
+  };
 }
 
 function getNode(walletAddress) {
@@ -203,7 +212,7 @@ export function createApplications(poolIds) {
       for(var i = 0; i < poolIds.length; i++) {
         let application;
         try {
-          application = await applyToPool(
+          application = await dispatch(applyToPool(
             poolIds[i],
             {
               email,
@@ -211,8 +220,10 @@ export function createApplications(poolIds) {
               reason,
               estimatedSpeed,
             }
-          );
-        } catch(e) {}
+          ));
+        } catch(e) {
+          throw new Error(e);
+        }
 
         if (application && application.error) {
           return application;
@@ -259,7 +270,7 @@ export function setUserNodeData() {
     } = expectedUsage;
 
     return new Promise(async (resolve, reject) => {
-      const setNode = await setNodeData(nodeAddress, passphraseValue, {
+      const setNode = await dispatch(setNodeData(nodeAddress, passphraseValue, {
         name,
         email,
         passphrase: passphraseValue,
@@ -270,7 +281,7 @@ export function setUserNodeData() {
         uptimeEnd,
         allDayUptime,
         ip,
-      });
+      }));
 
       if (setNode.error) {
         return reject();
