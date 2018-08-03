@@ -8,6 +8,7 @@ export { default as pools } from './pools';
 export { default as toasts } from './toasts';
 export { default as transactions } from './transactions';
 export { default as wallet } from './wallet';
+export { default as authorization } from './authorization';
 export { reducer as form } from 'redux-form';
 
 import currentStep from './signup/currentStep';

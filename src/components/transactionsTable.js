@@ -24,6 +24,7 @@ export class BaseTransactionsTable extends Component {
   }
 
   componentWillMount() {
+    this.props.getAllTransactions();
     this.requestInteral = setInterval(() => {
       this.props.getAllTransactions();
     }, 4000);
@@ -219,7 +220,6 @@ BaseTransactionsTable.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const typeFilter = state.transactions.typeFilter;
-
   return {
     transactions: state.transactions.transactions,
     typeFilter,

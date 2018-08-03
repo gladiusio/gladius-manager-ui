@@ -10,7 +10,6 @@ import PoolSelection from './signup/poolSelection';
 import LockedRoute from './lockedRoute';
 import MastheadContentSplit from './mastheadContentSplit';
 import Masthead from './masthead';
-import Toasts from './toasts';
 
 export function BaseSignup({
   currentOnboardingStepIndex,
@@ -28,7 +27,6 @@ export function BaseSignup({
         </Masthead>
       }
     >
-      <Toasts></Toasts>
       <div className="container pb-5">
         <div className="row justify-content-center">
           <Switch>
