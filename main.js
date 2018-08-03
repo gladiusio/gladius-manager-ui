@@ -19,8 +19,7 @@ let trayImage
 if (platform == 'darwin') {
   trayImage = path.join(imageFolder, '/tray/mac/icon.png')
   app.dock.hide()
-}
-else if (platform == 'win32') {
+} else if (platform == 'win32') {
   trayImage = path.join(imageFolder, '/tray/win/icon.ico')
 }
 
@@ -32,13 +31,11 @@ function createWindow() {
   })
 
   win.loadURL(
-    url.format(
-      {
-        pathname: path.join(__dirname, 'dist/index.html'),
-        protocol: 'file:',
-        slashes: true
-      }
-    )
+    url.format({
+      pathname: path.join(__dirname, 'dist/index.html'),
+      protocol: 'file:',
+      slashes: true
+    })
   )
 
   if (platform != "darwin") {
@@ -47,8 +44,7 @@ function createWindow() {
   }
 
   let contextMenu = Menu.buildFromTemplate(
-    [
-      {
+    [{
         label: 'Show Gladius Manager',
         click: function() {
           win.show()
@@ -76,7 +72,7 @@ function createWindow() {
       return true
     }
 
-    if(!app.isQuiting) {
+    if (!app.isQuiting) {
       event.preventDefault()
       win.hide()
     }
@@ -94,6 +90,57 @@ function createWindow() {
       appIcon.setHighlightMode('selection')
     }
   })
+
+  // Create the Application's main menu
+  var template = [{
+    label: "Application",
+    submenu: [{
+        label: "About Application",
+        selector: "orderFrontStandardAboutPanel:"
+      },
+      {
+        type: "separator"
+      }
+    ]
+  }, {
+    label: "Edit",
+    submenu: [{
+        label: "Undo",
+        accelerator: "CmdOrCtrl+Z",
+        selector: "undo:"
+      },
+      {
+        label: "Redo",
+        accelerator: "Shift+CmdOrCtrl+Z",
+        selector: "redo:"
+      },
+      {
+        type: "separator"
+      },
+      {
+        label: "Cut",
+        accelerator: "CmdOrCtrl+X",
+        selector: "cut:"
+      },
+      {
+        label: "Copy",
+        accelerator: "CmdOrCtrl+C",
+        selector: "copy:"
+      },
+      {
+        label: "Paste",
+        accelerator: "CmdOrCtrl+V",
+        selector: "paste:"
+      },
+      {
+        label: "Select All",
+        accelerator: "CmdOrCtrl+A",
+        selector: "selectAll:"
+      }
+    ]
+  }]
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 }
 
 app.on('ready', createWindow)
