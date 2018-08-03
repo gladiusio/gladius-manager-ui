@@ -107,7 +107,7 @@ export function createUserWallet() {
         throw new Error('Wallet creation failed!');
       }
       const walletAddress = wallet.response.address;
-      await authorizeUser(passphrase);
+      await dispatch(authorizeUser(passphrase));
       dispatch(setWalletAddress(walletAddress));
       dispatch(setWalletSuccess(true));
     }
