@@ -1,4 +1,6 @@
 import { createAction, createApiAction } from '../../../util/createAction';
+import { delayed } from '../../../backend';
+import mockedApplicationsResponse from '../../../mockedResponses/applications';
 import {
   API_FETCH_APPLICATIONS,
   GET_ALL_APPLICATIONS_ERROR,
