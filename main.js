@@ -2,7 +2,8 @@ let {
   app,
   BrowserWindow,
   Tray,
-  Menu
+  Menu,
+  nativeImage
 } = require('electron')
 
 let path = require('path')
@@ -14,6 +15,7 @@ let imageFolder = __dirname + '/img'
 let platform = require('os').platform()
 let iconPath = path.join(imageFolder, '/icon/icon.png')
 let trayImage
+let appIcon
 
 // Determine appropriate icon for platform
 if (platform == 'darwin') {
@@ -39,8 +41,7 @@ function createWindow() {
   )
 
   if (platform != "darwin") {
-    let appIcon = new Tray(trayImage)
-    appIcon.setPressedImage(imageFolder + '/tray/mac/iconHighlight.png');
+    appIcon = new Tray(nativeImage.createFromPath(trayImage));
   }
 
   let contextMenu = Menu.buildFromTemplate(
