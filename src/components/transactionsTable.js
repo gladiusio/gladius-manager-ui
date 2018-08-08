@@ -220,6 +220,7 @@ BaseTransactionsTable.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const typeFilter = state.transactions.typeFilter;
+  console.log(state);
   return {
     transactions: state.transactions.transactions,
     typeFilter,

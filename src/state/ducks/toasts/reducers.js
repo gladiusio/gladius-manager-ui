@@ -1,33 +1,10 @@
-import { nameAction, createAction } from '../util/createAction';
-
-const namespace = 'toasts';
-
-const ADD_TOAST = nameAction(namespace, 'ADD_TOAST');
-const REMOVE_TOAST = nameAction(namespace, 'REMOVE_TOAST');
+import {
+  ADD_TOAST,
+  REMOVE_TOAST
+} from './types';
 
 function getInitialState() {
   return [];
-}
-
-export function addToast(options = {}) {
-  return (dispatch) => {
-    const { text } = options;
-    if (text) {
-      setTimeout(() => {
-        dispatch(removeToast(text));
-      }, 5000);
-    }
-
-    return dispatch(createAction(ADD_TOAST, {
-      ...options,
-    }));
-  }
-}
-
-export function removeToast(text) {
-  return createAction(REMOVE_TOAST, {
-    text,
-  });
 }
 
 function reduceAddToast(state, payload) {

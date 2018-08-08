@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { removeToast } from '../state/toasts';
+import { toastActions } from '../state/ducks/toasts';
 import Toast from './shared/toast';
 import toastPropType from '../propTypes/toast';
+
+const { removeToast } = toastActions;
 
 export function BaseToasts(props) {
   const {

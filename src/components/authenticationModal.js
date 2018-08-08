@@ -9,9 +9,11 @@ import AuthenticationForm from './authenticationForm';
 import ExternalSubmitButton from './externalSubmitButton';
 import noop from '../util/noop';
 import bemify from '../util/bemify';
-import { authorizeUser } from '../state/authorization';
-import { addToast } from '../state/toasts';
+import { authorizationActions } from '../state/ducks/authorization';
+import { toastActions } from '../state/ducks/toasts';
 
+const { addToast } = toastActions;
+const { authorizeUser } = authorizationActions;
 const bem = bemify('type-to-confirm-modal');
 
 class AuthenticationModal extends Component {

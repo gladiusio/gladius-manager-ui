@@ -5,15 +5,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { submit } from 'redux-form';
 
-import {
-  setUserNodeData,
-  setEmailAddressAndName,
-  setIPAddress,
-  getNodeInfo,
-} from '../../state/account';
-import { setExpectedUsage } from '../../state/expectedUsage';
-import { fetchGLABalance } from '../../state/wallet';
-import { addToast } from '../../state/toasts';
+import { accountActions } from '../../state/ducks/account';
+import { expectedUsageActions } from '../../state/ducks/expectedUsage';
+import { walletActions } from '../../state/ducks/wallet';
+import { toastActions } from '../../state/ducks/toasts';
 import Card from '../card';
 import IPAddressForm from '../ipAddressForm';
 import TypeToConfirmModal from '../typeToConfirmModal';
@@ -24,6 +19,15 @@ import ExternalSubmitButton from '../externalSubmitButton';
 import bemify from '../../util/bemify';
 import externalFormSubmit from '../../util/externalFormSubmit';
 
+const {
+  setUserNodeData,
+  setEmailAddressAndName,
+  setIPAddress,
+  getNodeInfo,
+} = accountActions;
+const { fetchGLABalance } = walletActions;
+const { setExpectedUsage } = expectedUsageActions;
+const { addToast } = toastActions;
 const bem = bemify('settings');
 
 class BaseSettings extends Component {

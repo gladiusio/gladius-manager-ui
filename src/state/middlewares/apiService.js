@@ -1,6 +1,7 @@
-import { setUnauthorized } from '../authorization';
+import { authorizationActions } from '../ducks/authorization';
 import { postData } from "../../backend";
 
+const { setUnauthorized } = authorizationActions;
 const baseUrl = "http://localhost:3001/api";
 
 const apiService = () => (next) => (action) => {

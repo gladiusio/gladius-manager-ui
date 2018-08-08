@@ -5,6 +5,8 @@ import {
   GET_ALL_APPLICATIONS_SUCCESS,
 } from './types';
 
+const mockData = process.env.MOCK_DATA === "true";
+
 export function fetchApplications() {
   if (mockData) {
     return delayed(() => {
@@ -35,7 +37,7 @@ export function getAllApplicationsSuccess(applications) {
 export function getApplications() {
   return async (dispatch) => {
     try {
-      const applicationsResponse = await fetchApplications();
+      const applicationsResponse = await dispatch(fetchApplications());
       if (applicationsResponse.error) {
         return dispatch(getAllApplicationsError(applicationsResponse.error));
       }

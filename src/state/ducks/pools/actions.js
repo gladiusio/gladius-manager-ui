@@ -8,7 +8,20 @@ import {
   SET_NODE_COUNT_FILTER,
   SET_EARNINGS_FILTER
 } from './types';
-import { fetchPools } from './api';
+
+const mockData = process.env.MOCK_DATA === "true";
+
+export function fetchPools() {
+  if (mockData) {
+    return delayed(() => {
+      return mockedPoolsResponse;
+    }, 2000);
+  }
+
+  return new Promise((resolve, reject) => {
+    resolve(mockedPoolsResponse);
+  });
+}
 
 export function getAllPoolsError(error) {
   return async dispatch => dispatch(createAction(GET_ALL_POOLS_ERROR, {

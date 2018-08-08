@@ -10,9 +10,11 @@ import ComingSoon from '../comingSoon';
 import ManualPoolApply from '../manualPoolApply';
 import bemify from '../../util/bemify';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
-import { toggleSelectedPool, nextSignupStep, prevSignupStep } from '../../state/actions';
-import { createApplications } from '../../state/account';
+import { signupActions } from '../../state/ducks/signup';
+import { accountActions } from '../../state/ducks/account';
 
+const { createApplications } = accountActions;
+const { toggleSelectedPool, nextSignupStep, prevSignupStep } = signupActions;
 const bem = bemify('pool-selection');
 
 export class BasePoolSelection extends Component {

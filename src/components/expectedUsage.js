@@ -10,15 +10,16 @@ import BigRadioButton from './bigRadioButton';
 import TimeDropdown from './timeDropdown';
 import ComingSoon from './comingSoon';
 
-import {
+import { expectedUsageActions } from '../state/ducks/expectedUsage';
+
+const {
   setStorageAmount,
   setEstimatedSpeed,
   setReason,
   setUptimeStart,
   setUptimeEnd,
   toggleAllDayUptime,
-} from '../state/expectedUsage';
-
+} = expectedUsageActions;
 const bem = bemify('expectedUsage');
 
 // TODO: show storage?

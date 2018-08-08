@@ -13,16 +13,17 @@ import RatingTooltip from './ratingTooltip';
 import SliderTooltip from './sliderTooltip';
 import SpeedGradient from './speedGradient';
 import poolPropType from '../propTypes/pool';
-import {
+import { poolsActions } from '../state/ducks/pools';
+import bemify from '../util/bemify';
+
+const {
   handleSort,
   getAllPools,
   setLocationFilter,
   setRatingFilter,
   setNodeCountFilter,
   setEarningsFilter,
-} from '../state/ducks/pools';
-import bemify from '../util/bemify';
-
+} = poolsActions;
 const bem = bemify('pool-table');
 
 function filterPools(

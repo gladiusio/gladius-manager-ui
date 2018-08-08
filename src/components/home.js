@@ -4,15 +4,18 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { setEmailAddressAndName } from '../state/account';
-import { getAccount } from '../state/authorization';
-import { getApplications } from '../state/ducks/applications/actions';
+import { accountActions } from '../state/ducks/account';
+import { authorizationActions } from '../state/ducks/authorization';
+import { applicationsActions } from '../state/ducks/applications';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
 import EmailForm from './emailForm';
 import bemify from '../util/bemify';
 
+const { setEmailAddressAndName } = accountActions;
+const { getAccount } = authorizationActions;
+const { getApplications } = applicationsActions;
 const bem = bemify('home');
 
 export class BaseHome extends Component {

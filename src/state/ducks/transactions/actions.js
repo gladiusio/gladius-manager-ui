@@ -6,6 +6,8 @@ import {
   GET_ALL_TRANSACTIONS_SUCCESS
 } from './types';
 
+const mockData = process.env.MOCK_DATA === "true";
+
 export function fetchTransactions(walletAddress) {
   if (mockData) {
     return delayed(() => {
@@ -47,7 +49,7 @@ export function getAllTransactions() {
     }
 
     try {
-      const transactions = await fetchTransactions(walletAddress);
+      const transactions = await dispatch(fetchTransactions(walletAddress));
       if (transactions.error) {
         return dispatch(getAllTransactionsError(transactions.error));
       }
