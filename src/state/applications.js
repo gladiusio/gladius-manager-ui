@@ -33,12 +33,18 @@ function fetchApplications() {
 }
 
 export function getPendingApplications(applications) {
+  if (typeof applications == "undefined") {
+    return []
+  }
   return applications.filter((application) => {
     return application && application.profile.pending;
   });
 }
 
 export function getAcceptedApplications(applications) {
+  if (typeof applications == "undefined") {
+    return []
+  }
   return applications.filter((application) => {
     return application && application.profile.approved &&
       !application.profile.pending;
@@ -46,6 +52,9 @@ export function getAcceptedApplications(applications) {
 }
 
 export function getRejectedApplications(applications) {
+  if (typeof applications == "undefined") {
+    return []
+  }
   return applications.filter((application) => {
     return application && !application.profile.approved &&
       !application.profile.pending;
