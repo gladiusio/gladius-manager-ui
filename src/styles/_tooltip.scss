@@ -51,6 +51,7 @@
 
 .tooltip-wrapper {
   position: relative;
+  width: fit-content;
 
   &:hover {
     .tooltip-wrapper__tooltip {

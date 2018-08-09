@@ -30,11 +30,11 @@ export default function SubNavigation() {
         </li>
         <li className={bem('item')}>
           <NavLink
-            to="/dashboard/transactions"
+            to="/dashboard/wallet"
             activeClassName={bem('link', 'active')}
-            className={classnames(bem('link'), bem('link-transactions'))}
+            className={classnames(bem('link'), bem('link-wallet'))}
           >
-            Transactions
+            Wallet
           </NavLink>
         </li>
         <li className={bem('item')}>
