@@ -11,7 +11,7 @@ import CopyText from '../copyText';
 import bemify from '../../util/bemify';
 import { fetchGLABalance } from '../../state/wallet';
 
-const bem = bemify('transactions');
+const bem = bemify('wallet-page');
 
 class BaseTransactions extends Component {
   constructor(props) {

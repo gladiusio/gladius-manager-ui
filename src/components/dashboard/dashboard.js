@@ -6,7 +6,7 @@ import DashboardHome from './dashboardHome';
 import Marketplace from './marketplace';
 import ManageBalance from './manageBalance';
 import Settings from './settings';
-import Transactions from './transactions';
+import WalletPage from './walletPage';
 import Navigation from './navigation';
 import bemify from '../../util/bemify';
 
@@ -26,7 +26,7 @@ export default function Dashboard() {
               () => <Redirect to="/dashboard/home" />
             } />
             <Route path="/dashboard/home" component={DashboardHome} />
-            <Route path="/dashboard/transactions" component={Transactions} />
+            <Route path="/dashboard/wallet" component={WalletPage} />
             <Route path="/dashboard/marketplace" component={Marketplace} />
             <Route path="/dashboard/settings/balance" component={ManageBalance} />
             <Route path="/dashboard/settings" component={Settings} />

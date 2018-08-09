@@ -165,6 +165,10 @@ function setNodeData(nodeAddress, passphrase, body) {
 }
 
 function applyToPool(poolId, body) {
+  if (poolId && poolId.trim) {
+    poolId = poolId && poolId.trim();
+  }
+
   if (mockData) {
     return delayed(() => {
       return {
