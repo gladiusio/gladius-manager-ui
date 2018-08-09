@@ -1,5 +1,5 @@
 {
-  "name": "GladiusNodeManager",
+  "name": "Gladius Node Manager",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -8,6 +8,7 @@
     "classnames": "2.2.5",
     "create-react-class": "^15.6.3",
     "domain-name-parser": "^2.3.0",
+    "electron-packager": "^12.1.0",
     "history": "^4.7.2",
     "lodash.get": "4.4.2",
     "lodash.pick": "4.4.0",
@@ -82,7 +83,11 @@
     "lint": "eslint .",
     "eclint": "eclint check --block_comment_start '/*' --block_comment '*' --block_comment_end '*/'",
     "verify": "npm-run-all -s clean lint eclint test",
-    "start": "npm run build && electron ."
+    "start": "npm run build && electron .",
+    "package-mac": "electron-packager . Gladius --platform=darwin --arch=x64 --icon=\"img/icon/AppIcon.icns\" --ignore=\"build\" --out=\"build/macOS\" --overwrite",
+    "package-win":"electron-packager . Gladius --platform=\"win32\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Windows\" --overwrite",
+    "package-linux": "electron-packager . Gladius --platform=\"linux\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Linux\" --overwrite",
+    "package": "npm run build; npm run package-mac; npm run package-win; npm run package-linux"
   },
   "author": "",
   "license": "ISC"

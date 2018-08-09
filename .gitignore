@@ -1,3 +1,8 @@
+# Builds
+build/macOS/
+build/Windows/
+build/Linux/
+
 # macOS
 .DS_Store
 
@@ -62,4 +67,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
