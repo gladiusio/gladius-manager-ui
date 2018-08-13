@@ -11,15 +11,7 @@ import {
   SET_EARNINGS_FILTER
 } from './types';
 
-const mockData = process.env.MOCK_DATA === "true";
-
 export function fetchPools() {
-  if (mockData) {
-    return delayed(() => {
-      return mockedPoolsResponse;
-    }, 2000);
-  }
-
   return new Promise((resolve, reject) => {
     resolve(mockedPoolsResponse);
   });

@@ -19,10 +19,8 @@ export default {
         "wallet": "0x1f136d7b6308870ed334378f381c9f56d04c3aba"
       },
       "profile": {
-        "accepted": {
-          "Bool": false,
-          "Valid": false
-        },
+        "pending": true,
+        "approved": false,
         "bio": "",
         "email": "",
         "estimatedSpeed": 0,
@@ -47,10 +45,8 @@ export default {
         "wallet": "0x1f136d7b6308870ed334378f381c9f56d04c3aba"
       },
       "profile": {
-        "accepted": {
-          "Bool": true,
-          "Valid": true
-        },
+        "pending": false,
+        "approved": true,
         "bio": "",
         "email": "",
         "estimatedSpeed": 0,
@@ -75,10 +71,8 @@ export default {
         "wallet": "0x1f136d7b6308870ed334378f381c9f56d04c3abz"
       },
       "profile": {
-        "accepted": {
-          "Bool": false,
-          "Valid": true
-        },
+        "pending": false,
+        "approved": false,
         "bio": "",
         "email": "",
         "estimatedSpeed": 0,
@@ -88,4 +82,12 @@ export default {
       }
     }
   ],
+}
+
+export function match(path) {
+  if (!path) {
+    return false;
+  }
+
+  return path === '/node/applications';
 }

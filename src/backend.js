@@ -25,7 +25,7 @@ export async function delayed(cb, time = 100) {
       try {
         res = await cb();
       } catch (e) {
-        return reject();
+        return reject(e);
       }
 
       return resolve(res);

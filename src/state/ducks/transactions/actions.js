@@ -8,15 +8,7 @@ import {
   GET_ALL_TRANSACTIONS_SUCCESS
 } from './types';
 
-const mockData = process.env.MOCK_DATA === "true";
-
 export function fetchTransactions(walletAddress) {
-  if (mockData) {
-    return delayed(() => {
-      return mockedTransactionsResponse;
-    }, 2000);
-  }
-
   return async (dispatch) => {
     return dispatch(createApiAction(API_FETCH_TRANSACTIONS, {}, {
       path: `/account/${walletAddress}/transactions`,
@@ -47,15 +39,15 @@ export function getAllTransactions() {
   return async (dispatch, getState) => {
     const { walletAddress } = getState().wallet;
     if (!walletAddress) {
-      return dispatch(getAllTransactionsError(err));
+      return dispatch(getAllTransactionsError());
     }
 
     try {
       const transactions = await dispatch(fetchTransactions(walletAddress));
+
       if (transactions.error) {
         return dispatch(getAllTransactionsError(transactions.error));
       }
-
       return dispatch(getAllTransactionsSuccess(transactions.response));
     } catch (err) {
       return dispatch(getAllTransactionsError(err));

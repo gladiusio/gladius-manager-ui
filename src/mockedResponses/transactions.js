@@ -31,3 +31,18 @@ export default {
   ],
   "endpoint": "/api/market/transactions"
 }
+
+export function match(path) {
+  if (!path) {
+    return false;
+  }
+
+  if (path[0] === '/') {
+    path = path.slice(1);
+  }
+
+  const pathFragments = path.split('/');
+  return pathFragments[0] === 'account' &&
+    pathFragments[2] === 'transactions' &&
+    pathFragments[1];
+}

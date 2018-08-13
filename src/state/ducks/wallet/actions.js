@@ -12,7 +12,6 @@ import {
 } from './types';
 
 const { authorizeUser } = authorizationActions;
-const mockData = process.env.MOCK_DATA === "true";
 
 export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });

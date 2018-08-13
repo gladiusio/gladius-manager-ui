@@ -20,8 +20,6 @@ import {
   API_SET_NODE_DATA,
 } from './types';
 
-const mockData = process.env.MOCK_DATA === "true";
-
 export function setEmailAddressFailure(error) {
   return createAction(SET_EMAIL_ADDRESS_FAILURE, null, error);
 }
@@ -87,14 +85,6 @@ export function setApplicationSuccess(poolIds) {
 }
 
 export function setNodeData(nodeAddress, passphrase, body) {
-  if (mockData) {
-    return delayed(() => {
-      return {
-        txHash: { value: '0x3012093812038' },
-      };
-    }, 3000);
-  }
-
   return async (dispatch) => {
     return await dispatch(createApiAction(API_SET_NODE_DATA, {}, {
       path: `/node/${nodeAddress}/data`,
@@ -110,17 +100,6 @@ export function applyToPool(poolId, body) {
     poolId = poolId && poolId.trim();
   }
 
-  if (mockData) {
-    return delayed(() => {
-      return {
-        txHash: {
-          value: '0x92312312',
-        },
-        success: true,
-      };
-    }, 3000);
-  }
-
   return async (dispatch) => {
     return await dispatch(createApiAction(API_APPLY_TO_POOL, {}, {
       path: `/node/applications/${poolId}/new`,
@@ -131,13 +110,6 @@ export function applyToPool(poolId, body) {
 }
 
 export function getNode(walletAddress) {
-  if (mockData) {
-    return delayed(() => {
-      return {
-        response: {address: 'mynodeaddress'}
-      };
-    });
-  }
   return getJSON(`${process.env.CONTROL_API}/node/`);
 }
 
