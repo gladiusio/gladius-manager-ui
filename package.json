@@ -86,7 +86,7 @@
     "verify": "npm-run-all -s clean lint eclint test",
     "start": "npm run build && electron .",
     "package-mac": "electron-packager . Gladius --platform=darwin --arch=x64 --icon=\"img/icon/AppIcon.icns\" --ignore=\"build\" --out=\"build/macOS\" --overwrite",
-    "package-win": "flatten-packages; npm install electron-packager; electron-packager . Gladius --platform=\"win32\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Windows\" --overwrite",
+    "package-win": "flatten-packages; npm install electron-packager; electron-packager . gladius-electron --platform=\"win32\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Windows\" --overwrite",
     "package-linux": "electron-packager . Gladius --platform=\"linux\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Linux\" --overwrite",
     "package": "npm run build; npm run package-win; npm run package-mac;npm run package-linux"
   },
