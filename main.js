@@ -67,18 +67,9 @@ function createWindow() {
   }
 
   win.on('close', function(event) {
-    if (platform == "darwin") {
       app.isQuiting = true
       app.quit()
       return true
-    }
-
-    if (!app.isQuiting) {
-      event.preventDefault()
-      win.hide()
-    }
-
-    return false
   })
 
   win.on('minimize', function(event) {
