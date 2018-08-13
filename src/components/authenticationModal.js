@@ -20,7 +20,7 @@ class AuthenticationModal extends Component {
     this.props.authorizeUser(passphraseValue).then(() => {
       this.props.addToast({
         success: true,
-        text: 'You have successfully opened your wallet! Please try your previous action again'
+        text: 'You have successfully unlocked your wallet!'
       });
       this.setState({loading: false});
     }, () => {

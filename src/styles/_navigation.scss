@@ -26,7 +26,7 @@
   text-decoration: none;
 }
 
-$links: (dashboard, transactions, marketplace, settings);
+$links: (dashboard, wallet, marketplace, settings);
 
 @each $link in $links {
   .dashboard-navigation__link-#{$link} {
