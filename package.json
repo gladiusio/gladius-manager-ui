@@ -1,10 +1,9 @@
 {
-  "name": "Gladius Node Manager",
+  "name": "GladiusNodeManager",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "babel-polyfill": "6.26.0",
     "classnames": "2.2.5",
     "create-react-class": "^15.6.3",
     "domain-name-parser": "^2.3.0",
@@ -37,10 +36,11 @@
     "babel-eslint": "^8.2.3",
     "babel-loader": "7.1.4",
     "babel-plugin-istanbul": "4.1.6",
+    "babel-polyfill": "^6.26.0",
     "babel-register": "6.26.0",
     "copy-webpack-plugin": "4.5.1",
     "eclint": "^2.7.0",
-    "electron": "^2.0.1",
+    "electron": "^2.0.7",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
@@ -50,6 +50,7 @@
     "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.7.0",
+    "flatten-packages": "^0.1.4",
     "html-webpack-plugin": "3.2.0",
     "jsdom": "11.10.0",
     "leaked-handles": "5.2.0",
@@ -85,9 +86,9 @@
     "verify": "npm-run-all -s clean lint eclint test",
     "start": "npm run build && electron .",
     "package-mac": "electron-packager . Gladius --platform=darwin --arch=x64 --icon=\"img/icon/AppIcon.icns\" --ignore=\"build\" --out=\"build/macOS\" --overwrite",
-    "package-win":"electron-packager . Gladius --platform=\"win32\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Windows\" --overwrite",
+    "package-win": "flatten-packages; npm install electron-packager; electron-packager . Gladius --platform=\"win32\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Windows\" --overwrite",
     "package-linux": "electron-packager . Gladius --platform=\"linux\" --arch=\"x64\" --ignore=\"build\" --out=\"build/Linux\" --overwrite",
-    "package": "npm run build; npm run package-mac; npm run package-win; npm run package-linux"
+    "package": "npm run build; npm run package-win; npm run package-mac;npm run package-linux"
   },
   "author": "",
   "license": "ISC"
