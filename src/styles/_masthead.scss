@@ -21,12 +21,19 @@
 }
 
 .masthead__logo {
-  text-indent: -9999px;
-  background: transparent url('./assets/images/logo.svg') no-repeat center center;
+  background: transparent;
+  background-image: url('./assets/images/logo.png');
+  background-repeat: no-repeat;
   background-size: contain;
-  width: 119px;
+  width: 115px;
   height: 35px;
-  margin: ($base * 1.5) 0;
+  font-weight: bold;
+  font-size: 19px;
+  text-align: right;
+  line-height: 35px;
+  margin: ($base * 1.5) 0 ($base * 1.5) 5px;
+  color: $gladius-font-color;
+  font-family: $gladius-font;
 }
 
 .masthead__logo--dark {

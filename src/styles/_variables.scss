@@ -21,6 +21,9 @@ $blue-row: #fafcff;
 
 $tabular-header: #f0f5fa;
 
+$gladius-font: HankenGrotesk-Bold;
+$gladius-font-color: #0A2052;
+
 @mixin shadowed() {
   box-shadow: 0 2px 4px 0 rgba(10, 32, 82, 0.04);
 }
