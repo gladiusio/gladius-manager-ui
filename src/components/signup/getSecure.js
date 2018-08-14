@@ -3,18 +3,22 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setPassphrase, validatePassphrase } from '../../state/account';
-import { createUserWallet, setWalletSuccess } from '../../state/wallet';
+import { accountActions, accountSelectors } from '../../state/ducks/account';
+import { walletActions } from '../../state/ducks/wallet';
 import Card from '../card';
 import ExpectedUsage from '../expectedUsage';
 import PassphraseForm from '../passphraseForm';
 import ExternalSubmitButton from '../externalSubmitButton';
-import { validExpectedUsage } from '../../state/expectedUsage';
-import { addToast } from '../../state/toasts';
-import { nextSignupStep, prevSignupStep } from '../../state/actions';
+import { toastActions } from '../../state/ducks/toasts';
+import { signupActions } from '../../state/ducks/signup';
 import { onboardingField, onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import bemify from '../../util/bemify';
 
+const { setPassphrase } = accountActions;
+const { validatePassphrase } = accountSelectors;
+const { createUserWallet, setWalletSuccess } = walletActions;
+const { nextSignupStep, prevSignupStep } = signupActions;
+const { addToast } = toastActions;
 const bem = bemify('getSecure');
 
 class BaseGetSecurePage extends Component {

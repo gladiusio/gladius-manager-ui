@@ -13,17 +13,17 @@ import RatingTooltip from './ratingTooltip';
 import SliderTooltip from './sliderTooltip';
 import SpeedGradient from './speedGradient';
 import poolPropType from '../propTypes/pool';
-import { choosePool } from '../state/onboarding';
-import {
+import { poolsActions } from '../state/ducks/pools';
+import bemify from '../util/bemify';
+
+const {
   handleSort,
   getAllPools,
   setLocationFilter,
   setRatingFilter,
   setNodeCountFilter,
   setEarningsFilter,
-} from '../state/pools';
-import bemify from '../util/bemify';
-
+} = poolsActions;
 const bem = bemify('pool-table');
 
 function filterPools(
@@ -291,7 +291,6 @@ BasePoolTable.defaultProps = {
 /* eslint react/no-unused-prop-types: "off" */
 BasePoolTable.propTypes = {
   allowSelection: PropTypes.bool.isRequired,
-  choosePool: PropTypes.func.isRequired,
   className: PropTypes.string,
   handleSort: PropTypes.func.isRequired,
   onRowClick: PropTypes.func.isRequired,
@@ -329,7 +328,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    choosePool: id => dispatch(choosePool(id)),
     handleSort: col => dispatch(handleSort(col)),
     getAllPools: () => dispatch(getAllPools()),
     setLocationFilter: (locations) => dispatch(setLocationFilter(locations)),

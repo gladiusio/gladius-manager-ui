@@ -12,14 +12,16 @@ import bemify from '../../util/bemify';
 import externalFormSubmit from '../../util/externalFormSubmit';
 import ManualPoolApply from '../manualPoolApply';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
-import {
+import { accountActions } from '../../state/ducks/account';
+import { expectedUsageActions } from '../../state/ducks/expectedUsage';
+
+const {
   createApplications,
   setUserNodeData,
   setEmailAddressAndName,
   getNodeInfo,
-} from '../../state/account';
-import { setExpectedUsage } from '../../state/expectedUsage';
-
+} = accountActions;
+const { setExpectedUsage } = expectedUsageActions;
 const bem = bemify('marketplace');
 
 export class BaseMarketplace extends Component {

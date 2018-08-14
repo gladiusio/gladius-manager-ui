@@ -9,8 +9,9 @@ import Card from '../card';
 import WalletBalance from '../walletBalance';
 import CopyText from '../copyText';
 import bemify from '../../util/bemify';
-import { fetchGLABalance } from '../../state/wallet';
+import { walletActions } from '../../state/ducks/wallet';
 
+const { fetchGLABalance } = walletActions;
 const bem = bemify('wallet-page');
 
 class BaseTransactions extends Component {

@@ -84,7 +84,6 @@ ManualPoolApply.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-
 export default reduxForm({
   form: 'manualPoolApply',
 })(ManualPoolApply);

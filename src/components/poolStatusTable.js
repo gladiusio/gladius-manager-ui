@@ -7,17 +7,23 @@ import Card from './card';
 import Table from './shared/table';
 import poolPropType from '../propTypes/pool';
 import {
-  getApplications,
+  applicationsSelectors,
+  applicationsActions
+} from '../state/ducks/applications/';
+import bemify from '../util/bemify';
+
+const bem = bemify('pool-status-table');
+const {
   getPendingApplications,
   getRejectedApplications,
   getAcceptedApplications,
   isPending,
   isRejected,
   isAccepted
-} from '../state/applications';
-import bemify from '../util/bemify';
-
-const bem = bemify('pool-status-table');
+} = applicationsSelectors;
+const {
+  getApplications,
+} = applicationsActions;
 
 export class BasePoolStatusTable extends Component {
   constructor(props) {

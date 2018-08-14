@@ -8,14 +8,15 @@ import Table from './shared/table';
 import Tooltip from './shared/tooltip/tooltip';
 import FakeDropdown from './fakeDropdown';
 import TooltipWrapper from './tooltipWrapper';
-import {
-  getAllTransactions,
-  setFilterType,
-} from '../state/transactions';
+import { transactionsActions } from '../state/ducks/transactions';
 import transactionTypes from '../util/transactionTypes';
 import bemify from '../util/bemify';
 
 const bem = bemify('transactions-table');
+const {
+  getAllTransactions,
+  setFilterType,
+} = transactionsActions;
 
 export class BaseTransactionsTable extends Component {
   constructor(props) {

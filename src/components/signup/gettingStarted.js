@@ -2,17 +2,22 @@ import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setEmailAddress } from '../../state/account';
+import { accountActions } from '../../state/ducks/account';
 import MastheadContentSplit from '../mastheadContentSplit';
 import Masthead from '../masthead';
 import Card from '../card';
 import ExternalSubmitButton from '../externalSubmitButton';
 import ExpectedUsage from '../expectedUsage';
-import { validExpectedUsage, setExpectedUsage } from '../../state/expectedUsage';
-import { nextSignupStep } from '../../state/actions';
+import { expectedUsageActions } from '../../state/ducks/expectedUsage';
+import { expectedUsageSelectors } from '../../state/ducks/expectedUsage';
+import { signupActions } from '../../state/ducks/signup';
 import { onboardingField, onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import bemify from '../../util/bemify';
 
+const { setEmailAddress } = accountActions;
+const { setExpectedUsage } = expectedUsageActions;
+const { validExpectedUsage } = expectedUsageSelectors;
+const { nextSignupStep } = signupActions;
 const bem = bemify('gettingStarted');
 
 export function BaseGettingStarted({ disabledContinue, goToNextStep, setExpectedUsage }) {

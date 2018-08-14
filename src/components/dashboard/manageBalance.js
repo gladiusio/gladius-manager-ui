@@ -14,8 +14,9 @@ import Tab from '../shared/tab';
 import Card from '../card';
 import WalletBalance from '../walletBalance';
 import { formField } from '../../util/reduxForm';
-import { fetchGLABalance } from '../../state/wallet';
+import { walletActions } from '../../state/ducks/wallet';
 
+const { fetchGLABalance } = walletActions;
 const bem = bemify('manage-balance');
 
 export class BaseManageBalance extends Component {

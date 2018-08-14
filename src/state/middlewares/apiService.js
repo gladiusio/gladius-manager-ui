@@ -1,7 +1,10 @@
-import { setUnauthorized } from '../authorization';
-import { postData } from "../../backend";
+import { authorizationActions } from '../ducks/authorization';
+import { postData, delayed } from "../../backend";
+import { getMockedResponse } from '../../mockedResponses';
 
+const { setUnauthorized } = authorizationActions;
 const baseUrl = "http://localhost:3001/api";
+const mockData = process.env.MOCK_DATA === "true";
 
 const apiService = () => (next) => (action) => {
   const result = next(action);
@@ -13,6 +16,10 @@ const apiService = () => (next) => (action) => {
 
   if (!path) {
     throw new Error(`'path' not specified for async action ${ action.type }`);
+  }
+
+  if (mockData) {
+    return handleMockResponse(path);
   }
 
   const url = `${baseUrl}${path}`;
@@ -50,4 +57,8 @@ function fetchCatch403(url, body, headers = {}, method = 'POST') {
       }
     });
   });
+}
+
+function handleMockResponse(path) {
+  return delayed(() => getMockedResponse(path), 2000);
 }
