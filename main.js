@@ -23,6 +23,8 @@ if (platform == 'darwin') {
   app.dock.hide()
 } else if (platform == 'win32') {
   trayImage = path.join(imageFolder, '/tray/win/icon.ico')
+} else if (platform == 'linux') {
+  trayImage = path.join(imageFolder, '/tray/mac/icon.png')
 }
 
 function createWindow() {
