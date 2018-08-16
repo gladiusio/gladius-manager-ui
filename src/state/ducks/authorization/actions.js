@@ -42,7 +42,7 @@ export function authorizeUser(passphrase) {
 export function getAccount() {
   return async (dispatch, getState) => {
     const request = await dispatch(fetchAccount());
-    if (request.error) {
+    if (!request || request.error) {
       return;
     }
 

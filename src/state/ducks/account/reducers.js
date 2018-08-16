@@ -12,7 +12,6 @@ import {
   SET_ACCOUNT_CREATED,
   SET_ACCOUNT_INFO_SAVED,
   SET_APPLY_POOL_LOADING,
-  SET_APPLICATION_SUCCESS,
 } from './types';
 
 export default function reducer(state = {}, action = {}) {
@@ -81,11 +80,6 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         applyPoolLoading: action.payload.applyPoolLoading,
-      };
-    case SET_APPLICATION_SUCCESS:
-      return {
-        ...state,
-        appliedToPool: action.payload.success,
       };
     default:
       return state;

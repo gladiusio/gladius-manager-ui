@@ -8,3 +8,5 @@ export const SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS = nameAction(
   namespace,
   'SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS'
 );
+export const SET_APPLICATION_SUCCESS = nameAction(namespace, 'SET_APPLICATION_SUCCESS');
+export const SET_WALLET_SUCCESS = nameAction(namespace, 'SET_WALLET_SUCCESS');

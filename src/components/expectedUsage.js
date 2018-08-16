@@ -57,11 +57,12 @@ const CheckboxField = ({ input }) => {
   );
 };
 
-const TextareaField = ({ input }) => {
+const TextareaField = ({ input, onKeyDown }) => {
   return (
     <textarea
       className="p-2"
       placeholder={textareaPlaceholder}
+      onKeyDown={onKeyDown}
       {...input}
     />
   );
@@ -104,9 +105,17 @@ export function BaseExpectedUsage({
       </div>
     );
   }
+  const formSubmit = handleSubmit(onSubmit);
+
+  const onKeyDown = e => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      e.preventDefault();
+      formSubmit();
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={classnames(bem())}>
+    <form onSubmit={formSubmit} className={classnames(bem())}>
       <div className="col-12 mb-5">
         <div className="upload-speed-container mb-3">
           <span>Upload Speed</span>
@@ -153,6 +162,7 @@ export function BaseExpectedUsage({
         <Field
           name="reason"
           component={TextareaField}
+          onKeyDown={onKeyDown}
         />
       </div>
     </form>

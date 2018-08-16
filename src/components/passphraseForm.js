@@ -38,6 +38,8 @@ export default reduxForm({
         label="Passphrase Confirmation"
         component={HiddenValueInput}
       />
+      <button type="submit" className="hide">
+      </button>
     </div>
   </form>
 ));

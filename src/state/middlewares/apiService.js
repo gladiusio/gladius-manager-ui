@@ -56,6 +56,8 @@ function fetchCatch403(url, body, headers = {}, method = 'POST') {
         reject(res.json());
       }
     });
+  }, (err) => {
+    Promise.resolve(err);
   });
 }
 

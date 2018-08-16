@@ -1,24 +1,21 @@
 import { createAction, createApiAction } from '../../../util/createAction';
 import { authorizationActions } from '../authorization';
+import { signupActions } from '../signup';
 import { getJSON, postData, delayed } from '../../../backend';
 import {
   SET_PROCESSING_BALANCE,
   SET_WALLET_ADDRESS,
   SET_WALLET_LOADING,
-  SET_WALLET_SUCCESS,
   SET_GLA_BALANCE_LOADING,
   SET_GLA_BALANCE_SUCCESS,
   API_FETCH_BALANCE
 } from './types';
 
 const { authorizeUser } = authorizationActions;
+const { setWalletSuccess } = signupActions;
 
 export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });
-}
-
-export function setWalletSuccess(walletCreated) {
-  return createAction(SET_WALLET_SUCCESS, { walletCreated });
 }
 
 export function setWalletIsLoading(walletLoading) {

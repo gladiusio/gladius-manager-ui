@@ -19,7 +19,6 @@ export const SET_ACCOUNT_CREATED = nameAction(namespace, 'SET_ACCOUNT_CREATED');
 export const SET_ACCOUNT_INFO_SAVED = nameAction(namespace, 'SET_ACCOUNT_INFO_SAVED');
 
 export const SET_APPLY_POOL_LOADING = nameAction(namespace, 'SET_APPLY_POOL_LOADING');
-export const SET_APPLICATION_SUCCESS = nameAction(namespace, 'SET_APPLICATION_SUCCESS');
 
 export const API_APPLY_TO_POOL = nameAction(namespace, 'API_APPLY_TO_POOL');
 export const API_SET_NODE_DATA = nameAction(namespace, 'API_SET_NODE_DATA');
