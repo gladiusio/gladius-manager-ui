@@ -3,7 +3,9 @@ import { createAction } from '../../../util/createAction';
 import {
   TOGGLE_POOL,
   REMOVE_TOAST,
-  SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS
+  SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS,
+  SET_WALLET_SUCCESS,
+  SET_APPLICATION_SUCCESS,
 } from './types';
 
 function setCurrentSignupStepIndexSuccess(index) {
@@ -34,4 +36,12 @@ export function prevSignupStep() {
 
 export function toggleSelectedPool(poolId) {
   return createAction(TOGGLE_POOL, { poolId })
+}
+
+export function setWalletSuccess(walletCreated) {
+  return createAction(SET_WALLET_SUCCESS, { walletCreated });
+}
+
+export function setApplicationSuccess(poolIds) {
+  return createAction(SET_APPLICATION_SUCCESS, { success: true, poolIds });
 }

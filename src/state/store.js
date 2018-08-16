@@ -10,8 +10,15 @@ function loadState() {
   return ls.getOrDefault(stateKey);
 }
 
+const blackListedState = ['authorization', 'signup', 'toasts'];
 export function saveState(state) {
-  ls.putJSON(stateKey, state);
+  let savedState = {};
+  Object.keys(state).forEach((key) => {
+    if (blackListedState.indexOf(key) === -1) {
+      savedState[key] = state[key];
+    }
+  });
+  ls.putJSON(stateKey, savedState);
 }
 
 // eslint-disable-next-line no-underscore-dangle

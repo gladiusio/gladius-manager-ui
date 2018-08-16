@@ -102,7 +102,7 @@ BasePoolSelection.propTypes = {
 function mapStateToProps(state) {
   return {
     poolIds: state.signup.poolIds,
-    hasAppliedToPool: state.account.appliedToPool,
+    hasAppliedToPool: state.signup.appliedToPool,
     loading: state.account.applyPoolLoading,
   };
 }

@@ -1,6 +1,7 @@
 import { createAction, createApiAction } from '../../../util/createAction';
 import { getJSON, postData, delayed } from '../../../backend';
-import { addToast } from '../toasts/actions';
+import { toastActions } from '../toasts';
+import { signupActions } from '../signup';
 import {
   SET_EMAIL_ADDRESS,
   SET_EMAIL_ADDRESS_SUCCESS,
@@ -15,10 +16,12 @@ import {
   SET_ACCOUNT_CREATED,
   SET_ACCOUNT_INFO_SAVED,
   SET_APPLY_POOL_LOADING,
-  SET_APPLICATION_SUCCESS,
   API_APPLY_TO_POOL,
   API_SET_NODE_DATA,
 } from './types';
+
+const { setApplicationSuccess } = signupActions;
+const { addToast } = toastActions;
 
 export function setEmailAddressFailure(error) {
   return createAction(SET_EMAIL_ADDRESS_FAILURE, null, error);
@@ -78,10 +81,6 @@ export function setNodeAddress(nodeAddress) {
 
 export function setApplicationLoading(applyPoolLoading) {
   return createAction(SET_APPLY_POOL_LOADING, { applyPoolLoading });
-}
-
-export function setApplicationSuccess(poolIds) {
-  return createAction(SET_APPLICATION_SUCCESS, { success: true, poolIds });
 }
 
 export function setNodeData(nodeAddress, passphrase, body) {

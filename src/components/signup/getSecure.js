@@ -16,8 +16,8 @@ import bemify from '../../util/bemify';
 
 const { setPassphrase } = accountActions;
 const { validatePassphrase } = accountSelectors;
-const { createUserWallet, setWalletSuccess } = walletActions;
-const { nextSignupStep, prevSignupStep } = signupActions;
+const { createUserWallet } = walletActions;
+const { nextSignupStep, prevSignupStep, setWalletSuccess } = signupActions;
 const { addToast } = toastActions;
 const bem = bemify('getSecure');
 
@@ -33,6 +33,7 @@ class BaseGetSecurePage extends Component {
       continueClicked: false,
     };
     this.nextClick = this.nextClick.bind(this);
+    this.onPassphraseSubmit = this.onPassphraseSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -55,6 +56,11 @@ class BaseGetSecurePage extends Component {
     this.setState({continueClicked: true});
   }
 
+  onPassphraseSubmit(passphrase) {
+    this.props.setUserPassphrase(passphrase);
+    this.nextClick();
+  }
+
   render() {
     let {
       disabledContinue,
@@ -63,6 +69,7 @@ class BaseGetSecurePage extends Component {
       isLoading,
       setUserPassphrase
     } = this.props;
+
     return (
       <div className={classnames(bem(), 'col-7 mt-5')}>
         <div className="row justify-content-center">
@@ -79,7 +86,7 @@ class BaseGetSecurePage extends Component {
         <h2 className={classnames(onboardingSubhead, 'mb-4')}>We'll use the following details to encrypt your data on the blockchain and allow you to be identified</h2>
         <Card className="p-5 mb-5">
           <PassphraseForm
-            onSubmit={setUserPassphrase}
+            onSubmit={this.onPassphraseSubmit}
             onChange={this.onPassphraseChange}
             ref={this.passphraseForm}
           />
@@ -113,11 +120,11 @@ BaseGetSecurePage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { account, wallet } = state;
+  const { signup, wallet } = state;
 
   return {
     isLoading: wallet.walletLoading,
-    walletCreated: wallet.walletCreated,
+    walletCreated: signup.walletCreated,
   };
 }
 

@@ -2,7 +2,6 @@ import {
   SET_PROCESSING_BALANCE,
   SET_WALLET_ADDRESS,
   SET_WALLET_LOADING,
-  SET_WALLET_SUCCESS,
   SET_GLA_BALANCE_LOADING,
   SET_GLA_BALANCE_SUCCESS,
 } from './types';
@@ -36,11 +35,6 @@ export default function reducer(state = getInitialState(), action = {}) {
       return {
         ...state,
         walletLoading: action.payload.walletLoading,
-      };
-    case SET_WALLET_SUCCESS:
-      return {
-        ...state,
-        walletCreated: action.payload.walletCreated,
       };
     case SET_GLA_BALANCE_LOADING:
       return {

@@ -1,7 +1,9 @@
 import {
   TOGGLE_POOL,
   REMOVE_TOAST,
-  SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS
+  SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS,
+  SET_APPLICATION_SUCCESS,
+  SET_WALLET_SUCCESS
 } from './types';
 
 const steps = [{
@@ -28,6 +30,8 @@ function getInitialState() {
         [step.path]: index,
       }), {}),
     },
+    appliedToPool: false,
+    walletCreated: false,
   };
 }
 
@@ -55,6 +59,16 @@ export default function reducer(state = getInitialState(), action = {}) {
       return {
         ...state,
         poolIds: reduceTogglePool(action.payload.poolId, state)
+      };
+    case SET_APPLICATION_SUCCESS:
+      return {
+        ...state,
+        appliedToPool: action.payload.success,
+      };
+    case SET_WALLET_SUCCESS:
+      return {
+        ...state,
+        walletCreated: action.payload.walletCreated,
       };
     default:
       return state;

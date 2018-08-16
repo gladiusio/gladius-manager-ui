@@ -67,7 +67,8 @@ export class BaseMarketplace extends Component {
               Application Information
             </h2>
             <h5 className={classnames(onboardingSubhead, 'mb-4 text-center')}>
-              This information was saved from a previous application.<br/>Change fields if they have changed.
+              This info was saved from a previous application.<br/>
+              If you update fields, your info will be saved after applying to another pool.
             </h5>
             <Card className="mb-4">
               <EmailForm
