@@ -3,7 +3,7 @@ import {
   SET_EXPECTED_USAGE,
   SET_STORAGE_AMOUNT,
   SET_ESTIMATED_SPEED,
-  SET_REASON,
+  SET_BIO,
   SET_UPTIME_START,
   SET_UPTIME_END,
   TOGGLE_ALL_DAY_UPTIME
@@ -16,8 +16,8 @@ export function setStorageAmount(storageAmount) {
 export function setEstimatedSpeed(estimatedSpeed) {
   return createAction(SET_ESTIMATED_SPEED, { estimatedSpeed });
 }
-export function setReason(reason) {
-  return createAction(SET_REASON, { reason });
+export function setBio(bio) {
+  return createAction(SET_BIO, { bio });
 }
 export function setUptimeStart(uptimeStart) {
   return createAction(SET_UPTIME_START, { uptimeStart });

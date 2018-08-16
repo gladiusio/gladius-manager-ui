@@ -1,6 +1,6 @@
 export function validExpectedUsage(expectedUsage) {
   return expectedUsage.estimatedSpeed !== undefined &&
-    expectedUsage.reason;
+    expectedUsage.bio;
     // expectedUsage.uptimeStart !== undefined &&
     // expectedUsage.uptimeEnd !== undefined &&
     // expectedUsage.allDayUptime !== undefined;

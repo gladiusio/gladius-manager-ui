@@ -5,6 +5,7 @@ import {
   API_FETCH_APPLICATIONS,
   GET_ALL_APPLICATIONS_ERROR,
   GET_ALL_APPLICATIONS_SUCCESS,
+  SET_VIEWING_APPLICATION
 } from './types';
 
 export function fetchApplications() {
@@ -25,6 +26,12 @@ export function getAllApplicationsError(error) {
 export function getAllApplicationsSuccess(applications) {
   return async dispatch => dispatch(createAction(GET_ALL_APPLICATIONS_SUCCESS, {
     applications,
+  }));
+}
+
+export function setViewingApplication(application) {
+  return async dispatch => dispatch(createAction(SET_VIEWING_APPLICATION, {
+    application,
   }));
 }
 
