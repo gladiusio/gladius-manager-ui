@@ -4,6 +4,7 @@ import {
   SET_WALLET_LOADING,
   SET_GLA_BALANCE_LOADING,
   SET_GLA_BALANCE_SUCCESS,
+  SET_ETH_BALANCE_SUCCESS,
 } from './types';
 
 function reduceSetProcessingBalance(state, payload) {
@@ -45,6 +46,11 @@ export default function reducer(state = getInitialState(), action = {}) {
       return {
         ...state,
         glaBalance: action.payload.glaBalance,
+      };
+    case SET_ETH_BALANCE_SUCCESS:
+      return {
+        ...state,
+        ethBalance: action.payload.ethBalance,
       };
     default:
       return state;

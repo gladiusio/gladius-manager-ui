@@ -8,6 +8,7 @@ import {
   SET_WALLET_LOADING,
   SET_GLA_BALANCE_LOADING,
   SET_GLA_BALANCE_SUCCESS,
+  SET_ETH_BALANCE_SUCCESS,
   API_FETCH_BALANCE
 } from './types';
 
@@ -28,6 +29,10 @@ export function setGlaBalanceIsLoading(glaBalanceLoading) {
 
 export function setGlaBalanceSuccess(glaBalance) {
   return createAction(SET_GLA_BALANCE_SUCCESS, { glaBalance });
+}
+
+export function setEthBalanceSuccess(ethBalance) {
+  return createAction(SET_ETH_BALANCE_SUCCESS, { ethBalance });
 }
 
 export function createWallet(passphrase) {
@@ -103,5 +108,23 @@ export function fetchGLABalance() {
     dispatch(setGlaBalanceIsLoading(true));
     requestBalance(walletAddress);
     return dispatch(setGlaBalanceIsLoading(false));
+  };
+}
+
+export function fetchETHBalance() {
+  return async (dispatch, getState) => {
+    async function requestBalance(walletAddress) {
+      const request = await dispatch(fetchBalance(walletAddress, 'eth'));
+      if (request.error) {
+        throw new Error('ETH fetch balance failed!');
+      }
+      const ethBalance = request.response.value;
+
+      return dispatch(setEthBalanceSuccess(ethBalance));
+    }
+
+    const { walletAddress } = getState().wallet;
+
+    return requestBalance(walletAddress);
   };
 }
