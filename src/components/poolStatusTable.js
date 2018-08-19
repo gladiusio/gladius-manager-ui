@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import Card from './card';
 import Table from './shared/table';
+import ViewApplicationModal from './viewApplicationModal';
 import poolPropType from '../propTypes/pool';
 import {
   applicationsSelectors,
@@ -23,6 +24,7 @@ const {
 } = applicationsSelectors;
 const {
   getApplications,
+  setViewingApplication
 } = applicationsActions;
 
 export class BasePoolStatusTable extends Component {
@@ -137,6 +139,18 @@ export class BasePoolStatusTable extends Component {
     );
   }
 
+  renderViewApplicationButton(application) {
+    return (
+      <span
+        className={classnames(bem('view-application'), 'text-muted')}
+        onClick={() => this.props.viewApplication(application)}
+      >
+        <img src="./assets/images/icon-marketplace-off.svg" alt="" className="mr-2" />
+        View
+      </span>
+    );
+  }
+
   getTableHeader(hideHead) {
     return (
       <Table.Header className={classnames({'hidden-header': hideHead})}>
@@ -165,6 +179,11 @@ export class BasePoolStatusTable extends Component {
             className={classnames(bem('header-cell'), 'earnings')}
             sorted="">
             { hideHead ? null : 'Earnings' }
+          </Table.HeaderCell>
+          <Table.HeaderCell
+            className={classnames(bem('header-cell'), 'info')}
+            sorted="">
+            { hideHead ? null : 'Info' }
           </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
@@ -201,6 +220,7 @@ export class BasePoolStatusTable extends Component {
         <Table.Cell>{this.renderBandwidth(application)}</Table.Cell>
         <Table.Cell>{this.renderNodeCount(application)}</Table.Cell>
         <Table.Cell>{this.renderEarnings(application)}</Table.Cell>
+        <Table.Cell>{this.renderViewApplicationButton(application)}</Table.Cell>
       </Table.Row>
     );
   }
@@ -252,6 +272,20 @@ export class BasePoolStatusTable extends Component {
     );
   }
 
+  renderApplicationModal() {
+    if (this.props.viewingApplication) {
+      return (
+        <ViewApplicationModal
+          application={this.props.viewingApplication}
+          onClose={() => this.props.viewApplication(null)}
+        >
+        </ViewApplicationModal>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const {
       className,
@@ -261,6 +295,7 @@ export class BasePoolStatusTable extends Component {
 
     return (
       <div className={classnames(bem(), className)}>
+        {this.renderApplicationModal()}
         <Card noPadding>
           {this.getTable(applications)}
           {this.getEmptyRow(applications)}
@@ -289,12 +324,14 @@ function mapStateToProps(state, ownProps) {
       ...getPendingApplications(applications)
     ],
     rejectedApplications: getRejectedApplications(applications),
+    viewingApplication: state.applications.viewingApplication,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getApplications: () => dispatch(getApplications()),
+    viewApplication: (application) => dispatch(setViewingApplication(application))
   };
 }
 

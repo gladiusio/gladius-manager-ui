@@ -120,7 +120,7 @@ export function createApplications(poolIds) {
       name
     } = account;
     const {
-      reason,
+      bio,
       estimatedSpeed,
     } = expectedUsage;
 
@@ -133,7 +133,7 @@ export function createApplications(poolIds) {
             {
               email,
               name,
-              reason,
+              bio,
               estimatedSpeed,
             }
           ));
@@ -180,7 +180,7 @@ export function setUserNodeData() {
     const {
       storageAmount,
       estimatedSpeed,
-      reason,
+      bio,
       uptimeStart,
       uptimeEnd,
       allDayUptime,
@@ -193,7 +193,7 @@ export function setUserNodeData() {
         passphrase: passphraseValue,
         storageAmount,
         estimatedSpeed,
-        reason,
+        bio,
         uptimeStart,
         uptimeEnd,
         allDayUptime,

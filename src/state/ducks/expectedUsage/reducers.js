@@ -2,7 +2,7 @@ import {
   SET_EXPECTED_USAGE,
   SET_STORAGE_AMOUNT,
   SET_ESTIMATED_SPEED,
-  SET_REASON,
+  SET_BIO,
   SET_UPTIME_START,
   SET_UPTIME_END,
   TOGGLE_ALL_DAY_UPTIME
@@ -12,7 +12,7 @@ function getInitialState() {
   return {
     storageAmount: 200,
     estimatedSpeed: 1,
-    reason: undefined,
+    bio: undefined,
     uptimeStart: 800,
     uptimeEnd: 1800,
     allDayUptime: false,
@@ -33,10 +33,10 @@ export default function reducer(state = getInitialState(), action = {}) {
         ...state,
         estimatedSpeed: action.payload.estimatedSpeed,
       };
-    case SET_REASON:
+    case SET_BIO:
       return {
         ...state,
-        reason: action.payload.reason,
+        bio: action.payload.bio,
       };
     case SET_UPTIME_START:
       return {

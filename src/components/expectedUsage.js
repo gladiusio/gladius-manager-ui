@@ -15,7 +15,7 @@ import { expectedUsageActions } from '../state/ducks/expectedUsage';
 const {
   setStorageAmount,
   setEstimatedSpeed,
-  setReason,
+  setBio,
   setUptimeStart,
   setUptimeEnd,
   toggleAllDayUptime,
@@ -75,14 +75,14 @@ export function BaseExpectedUsage({
   allDayValue,
   uptimeStartValue,
   uptimeEndValue,
-  reason,
+  bio,
   storageAmount,
   estimatedSpeed,
   setStorageAmount,
   setEstimatedSpeed,
   setUptimeStart,
   setUptimeEnd,
-  setReason,
+  setBio,
   toggleAllDayUptime,
 }) {
   let storageSlider = null;
@@ -160,7 +160,7 @@ export function BaseExpectedUsage({
       <div className="col-12">
         <div className="mb-2">Your default biography for applications</div>
         <Field
-          name="reason"
+          name="bio"
           component={TextareaField}
           onKeyDown={onKeyDown}
         />
@@ -178,12 +178,12 @@ BaseExpectedUsage.propTypes = {
   allDayValue: PropTypes.bool,
   uptimeStartValue: PropTypes.number,
   uptimeEndValue: PropTypes.number,
-  reason: PropTypes.string,
+  bio: PropTypes.string,
   estimatedSpeed: PropTypes.number,
   setEstimatedSpeed: PropTypes.func,
   setUptimeStart: PropTypes.func,
   setUptimeEnd: PropTypes.func,
-  setReason: PropTypes.func,
+  setBio: PropTypes.func,
   toggleAllDayUptime: PropTypes.func,
 };
 
@@ -197,7 +197,7 @@ function mapStateToProps(state) {
     allDayValue: expectedUsage.allDayUptime,
     uptimeStartValue: expectedUsage.uptimeStart,
     uptimeEndValue: expectedUsage.uptimeEnd,
-    reason: expectedUsage.reason,
+    bio: expectedUsage.bio,
     storageAmount: expectedUsage.storageAmount,
     estimatedSpeed: form.expectedUsage && form.expectedUsage.values.estimatedSpeed,
   };
@@ -209,7 +209,7 @@ function mapDispatchToProps(dispatch) {
     setStorageAmount: storageAmount => dispatch(setStorageAmount(storageAmount)),
     setUptimeStart: uptimeStart => dispatch(setUptimeStart(uptimeStart)),
     setUptimeEnd: uptimeEnd => dispatch(setUptimeEnd(uptimeEnd)),
-    setReason: textEvent => dispatch(setReason(textEvent.target.value)),
+    setBio: textEvent => dispatch(setBio(textEvent.target.value)),
     toggleAllDayUptime: () => dispatch(toggleAllDayUptime()),
   };
 }

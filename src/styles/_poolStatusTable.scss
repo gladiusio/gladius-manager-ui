@@ -27,6 +27,10 @@
     color: $grey-text;
   }
 
+  &__view-application {
+    cursor: pointer;
+  }
+
   &__status {
     padding: 5px;
     color: $white;

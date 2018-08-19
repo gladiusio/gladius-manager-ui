@@ -21,11 +21,11 @@ export default {
       "profile": {
         "pending": true,
         "approved": false,
-        "bio": "",
-        "email": "",
-        "estimatedSpeed": 0,
+        "bio": "I desperately need money.",
+        "email": "test@example.com",
+        "estimatedSpeed": 100,
         "location": "",
-        "name": "",
+        "name": "John Doe",
         "wallet": "0xa634d7ecc09fa5684d6bfeec351d594c23e96229"
       }
     },
@@ -47,11 +47,11 @@ export default {
       "profile": {
         "pending": false,
         "approved": true,
-        "bio": "",
-        "email": "",
-        "estimatedSpeed": 0,
+        "bio": "I have extra compute power.",
+        "email": "test1@example.com",
+        "estimatedSpeed": 16,
         "location": "",
-        "name": "",
+        "name": "Jane Doe",
         "wallet": "0xa634d7ecc09fa5684d6bfeec351d594c23e96229"
       }
     },
