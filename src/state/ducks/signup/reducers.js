@@ -5,6 +5,9 @@ import {
   SET_APPLICATION_SUCCESS,
   SET_WALLET_SUCCESS
 } from './types';
+import {
+  API_STATUS_CODE_NO_WALLET
+} from '../../middlewares/apiService';
 
 const steps = [{
   path: '/signup/getting-started',
@@ -70,6 +73,8 @@ export default function reducer(state = getInitialState(), action = {}) {
         ...state,
         walletCreated: action.payload.walletCreated,
       };
+    case API_STATUS_CODE_NO_WALLET:
+      return getInitialState();
     default:
       return state;
   }

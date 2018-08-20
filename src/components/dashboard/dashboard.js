@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Masthead from '../masthead';
 import MastheadContentSplit from '../mastheadContentSplit';
@@ -12,7 +14,11 @@ import bemify from '../../util/bemify';
 
 const bem = bemify('dashboard');
 
-export default function Dashboard() {
+function BaseDashboard({ hasAccount }) {
+  if (!hasAccount) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <MastheadContentSplit masthead={
       <Masthead containerClass="absolute">
@@ -36,3 +42,16 @@ export default function Dashboard() {
     </MastheadContentSplit>
   );
 }
+
+
+BaseDashboard.propTypes = {
+  hasAccount: PropTypes.bool,
+};
+
+function mapStateToProps({ authorization }) {
+  return {
+    hasAccount: authorization.hasAccount,
+  };
+}
+
+export default connect(mapStateToProps)(BaseDashboard);
