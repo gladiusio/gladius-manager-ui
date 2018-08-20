@@ -11,7 +11,7 @@ import CopyText from '../copyText';
 import bemify from '../../util/bemify';
 import { walletActions } from '../../state/ducks/wallet';
 
-const { fetchGLABalance } = walletActions;
+const { fetchGLABalance, fetchETHBalance } = walletActions;
 const bem = bemify('wallet-page');
 
 class BaseTransactions extends Component {
@@ -21,17 +21,24 @@ class BaseTransactions extends Component {
 
   componentWillMount() {
     this.props.fetchBalance();
+    this.requestInteral = setInterval(() => {
+      this.props.fetchBalance();
+    }, 4000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.requestInteral);
   }
 
   render() {
-    const { glaBalance, walletAddress } = this.props;
+    const { glaBalance, ethBalance, walletAddress } = this.props;
     return (
       <div className={classnames(bem(), 'col-10 pt-5')}>
         <div className="row justify-content-between">
           <div className="col-6 p-0 pr-3">
             <Card className="mb-2" title="Balance Information">
               <div>
-                <WalletBalance walletBalance={glaBalance} />
+                <WalletBalance glaBalance={glaBalance} ethBalance={ethBalance} />
               </div>
             </Card>
           </div>
@@ -59,18 +66,26 @@ class BaseTransactions extends Component {
 }
 
 BaseTransactions.propTypes = {
+  glaBalance: PropTypes.number,
+  ethBalance: PropTypes.number,
+  walletAddress: PropTypes.string,
+  fetchBalance: PropTypes.func,
 };
 
 function mapStateToProps(state) {
   return {
     glaBalance: state.wallet.glaBalance,
+    ethBalance: state.wallet.ethBalance,
     walletAddress: state.wallet.walletAddress,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchBalance: () => dispatch(fetchGLABalance()),
+    fetchBalance: () => {
+      dispatch(fetchGLABalance());
+      dispatch(fetchETHBalance());
+    },
   };
 }
 

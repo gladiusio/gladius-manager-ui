@@ -2,10 +2,13 @@
   &__balance {
     &--top,
     &--bottom {
-      padding: 1rem 2rem;
+      padding: 16px 0px;
+      max-width: 50%;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    &--gla {
+    &--GLA {
       border-radius: 4px;
       background-color: #31C7C3;
       text-align: center;
@@ -15,6 +18,19 @@
         font-size: 0.8rem;
         font-weight: 600;
         color: $white;
+      }
+    }
+
+    &--ETH {
+      border-radius: 4px;
+      background-color: #3C3C3D;
+      text-align: center;
+      padding: 0 0.4rem;
+
+      p {
+        color: $white;
+        font-size: 0.8rem;
+        font-weight: 600;
       }
     }
 
@@ -40,9 +56,6 @@
   &__balance-bottom--header,
   &__balance-top--content,
   &__balance-bottom--content {
-    display: table;
-    width: 100%;
-
     p, img {
       margin: 0;
       display: inline-block;
@@ -52,6 +65,10 @@
 
   &__balance-top--current,
   &__balance-bottom--processing {
+    max-width: 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     p {
       font-size: 2.5rem;
       margin-right: 0.5rem;
@@ -60,7 +77,8 @@
 
   &__balance-top--current,
   &__balance-bottom--processing,
-  &__balance--gla {
+  &__balance--GLA,
+  &__balance--ETH {
     display: inline-block;
     vertical-align: middle;
   }

@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+
 import bemify from '../util/bemify';
 import TooltipWrapper from './tooltipWrapper';
 
@@ -72,28 +74,54 @@ export default class WalletBalance extends PureComponent {
     );
   }
 
+  renderLogo(symbol) {
+    if (symbol === 'GLA') {
+      return (
+        <img src="./assets/images/icon-logo-small.svg" alt="Logo" />
+      );
+    }
+
+    if (symbol === 'ETH') {
+      return (
+        <img src="./assets/images/icon-eth.png" alt="Logo" className="eth-icon" />
+      );
+    }
+
+    return null;
+  }
+
+  renderBalance(title, balance, symbol) {
+    return (
+      <div className={classnames(bem('balance', 'top'), 'row justify-content-center flex-column')}>
+        <span className={bem('balance-top', 'header')}>
+          {this.renderLogo(symbol)}
+          <p>{title}</p>
+        </span>
+        <span className={bem('balance-top', 'content')}>
+          <div className={bem('balance-top', 'current')}>
+            <p title={balance}>{balance}</p>
+          </div>
+          <div className={bem('balance', symbol)}>
+            <p>{symbol}</p>
+          </div>
+        </span>
+      </div>
+    );
+  }
+
   render() {
-    let { walletBalance } = this.props;
-    if (typeof walletBalance !== 'number') {
-      walletBalance = '-';
+    let { glaBalance, ethBalance } = this.props;
+    if (typeof glaBalance !== 'number') {
+      glaBalance = '-';
+    }
+    if (typeof ethBalance !== 'number') {
+      ethBalance = '_';
     }
 
     return (
-      <div className={bem('balance')}>
-        <div className={bem('balance', 'top')}>
-          <div className={bem('balance-top', 'header')}>
-            <img src="./assets/images/icon-logo-small.svg" alt="Logo" />
-            <p>Gladius Balance</p>
-          </div>
-          <div className={bem('balance-top', 'content')}>
-            <div className={bem('balance-top', 'current')}>
-              <p>{walletBalance}</p>
-            </div>
-            <div className={bem('balance', 'gla')}>
-              <p>GLA</p>
-            </div>
-          </div>
-        </div>
+      <div className={classnames(bem('balance'), 'row justify-content-around')}>
+        {this.renderBalance('Gladius Balance', glaBalance, 'GLA')}
+        {this.renderBalance('Ether Balance', ethBalance, 'ETH')}
         {this.renderProcessingBalance()}
       </div>
     );
