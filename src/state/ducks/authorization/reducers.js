@@ -3,6 +3,10 @@ import {
   RESET_UNAUTHORIZED,
   SET_HAS_ACCOUNT
 } from './types';
+import {
+  API_STATUS_CODE_UNAUTHORIZED,
+  API_STATUS_CODE_NO_WALLET
+} from '../../middlewares/apiService';
 
 function getInitialState() {
   return {
@@ -30,6 +34,17 @@ export default function authorizationReducer(state = getInitialState(), action =
       return {
         ...state,
         hasAccount: action.payload.hasAccount,
+      };
+    case API_STATUS_CODE_UNAUTHORIZED:
+      return {
+        ...state,
+        isUnauthorized: true,
+      };
+    case API_STATUS_CODE_NO_WALLET:
+      return {
+        ...state,
+        hasAccount: false,
+        isUnauthorized: false
       };
     default:
       return state;

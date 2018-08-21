@@ -1,10 +1,21 @@
-import { authorizationActions } from '../ducks/authorization';
+import { createAction, nameAction } from '../../util/createAction';
 import { postData, delayed } from "../../backend";
 import { getMockedResponse } from '../../mockedResponses';
 
-const { setUnauthorized } = authorizationActions;
 const baseUrl = "http://localhost:3001/api";
 const mockData = process.env.MOCK_DATA === "true";
+const namespace = 'apiService';
+
+function getStatusCodeType(statusCode) {
+  return nameAction(namespace, `STATUS_CODE_${statusCode}`);
+}
+
+export const API_STATUS_CODE_UNAUTHORIZED = getStatusCodeType(405);
+export const API_STATUS_CODE_NO_WALLET = getStatusCodeType(400);
+
+function createStatusCodeAction(statusCode, response) {
+  return createAction(getStatusCodeType(statusCode), { response });
+}
 
 const apiService = () => (next) => (action) => {
   const result = next(action);
@@ -24,40 +35,25 @@ const apiService = () => (next) => (action) => {
 
   const url = `${baseUrl}${path}`;
 
-  return fetchCatch403(url, body, headers, method).then(
-    res => handleResponse(res, action, next),
-    err => handleErrors(err, action, next),
-  );
+  return fetchAndCreateAction(url, body, headers, method, next);
 };
 
 export default apiService;
 
-function handleErrors(err, action, next) {
-  next(setUnauthorized(action));
-  return Promise.resolve(err);
-}
-
-function handleResponse(res, action, next) {
-  return res;
-}
-
-function fetchCatch403(url, body, headers = {}, method = 'POST') {
+function fetchAndCreateAction(url, body, headers = {}, method = 'POST', next) {
   return window.fetch(url, {
     body: JSON.stringify(body),
     headers,
     method,
   }).then((res) => {
     const { status } = res;
+    const responseJson = res.json();
 
-    return new Promise((resolve, reject) => {
-      if (status !== 403) {
-        resolve(res.json());
-      } else {
-        reject(res.json());
-      }
-    });
-  }, (err) => {
-    Promise.resolve(err);
+    if (status && responseJson) {
+      next(createStatusCodeAction(status, responseJson));
+    }
+
+    return responseJson;
   });
 }
 
