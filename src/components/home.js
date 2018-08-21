@@ -23,6 +23,10 @@ export class BaseHome extends Component {
     this.props.getAccount();
   }
 
+  componentDidUpdate() {
+    this.props.getAccount();
+  }
+
   renderEmail() {
     return (
       <Fragment>
@@ -67,6 +71,7 @@ BaseHome.propTypes = {
 function mapStateToProps({ authorization }) {
   return {
     onboardingDone: authorization.hasAccount,
+    isUnauthorized: authorization.isUnauthorized,
   };
 }
 
