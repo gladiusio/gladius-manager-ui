@@ -33,9 +33,9 @@ export class BasePoolSelection extends Component {
     }
   }
 
-  applyClick(poolIds) {
+  applyClick() {
     this.setState({hasClickedApply: true});
-    return this.props.applyToPools(poolIds);
+    return this.props.applyToPools(this.props.poolIds);
   }
 
   render() {
@@ -68,21 +68,19 @@ export class BasePoolSelection extends Component {
             Skip this step
           </Link>
         </div>
-        <ComingSoon className="mb-4 p-4">
-          <PoolTable
-            className="mb-4"
-            onRowClick={(poolId) => { props.selectPool(poolId); }}
-          />
-          <div className="d-flex flex-row justify-content-end">
-            <button
-              onClick={this.applyClick}
-              disabled={!props.poolIds || props.loading}
-              className="btn btn-primary btn-chunky btn-lg"
-            >
-              Continue
-            </button>
-          </div>
-        </ComingSoon>
+        <PoolTable
+          className="mb-4"
+          onRowClick={(poolId) => { props.selectPool(poolId); }}
+        />
+        <div className="d-flex flex-row justify-content-end">
+          <button
+            onClick={this.applyClick}
+            disabled={!props.poolIds || props.loading}
+            className="btn btn-primary btn-chunky btn-lg"
+          >
+            Continue
+          </button>
+        </div>
       </div>
     );
   }

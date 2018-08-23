@@ -36,7 +36,6 @@ function filterPools(
   if (!pools || pools.length === 0) {
     return [];
   }
-
   return pools.filter((pool) => {
     let locationMatch = locationFilter.indexOf(pool.location) > -1;
     if (locationFilter.length === 0) {
@@ -56,6 +55,10 @@ function filterPools(
 export class BasePoolTable extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      rowPages: 1
+    };
 
     const methods = [
       'getOnApply',
@@ -142,7 +145,10 @@ export class BasePoolTable extends Component {
     let checkbox = null;
     if (allowSelection) {
       checkbox = (
-        <Table.Cell className="py-4 text-center">
+        <Table.Cell
+          className="py-4 text-center"
+          onClick={() => this.props.onRowClick(p.address)}
+        >
           <BigRadioButton
             isCheckbox
             on={isSelected}
@@ -159,7 +165,6 @@ export class BasePoolTable extends Component {
             [bem('pool-row', 'selected')]: isSelected,
           })
         }
-        onClick={() => this.props.onRowClick(p.address)}
       >
         {checkbox}
         <Table.Cell>{p.name}</Table.Cell>
@@ -171,6 +176,28 @@ export class BasePoolTable extends Component {
           {p.earnings} GLA<span className="text-muted">/GB</span>
         </Table.Cell>
       </Table.Row>
+    );
+  }
+
+  renderRows(pools) {
+    const rowsLimited = pools.slice(0, this.props.rowLimit * this.state.rowPages);
+    return rowsLimited.map(this.renderRow);
+  }
+
+  renderShowMore(pools) {
+    const { rowPages } = this.state;
+    if (pools.length < (this.props.rowLimit * rowPages)) {
+      return null;
+    }
+
+    return (
+      <div
+        onClick={() => this.setState({rowPages: rowPages + 1})}
+        className={classnames(bem('show-rejected'), 'p-2')}
+      >
+        Show More
+        <img src="./assets/images/icon-chevron-down.svg" alt="" />
+      </div>
     );
   }
 
@@ -245,13 +272,13 @@ export class BasePoolTable extends Component {
     return (
       <div className={classnames(bem(), className)}>
         <div className="row mb-3 align-items-center">
-          <div className="col-3">
+          <div className="col-2">
             <span className="font-italic">
-              <span className="text-muted">Showing</span>&nbsp;
+              <span className="text-muted">Showing</span><br/>
               { pools.length === totalPools ? 'all pools' : pools.length + ' pools' }
             </span>
           </div>
-          <div className="col-9 text-right">
+          <div className="col-10 text-right">
             <span className="text-muted mr-3">Filter by:</span>
             <Tooltip tooltip={this.renderLocationTooltip}>
               <FakeDropdown value="Location" className="mr-2" />
@@ -271,9 +298,10 @@ export class BasePoolTable extends Component {
           <Table className="table">
             {this.renderTableHeader()}
             <Table.Body>
-              {pools.map(this.renderRow)}
+              {this.renderRows(pools)}
             </Table.Body>
           </Table>
+          {this.renderShowMore(pools)}
         </Card>
       </div>
     );
@@ -286,6 +314,7 @@ BasePoolTable.defaultProps = {
   poolIds: [],
   sortColumn: 'name',
   sortDirection: 'asc',
+  rowLimit: 5,
 };
 
 /* eslint react/no-unused-prop-types: "off" */
@@ -293,6 +322,7 @@ BasePoolTable.propTypes = {
   allowSelection: PropTypes.bool.isRequired,
   className: PropTypes.string,
   handleSort: PropTypes.func.isRequired,
+  rowLimit: PropTypes.number,
   onRowClick: PropTypes.func.isRequired,
   getAllPools: PropTypes.func.isRequired,
   poolIds: PropTypes.arrayOf(PropTypes.string),
@@ -309,9 +339,10 @@ function mapStateToProps(state, ownProps) {
     earningsFilter,
     availablePools,
   } = state.pools;
-  const pools = filterPools(
-    availablePools, locationFilter, ratingFilter, nodeCountFilter, earningsFilter
-  );
+  // const pools = filterPools(
+  //   availablePools, locationFilter, ratingFilter, nodeCountFilter, earningsFilter
+  // );
+  const pools = availablePools;
   return {
     poolIds: state.signup.poolIds,
     pools,
@@ -323,6 +354,7 @@ function mapStateToProps(state, ownProps) {
     ratingFilter,
     earningsFilter,
     allowSelection: ownProps.allowSelection,
+    onRowClick: ownProps.onRowClick,
   };
 }
 

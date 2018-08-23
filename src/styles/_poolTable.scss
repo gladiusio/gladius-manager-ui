@@ -7,4 +7,11 @@
     width: 18%;
     text-align: left;
   }
+
+  &__show-rejected {
+    text-align: center;
+    border-top: 1px solid #dee2e6;
+    cursor: pointer;
+    color: $grey-text;
+  }
 }

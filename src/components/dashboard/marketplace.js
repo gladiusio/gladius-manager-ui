@@ -10,10 +10,11 @@ import ExpectedUsage from '../expectedUsage';
 import IPAddressForm from '../ipAddressForm';
 import bemify from '../../util/bemify';
 import externalFormSubmit from '../../util/externalFormSubmit';
-import ManualPoolApply from '../manualPoolApply';
+import PoolTable from '../poolTable';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import { accountActions } from '../../state/ducks/account';
 import { expectedUsageActions } from '../../state/ducks/expectedUsage';
+import { signupActions } from '../../state/ducks/signup';
 
 const {
   createApplications,
@@ -22,6 +23,7 @@ const {
   getNodeInfo,
 } = accountActions;
 const { setExpectedUsage } = expectedUsageActions;
+const { toggleSelectedPool } = signupActions;
 const bem = bemify('marketplace');
 
 export class BaseMarketplace extends Component {
@@ -31,18 +33,22 @@ export class BaseMarketplace extends Component {
     this.applyClick = this.applyClick.bind(this);
   }
 
-  applyClick(poolIds) {
+  applyClick() {
     return externalFormSubmit(
       this.props.dispatch,
       ['emailAddress', 'expectedUsage']
     ).then(() => {
-      return this.props.applyToPools(poolIds);
-    })
+      return this.props.applyToPools(this.props.poolIds);
+    }).catch((err) => {
+      console.log('WHAT', err);
+    });
   }
 
   render() {
     const {
+      applyToPools,
       loading,
+      poolIds,
       selectPool,
       setExpectedUsage,
       setEmailAddressAndName
@@ -52,33 +58,39 @@ export class BaseMarketplace extends Component {
       <div className={classnames(bem(), 'col-10')}>
         <div className="row justify-content-center mb-4">
           <div className="col-9">
-            <h5 className={classnames(bem('pool-input-title'), 'mt-5')}>
-              Paste in a pool address to apply to a pool.
-            </h5>
-            <ManualPoolApply
-              className="row justify-content-start align-items-md-start mb-4 pl-3 pr-3"
-              inputClass={classnames(bem('pool-input'))}
-              disabled={loading}
-              onSubmit={(poolId) => this.applyClick([poolId.poolAddress]) }
-              placeholder="Pool address. Example: 0xDAcd582..."
-              buttonText="Apply to Pool"
-            />
-            <h2 className={classnames(onboardingSecondaryHead, 'mb-2 text-center')}>
-              Application Information
-            </h2>
-            <h5 className={classnames(onboardingSubhead, 'mb-4 text-center')}>
-              This info was saved from a previous application.<br/>
-              If you update fields, your info will be saved after applying to another pool.
-            </h5>
-            <Card className="mb-4">
-              <EmailForm
-                className="col-12"
-                showLabels
-                hideInfo
-                onSubmit={setEmailAddressAndName}
+            <section>
+              <PoolTable
+                className="mt-5"
+                onRowClick={(poolId) => { this.props.selectPool(poolId); }}
               />
-              <ExpectedUsage onSubmit={setExpectedUsage} />
-            </Card>
+              <div className="d-flex flex-row justify-content-end mb-5 mt-3">
+                <button
+                  onClick={this.applyClick}
+                  disabled={!poolIds.length || loading}
+                  className="btn btn-primary btn-chunky btn-lg"
+                >
+                  Apply
+                </button>
+              </div>
+            </section>
+            <section className={classnames(bem('application-section'), 'pt-5')}>
+              <h2 className={classnames(onboardingSecondaryHead, 'mb-2 text-center')}>
+                Application Information
+              </h2>
+              <h5 className={classnames(onboardingSubhead, 'mb-5 text-center')}>
+                This info was saved from a previous application.<br/>
+                If you update fields, your info will be saved after applying to another pool.
+              </h5>
+              <Card className="mb-4">
+                <EmailForm
+                  className="col-12"
+                  showLabels
+                  hideInfo
+                  onSubmit={setEmailAddressAndName}
+                />
+                <ExpectedUsage onSubmit={setExpectedUsage} />
+              </Card>
+            </section>
           </div>
         </div>
       </div>
@@ -115,6 +127,7 @@ function mapDispatchToProps(dispatch) {
     setNodeData: () => {
       return dispatch(setUserNodeData());
     },
+    selectPool: (poolId) => dispatch(toggleSelectedPool(poolId)),
     dispatch,
   };
 }

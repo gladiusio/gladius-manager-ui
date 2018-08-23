@@ -154,6 +154,10 @@ export function createApplications(poolIds) {
         const application = await applyToPools(poolIds);
         dispatch(setApplicationLoading(false));
         if (application && application.error) {
+          dispatch(addToast({
+            text: 'There was a problem applying to the pools. Please try again later.',
+            warning: true,
+          }));
           return reject();
         }
 

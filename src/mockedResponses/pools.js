@@ -62,3 +62,11 @@ export default {
   },
   "endpoint": "/api/market/pools"
 }
+
+export function match(path) {
+  if (!path) {
+    return false;
+  }
+
+  return path === '/market/pools';
+}
