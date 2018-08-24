@@ -1,6 +1,7 @@
-import { createAction } from '../../../util/createAction';
+import { createAction, createApiAction } from '../../../util/createAction';
 import { delayed } from '../../../backend';
 import mockedPoolsResponse from '../../../mockedResponses/pools';
+import { signupActions } from '../signup';
 import {
   SORT_POOLS,
   GET_ALL_POOLS_ERROR,
@@ -8,13 +9,41 @@ import {
   SET_LOCATION_FILTER,
   SET_RATING_FILTER,
   SET_NODE_COUNT_FILTER,
-  SET_EARNINGS_FILTER
+  SET_EARNINGS_FILTER,
+  API_APPLY_TO_POOL,
+  API_GET_POOLS
 } from './types';
 
+const { removeSelectedPool } = signupActions;
+
+export function applyToPool(poolId, body) {
+  if (poolId && poolId.trim) {
+    poolId = poolId && poolId.trim();
+  }
+
+  return async (dispatch) => {
+    return dispatch(createApiAction(API_APPLY_TO_POOL, {}, {
+      path: `/node/applications/${poolId}/new`,
+      method: 'POST',
+      body,
+    })).then((response) => {
+      if (response.success) {
+        dispatch(removeSelectedPool(poolId));
+      }
+
+      return response;
+    }, (err) => {
+      Promise.reject(err);
+    });
+  };
+}
+
 export function fetchPools() {
-  return new Promise((resolve, reject) => {
-    resolve(mockedPoolsResponse);
-  });
+  return (dispatch) => {
+    return dispatch(createApiAction(API_GET_POOLS, {}, {
+      path: '/market/pools',
+    }));
+  }
 }
 
 export function getAllPoolsError(error) {
@@ -62,7 +91,7 @@ export function setEarningsFilter(earningsFilter) {
 export function getAllPools() {
   return async (dispatch) => {
     try {
-      const pools = await fetchPools();
+      const pools = await dispatch(fetchPools());
       if (pools.error) return dispatch(getAllPoolsError(pools.error));
       const allPools = pools.response.pools.map((pool) => {
         let data = pool.data;

@@ -10,7 +10,7 @@ export default function TooltipWrapper(props) {
   return (
     <div className={classnames(bem(), props.className)}>
       <div
-        className={bem('tooltip')}
+        className={classnames(bem('tooltip'), { hide: props.disabled })}
         style={props.tooltipStyle}
       >
         {props.content}
@@ -24,6 +24,7 @@ TooltipWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
   content: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
   tooltipStyle: PropTypes.object,
 };
@@ -31,4 +32,5 @@ TooltipWrapper.propTypes = {
 TooltipWrapper.defaultProps = {
   className: '',
   tooltipStyle: {},
+  disabled: false,
 };

@@ -2,6 +2,7 @@ import { createAction, createApiAction } from '../../../util/createAction';
 import { getJSON, postData, delayed } from '../../../backend';
 import { toastActions } from '../toasts';
 import { signupActions } from '../signup';
+import { poolsActions } from '../pools';
 import {
   SET_EMAIL_ADDRESS,
   SET_EMAIL_ADDRESS_SUCCESS,
@@ -16,12 +17,12 @@ import {
   SET_ACCOUNT_CREATED,
   SET_ACCOUNT_INFO_SAVED,
   SET_APPLY_POOL_LOADING,
-  API_APPLY_TO_POOL,
   API_SET_NODE_DATA,
 } from './types';
 
 const { setApplicationSuccess } = signupActions;
 const { addToast } = toastActions;
+const { applyToPool } = poolsActions;
 
 export function setEmailAddressFailure(error) {
   return createAction(SET_EMAIL_ADDRESS_FAILURE, null, error);
@@ -94,20 +95,6 @@ export function setNodeData(nodeAddress, passphrase, body) {
   };
 }
 
-export function applyToPool(poolId, body) {
-  if (poolId && poolId.trim) {
-    poolId = poolId && poolId.trim();
-  }
-
-  return async (dispatch) => {
-    return await dispatch(createApiAction(API_APPLY_TO_POOL, {}, {
-      path: `/node/applications/${poolId}/new`,
-      method: 'POST',
-      body,
-    }));
-  };
-}
-
 export function getNode(walletAddress) {
   return getJSON(`${process.env.CONTROL_API}/node/`);
 }
@@ -125,49 +112,47 @@ export function createApplications(poolIds) {
     } = expectedUsage;
 
     async function applyToPools(poolIds) {
+      const result = { success: [], error: [] };
       for(var i = 0; i < poolIds.length; i++) {
-        let application;
-        try {
-          application = await dispatch(applyToPool(
-            poolIds[i],
-            {
-              email,
-              name,
-              bio,
-              estimatedSpeed,
-            }
-          ));
-        } catch(e) {
-          throw new Error(e);
-        }
+        let application = await dispatch(applyToPool(
+          poolIds[i],
+          {
+            email,
+            name,
+            bio,
+            estimatedSpeed,
+          }
+        ));
 
         if (application && application.error) {
-          return application;
+          result.error.push(poolIds[i]);
+        } else {
+          result.success.push(poolIds[i]);
         }
       }
+
+      return result;
     }
 
     return new Promise(async (resolve, reject) => {
       dispatch(setApplicationLoading(true));
+      const application = await applyToPools(poolIds);
+      dispatch(setApplicationLoading(false));
 
-      try {
-        const application = await applyToPools(poolIds);
-        dispatch(setApplicationLoading(false));
-        if (application && application.error) {
-          return reject();
-        }
-
+      if (application && application.error.length) {
         dispatch(addToast({
-          text: 'You have successfully applied to a pool!',
-          success: true,
+          text: 'There was a problem applying to the pools. Please try again later.',
+          warning: true,
         }));
-        dispatch(setApplicationSuccess(poolIds));
-        resolve();
-      } catch (e) {
-        console.log(e);
-        dispatch(setApplicationLoading(false));
-        reject();
+        return reject();
       }
+
+      dispatch(addToast({
+        text: 'You have successfully applied to a pool!',
+        success: true,
+      }));
+      dispatch(setApplicationSuccess(poolIds));
+      resolve();
     });
   }
 }

@@ -17,6 +17,7 @@ export default class RatingTooltip extends Component {
     };
 
     this.apply = this.apply.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -39,6 +40,15 @@ export default class RatingTooltip extends Component {
 
     this.props.onApply(this.state.minRating);
   }
+
+  clear() {
+    this.setState({
+      isPristine: true,
+    });
+
+    this.props.onClear();
+  }
+
 
   renderOptions() {
     const options = [];
@@ -67,8 +77,9 @@ export default class RatingTooltip extends Component {
       <Tooltip.TooltipContent
         onSubmit={this.apply}
         disableSubmit={this.state.isPristine}
+        onCancel={this.clear}
         submitText="Apply"
-        cancelText=""
+        cancelText="Clear"
       >
         <p className="mb-2">At least</p>
         <div className={bem()}>
@@ -80,7 +91,7 @@ export default class RatingTooltip extends Component {
 }
 
 RatingTooltip.defaultProps = {
-  minRating: 1,
+  minRating: 0,
 };
 
 RatingTooltip.propTypes = {

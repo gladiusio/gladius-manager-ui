@@ -1,10 +1,15 @@
 @import 'variables';
 
 .marketplace {
-  min-width: 900px;
+  min-width: 1000px;
 
   .onboarding-secondary-head, .onboarding-subhead {
     text-align: left;
+  }
+
+  &__application-section {
+    padding-top: 5rem;
+    border-top: 1px solid $grey-border;
   }
 }
 

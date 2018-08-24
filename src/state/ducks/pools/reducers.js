@@ -11,21 +11,19 @@ import {
 } from './types';
 
 function reduceSortPools(state, payload) {
-  const { availablePools, sortColumn, sortDirection } = state;
+  const { sortDirection, sortColumn } = state;
   const { col } = payload;
 
   if (col !== sortColumn) {
     return {
       ...state,
       sortColumn: col,
-      availablePools: sortBy(availablePools, [col]),
       sortDirection: 'asc',
     };
   }
 
   return {
     ...state,
-    availablePools: availablePools.reverse(),
     sortDirection: sortDirection === 'asc' ? 'desc' : 'asc',
   };
 }
@@ -76,9 +74,9 @@ function getInitialState() {
   return {
     availablePools: [],
     sortDirection: 'desc',
-    sortColumn: 'name',
+    sortColumn: null,
     locationFilter: [],
-    ratingFilter: 1,
+    ratingFilter: 0,
     nodeCountFilter: [0, 100],
     earningsFilter: [0, 100]
   };

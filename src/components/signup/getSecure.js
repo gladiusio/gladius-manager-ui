@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { isValid } from 'redux-form';
 import PropTypes from 'prop-types';
 
 import { accountActions, accountSelectors } from '../../state/ducks/account';
@@ -26,10 +27,8 @@ class BaseGetSecurePage extends Component {
     super(props);
 
     this.passphraseForm = React.createRef();
-    this.onPassphraseChange = this.onPassphraseChange.bind(this);
 
     this.state = {
-      validForm: false,
       continueClicked: false,
     };
     this.nextClick = this.nextClick.bind(this);
@@ -44,12 +43,6 @@ class BaseGetSecurePage extends Component {
     if (this.props.walletCreated && this.state.continueClicked) {
       this.props.goToNextStep();
     }
-  }
-
-  onPassphraseChange(passphraseForm) {
-    this.setState({
-      validForm: validatePassphrase(passphraseForm)
-    });
   }
 
   nextClick() {
@@ -67,7 +60,8 @@ class BaseGetSecurePage extends Component {
       goToNextStep,
       goToPrevStep,
       isLoading,
-      setUserPassphrase
+      setUserPassphrase,
+      validForm
     } = this.props;
 
     return (
@@ -87,7 +81,6 @@ class BaseGetSecurePage extends Component {
         <Card className="p-5 mb-5">
           <PassphraseForm
             onSubmit={this.onPassphraseSubmit}
-            onChange={this.onPassphraseChange}
             ref={this.passphraseForm}
           />
         </Card>
@@ -101,7 +94,7 @@ class BaseGetSecurePage extends Component {
           <ExternalSubmitButton
             formIds={['passphrase']}
             className="btn btn-primary btn-chunky btn-lg mt-2 mb-5 mr-5"
-            disabled={isLoading || !this.state.validForm}
+            disabled={isLoading || !validForm}
             onSubmit={this.nextClick}
           >
             Continue
@@ -125,6 +118,7 @@ function mapStateToProps(state) {
   return {
     isLoading: wallet.walletLoading,
     walletCreated: signup.walletCreated,
+    validForm: isValid('passphrase')(state),
   };
 }
 

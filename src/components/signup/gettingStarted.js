@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { isValid } from 'redux-form';
+
 import { accountActions } from '../../state/ducks/account';
 import MastheadContentSplit from '../mastheadContentSplit';
 import Masthead from '../masthead';
@@ -16,7 +18,6 @@ import bemify from '../../util/bemify';
 
 const { setEmailAddress } = accountActions;
 const { setExpectedUsage } = expectedUsageActions;
-const { validExpectedUsage } = expectedUsageSelectors;
 const { nextSignupStep } = signupActions;
 const bem = bemify('gettingStarted');
 
@@ -46,7 +47,7 @@ class BaseGettingStarted extends Component {
   }
 
   render() {
-    const { goToNextStep } = this.props;
+    const { goToNextStep, validInfo } = this.props;
 
     return (
       <div className={classnames(bem(), 'col-7 mt-5')}>
@@ -65,6 +66,7 @@ class BaseGettingStarted extends Component {
           <div className="fixed-bottom row justify-content-end">
             <ExternalSubmitButton
               className="btn btn-primary btn-chunky btn-lg mt-4 mb-5 mr-5"
+              disabled={!validInfo}
               formIds={['expectedUsage']}
             >
               Continue
@@ -77,12 +79,13 @@ class BaseGettingStarted extends Component {
 }
 
 BaseGettingStarted.propTypes = {
-  disabledContinue: PropTypes.bool,
   goToNextStep: PropTypes.func,
+  validInfo: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
   return {
+    validInfo: isValid('expectedUsage')(state),
   };
 }
 
