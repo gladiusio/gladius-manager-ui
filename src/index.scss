@@ -161,7 +161,12 @@ body {
 
 .fixed-bottom {
   position: fixed;
+  pointer-events: none;
   bottom: 0;
+
+  * {
+    pointer-events: all;
+  }
 }
 
 .fixed-bottom-row {

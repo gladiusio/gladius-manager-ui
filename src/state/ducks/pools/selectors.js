@@ -15,7 +15,6 @@ export function filterPools(
     earningsFilter,
   } = filters;
   const { sortDirection, sortColumn } = sortInfo;
-  console.log(locationFilter);
   let filteredPools = pools.filter((pool) => {
     let locationMatch = locationFilter.indexOf(pool.location) > -1;
     if (locationFilter.length === 0) {

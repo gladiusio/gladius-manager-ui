@@ -116,7 +116,7 @@ export class BasePoolTable extends Component {
   }
 
   renderEarnings(p) {
-    if (p && p.earnings !== '') {
+    if (p && p.earnings) {
       return (
         <span>
           <img src="./assets/images/icon-logo-small.svg" alt="" className="mr-2" />
@@ -247,6 +247,16 @@ export class BasePoolTable extends Component {
     );
   }
 
+  renderEmptyPools(pools) {
+    if (pools.length === 0) {
+      return (
+        <div className="text-center text-muted p-3">
+          There are currently no pools that match your criteria.
+        </div>
+      );
+    }
+  }
+
   render() {
     const {
       className,
@@ -286,6 +296,7 @@ export class BasePoolTable extends Component {
               {this.renderRows(pools)}
             </Table.Body>
           </Table>
+          {this.renderEmptyPools(pools)}
           {this.renderShowMore(pools)}
         </Card>
       </div>
