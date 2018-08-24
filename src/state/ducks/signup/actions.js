@@ -2,7 +2,7 @@ import { push } from 'react-router-redux';
 import { createAction } from '../../../util/createAction';
 import {
   TOGGLE_POOL,
-  REMOVE_TOAST,
+  REMOVE_POOL,
   SET_CURRENT_SIGNUP_STEP_INDEX_SUCCESS,
   SET_WALLET_SUCCESS,
   SET_APPLICATION_SUCCESS,
@@ -36,6 +36,10 @@ export function prevSignupStep() {
 
 export function toggleSelectedPool(poolId) {
   return createAction(TOGGLE_POOL, { poolId })
+}
+
+export function removeSelectedPool(poolId) {
+  return createAction(REMOVE_POOL, { poolId })
 }
 
 export function setWalletSuccess(walletCreated) {

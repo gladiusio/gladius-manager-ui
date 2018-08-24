@@ -58,5 +58,5 @@ function fetchAndCreateAction(url, body, headers = {}, method = 'POST', next) {
 }
 
 function handleMockResponse(path) {
-  return delayed(() => getMockedResponse(path), 2000);
+  return delayed(() => getMockedResponse(path), 200);
 }

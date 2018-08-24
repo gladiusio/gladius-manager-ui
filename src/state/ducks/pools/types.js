@@ -10,3 +10,4 @@ export const SET_RATING_FILTER = nameAction(namespace, 'SET_RATING_FILTER');
 export const SET_NODE_COUNT_FILTER = nameAction(namespace, 'SET_NODE_COUNT_FILTER');
 export const SET_EARNINGS_FILTER = nameAction(namespace, 'SET_EARNINGS_FILTER');
 export const API_GET_POOLS = nameAction(namespace, 'API_GET_POOLS');
+export const API_APPLY_TO_POOL = nameAction(namespace, 'API_APPLY_TO_POOL');

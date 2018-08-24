@@ -24,7 +24,8 @@ export class BasePoolSelection extends Component {
     this.state = {
       hasClickedApply: false,
     };
-    this.applyClick = this.applyClick.bind(this);
+    this.applyByTable = this.applyByTable.bind(this);
+    this.applyManually = this.applyManually.bind(this);
   }
 
   componentDidUpdate() {
@@ -33,9 +34,14 @@ export class BasePoolSelection extends Component {
     }
   }
 
-  applyClick() {
+  applyByTable() {
     this.setState({hasClickedApply: true});
     return this.props.applyToPools(this.props.poolIds);
+  }
+
+  applyManually(poolIds) {
+    this.setState({hasClickedApply: true});
+    return this.props.applyToPools(poolIds);
   }
 
   render() {
@@ -43,21 +49,15 @@ export class BasePoolSelection extends Component {
 
     return (
       <div className={classnames(bem(), 'col-10')}>
-        <h1 className={classnames(onboardingSecondaryHead, 'mt-5')}>
-          Input a pool address you wish to join
-        </h1>
-        <h2 className={classnames(onboardingSubhead, 'mb-5')}>
-          You will contribute with your bandwidth, small amounts of storage, and processing power
-        </h2>
-        <h5 className={classnames(bem('pool-input-title'))}>
+        <h1 className={classnames(onboardingSecondaryHead, bem('pool-input-title'), 'mt-5')}>
           Paste in a pool address to apply to a pool.
-        </h5>
+        </h1>
         <div className="row justify-content-start align-items-lg-start pl-3">
           <ManualPoolApply
             className="row justify-content-start align-items-md-start mb-4 pl-3 pr-3"
             inputClass={classnames(bem('pool-input'))}
             disabled={props.loading}
-            onSubmit={(poolId) => this.applyClick([poolId.poolAddress]) }
+            onSubmit={(poolId) => this.applyManually([poolId.poolAddress]) }
             placeholder="Pool address. Example: 0xDAcd582..."
             buttonText="Apply to Pool"
           />
@@ -68,18 +68,30 @@ export class BasePoolSelection extends Component {
             Skip this step
           </Link>
         </div>
+        <h1 className={classnames(onboardingSecondaryHead, 'mt-5')}>
+          Or, choose a pool you wish to join
+        </h1>
+        <h2 className={classnames(onboardingSubhead, 'mb-5')}>
+          You will contribute with your bandwidth, small amounts of storage, and processing power
+        </h2>
         <PoolTable
           className="mb-4"
           onRowClick={(poolId) => { props.selectPool(poolId); }}
         />
         <div className="d-flex flex-row justify-content-end">
           <button
-            onClick={this.applyClick}
-            disabled={!props.poolIds || props.loading}
+            onClick={this.applyByTable}
+            disabled={!props.poolIds.length || props.loading}
             className="btn btn-primary btn-chunky btn-lg"
           >
-            Continue
+            Apply
           </button>
+          <Link
+            to="/dashboard/home"
+            className="btn btn-text btn-md mt-2 ml-3"
+          >
+            Skip this step
+          </Link>
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
 import { createAction, createApiAction } from '../../../util/createAction';
 import { delayed } from '../../../backend';
 import mockedPoolsResponse from '../../../mockedResponses/pools';
+import { signupActions } from '../signup';
 import {
   SORT_POOLS,
   GET_ALL_POOLS_ERROR,
@@ -9,31 +10,11 @@ import {
   SET_RATING_FILTER,
   SET_NODE_COUNT_FILTER,
   SET_EARNINGS_FILTER,
+  API_APPLY_TO_POOL,
   API_GET_POOLS
 } from './types';
 
-export async function applyToPools(poolIds) {
-  for(var i = 0; i < poolIds.length; i++) {
-    let application;
-    try {
-      application = await dispatch(applyToPool(
-        poolIds[i],
-        {
-          email,
-          name,
-          bio,
-          estimatedSpeed,
-        }
-      ));
-    } catch(e) {
-      throw new Error(e);
-    }
-
-    if (application && application.error) {
-      return application;
-    }
-  }
-}
+const { removeSelectedPool } = signupActions;
 
 export function applyToPool(poolId, body) {
   if (poolId && poolId.trim) {
@@ -41,11 +22,19 @@ export function applyToPool(poolId, body) {
   }
 
   return async (dispatch) => {
-    return await dispatch(createApiAction(API_APPLY_TO_POOL, {}, {
+    return dispatch(createApiAction(API_APPLY_TO_POOL, {}, {
       path: `/node/applications/${poolId}/new`,
       method: 'POST',
       body,
-    }));
+    })).then((response) => {
+      if (response.success) {
+        dispatch(removeSelectedPool(poolId));
+      }
+
+      return response;
+    }, (err) => {
+      Promise.reject(err);
+    });
   };
 }
 

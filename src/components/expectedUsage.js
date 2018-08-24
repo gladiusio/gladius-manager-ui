@@ -57,14 +57,19 @@ const CheckboxField = ({ input }) => {
   );
 };
 
-const TextareaField = ({ input, onKeyDown }) => {
+const TextareaField = ({ input, onKeyDown, meta: { touched, error } }) => {
   return (
-    <textarea
-      className="p-2"
-      placeholder={textareaPlaceholder}
-      onKeyDown={onKeyDown}
-      {...input}
-    />
+    <div className="input form-group">
+      <textarea
+        className="p-2 m-0"
+        placeholder={textareaPlaceholder}
+        onKeyDown={onKeyDown}
+        {...input}
+      />
+      <div key="bioInputField-error" className="invalid-feedback">
+        {touched ? error : ''}
+      </div>
+    </div>
   );
 };
 
@@ -216,6 +221,10 @@ function mapDispatchToProps(dispatch) {
 
 BaseExpectedUsage = reduxForm({
   form: 'expectedUsage',
+  validate: ({ bio, estimatedSpeed }) => ({
+    bio: bio ? undefined : 'Please enter a bio',
+    estimatedSpeed: estimatedSpeed !== undefined ? undefined : 'Please enter an estimated upload speed',
+  })
 })(BaseExpectedUsage);
 
 BaseExpectedUsage = connect(

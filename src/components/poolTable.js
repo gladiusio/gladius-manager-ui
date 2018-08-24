@@ -13,7 +13,7 @@ import RatingTooltip from './ratingTooltip';
 import SliderTooltip from './sliderTooltip';
 import SpeedGradient from './speedGradient';
 import poolPropType from '../propTypes/pool';
-import { poolsActions } from '../state/ducks/pools';
+import { poolsActions, poolsSelectors } from '../state/ducks/pools';
 import bemify from '../util/bemify';
 
 const {
@@ -24,33 +24,8 @@ const {
   setNodeCountFilter,
   setEarningsFilter,
 } = poolsActions;
+const { filterPools } = poolsSelectors;
 const bem = bemify('pool-table');
-
-function filterPools(
-  pools,
-  locationFilter,
-  ratingFilter,
-  nodeCountFilter,
-  earningsFilter
-) {
-  if (!pools || pools.length === 0) {
-    return [];
-  }
-  return pools.filter((pool) => {
-    let locationMatch = locationFilter.indexOf(pool.location) > -1;
-    if (locationFilter.length === 0) {
-      locationMatch = true;
-    }
-
-    const ratingMatch = Number(pool.rating) >= ratingFilter;
-    const nodeCountMatch = Number(pool.nodeCount) >= nodeCountFilter[0] &&
-      Number(pool.nodeCount) <= nodeCountFilter[1];
-    const earningsMatch = Number(pool.earnings || 0) >= earningsFilter[0] &&
-      Number(pool.earnings || 0) <= earningsFilter[1];
-
-    return locationMatch && ratingMatch && nodeCountMatch && earningsMatch;
-  });
-}
 
 export class BasePoolTable extends Component {
   constructor(props) {
@@ -124,6 +99,7 @@ export class BasePoolTable extends Component {
     return (
       <RatingTooltip
         onApply={this.getOnApply(hide, this.props.setRatingFilter)}
+        onClear={() => {this.props.setRatingFilter(0); hide()}}
         minRating={this.props.ratingFilter}
       />
     );
@@ -137,6 +113,19 @@ export class BasePoolTable extends Component {
         selected={this.props.locationFilter}
       />
     );
+  }
+
+  renderEarnings(p) {
+    if (p && p.earnings !== '') {
+      return (
+        <span>
+          <img src="./assets/images/icon-logo-small.svg" alt="" className="mr-2" />
+          {p.earnings} GLA<span className="text-muted">/GB</span>
+        </span>
+      )
+    }
+
+    return '—';
   }
 
   renderRow(p) {
@@ -167,13 +156,12 @@ export class BasePoolTable extends Component {
         }
       >
         {checkbox}
-        <Table.Cell>{p.name}</Table.Cell>
-        <Table.Cell>{p.location}</Table.Cell>
+        <Table.Cell>{p.name || '—'}</Table.Cell>
+        <Table.Cell>{p.location || '—'}</Table.Cell>
         <Table.Cell><StarRating rating={p.rating} /></Table.Cell>
-        <Table.Cell>{p.nodeCount}</Table.Cell>
+        <Table.Cell>{p.nodeCount === '' ? '—' : p.nodeCount}</Table.Cell>
         <Table.Cell>
-          <img src="./assets/images/icon-logo-small.svg" alt="" className="mr-2" />
-          {p.earnings} GLA<span className="text-muted">/GB</span>
+          {this.renderEarnings(p)}
         </Table.Cell>
       </Table.Row>
     );
@@ -280,9 +268,6 @@ export class BasePoolTable extends Component {
           </div>
           <div className="col-10 text-right">
             <span className="text-muted mr-3">Filter by:</span>
-            <Tooltip tooltip={this.renderLocationTooltip}>
-              <FakeDropdown value="Location" className="mr-2" />
-            </Tooltip>
             <Tooltip tooltip={this.renderRatingTooltip}>
               <FakeDropdown value="Rating" className="mr-2" />
             </Tooltip>
@@ -339,10 +324,15 @@ function mapStateToProps(state, ownProps) {
     earningsFilter,
     availablePools,
   } = state.pools;
-  // const pools = filterPools(
-  //   availablePools, locationFilter, ratingFilter, nodeCountFilter, earningsFilter
-  // );
-  const pools = availablePools;
+  const pools = filterPools(
+    availablePools,
+    { locationFilter, ratingFilter, nodeCountFilter, earningsFilter },
+    {
+      sortDirection: state.pools.sortDirection,
+      sortColumn: state.pools.sortColumn,
+    }
+  );
+
   return {
     poolIds: state.signup.poolIds,
     pools,
