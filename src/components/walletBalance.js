@@ -115,7 +115,7 @@ export default class WalletBalance extends PureComponent {
       glaBalance = '-';
     }
     if (typeof ethBalance !== 'number') {
-      ethBalance = '_';
+      ethBalance = '-';
     }
 
     return (

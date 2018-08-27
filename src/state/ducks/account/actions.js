@@ -1,4 +1,5 @@
 import { createAction, createApiAction } from '../../../util/createAction';
+import { captureError } from '../../../util/logger';
 import { getJSON, postData, delayed } from '../../../backend';
 import { toastActions } from '../toasts';
 import { signupActions } from '../signup';
@@ -144,6 +145,13 @@ export function createApplications(poolIds) {
           text: 'There was a problem applying to the pools. Please try again later.',
           warning: true,
         }));
+        captureError('Pool application failed', {
+          email,
+          name,
+          bio,
+          estimatedSpeed,
+          poolIds: application.error
+        }, 'debug');
         return reject();
       }
 
