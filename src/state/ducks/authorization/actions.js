@@ -6,6 +6,7 @@ import {
   API_OPEN_WALLET,
   API_FETCH_ACCOUNT,
 } from './types';
+import { setWalletAddress } from '../wallet/actions';
 
 export function openWallet(passphrase) {
   return createApiAction(API_OPEN_WALLET, {}, {
@@ -47,6 +48,7 @@ export function getAccount() {
     }
 
     if (request.response && request.response.address) {
+      dispatch(setWalletAddress(request.response.address));
       dispatch(setHasAccount(true));
     }
   };
