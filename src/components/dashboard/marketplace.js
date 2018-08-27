@@ -12,6 +12,7 @@ import ExpectedUsage from '../expectedUsage';
 import IPAddressForm from '../ipAddressForm';
 import ManualPoolApply from '../manualPoolApply';
 import bemify from '../../util/bemify';
+import noop from '../../util/noop';
 import externalFormSubmit from '../../util/externalFormSubmit';
 import PoolTable from '../poolTable';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
@@ -176,7 +177,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     applyToPools: (poolIds) => {
-      return dispatch(createApplications(poolIds));
+      return dispatch(createApplications(poolIds)).catch(noop);
     },
     setEmailAddressAndName: ({email, name}) => {
       dispatch(setEmailAddressAndName(email, name));

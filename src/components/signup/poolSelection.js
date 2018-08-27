@@ -9,6 +9,7 @@ import PoolTable from '../poolTable';
 import ComingSoon from '../comingSoon';
 import ManualPoolApply from '../manualPoolApply';
 import bemify from '../../util/bemify';
+import noop from '../../util/noop';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import { signupActions } from '../../state/ducks/signup';
 import { accountActions } from '../../state/ducks/account';
@@ -121,7 +122,7 @@ function mapDispatchToProps(dispatch) {
   return {
     goToNextStep: () => dispatch(nextSignupStep()),
     goToPrevStep: () => dispatch(prevSignupStep()),
-    applyToPools: (poolIds) => dispatch(createApplications(poolIds)),
+    applyToPools: (poolIds) => dispatch(createApplications(poolIds)).catch(noop),
     selectPool: (poolId) => dispatch(toggleSelectedPool(poolId)),
   };
 }

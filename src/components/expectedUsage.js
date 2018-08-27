@@ -59,8 +59,9 @@ const CheckboxField = ({ input }) => {
 
 const TextareaField = ({ input, onKeyDown, meta: { touched, error } }) => {
   return (
-    <div className="input form-group">
+    <div key="bioInputField" className="input form-group">
       <textarea
+        key="bioInputField-value"
         className="p-2 m-0"
         placeholder={textareaPlaceholder}
         onKeyDown={onKeyDown}
