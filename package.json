@@ -79,6 +79,7 @@
     "local-mocked": "MOCK_DATA=true npm run local",
     "js:watch": "webpack-dev-server",
     "js:build": "webpack",
+    "dev-build": "npm run clean && NODE_ENV=development npm-run-all -p js:build style:build",
     "build": "npm run clean && NODE_ENV=production npm-run-all -p js:build style:build",
     "style:build": "node-sass-chokidar src/ -o dist/ --include-path src/styles",
     "style:watch": "npm run style:build && node-sass-chokidar src/ -o dist/ --watch --recursive  --include-path src/styles",

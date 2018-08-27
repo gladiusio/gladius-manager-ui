@@ -10,7 +10,7 @@ import { storeFactory, saveState } from './state/store';
 
 if (window.Raven) {
   window.Raven.config(
-    'https://587a7c212c904b70afe329b94819f8ba@sentry.io/1268531'
+    process.env.SENTRY_DSN,
   ).install();
 }
 

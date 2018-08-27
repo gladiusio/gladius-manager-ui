@@ -32,9 +32,10 @@ const svgCopyConfig = new CopyPlugin([{
 const env = new webpack.EnvironmentPlugin({
   NODE_ENV: '',
   MOCK_DATA: process.env.MOCK_DATA === "true",
+  SENTRY_DSN: process.env.NODE_ENV === "production" ?
+    "https://04f9d0921e1d4ad0bd92d8237275daf7@sentry.io/1269560" :
+    "",
   CONTROL_API: 'http://localhost:3001/api',
-  MARKET_CONTRACT_ADDRESS: '0xaa588d3737b611bafd7bd713445b314bd453a5c8',
-  POOL_CONTRACT_ADDRESS: '0xf204a4ef082f5c04bb89f7d5e6568b796096735a',
 });
 
 module.exports = {
