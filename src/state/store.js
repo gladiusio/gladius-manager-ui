@@ -6,11 +6,19 @@ import * as ls from '../util/localStorage';
 import { apiService } from './middlewares';
 
 const stateKey = 'state-1';
+const blackListedState = ['authorization', 'signup', 'toasts', 'pools'];
+
 function loadState() {
-  return ls.getOrDefault(stateKey);
+  let savedState = ls.getOrDefault(stateKey);
+  if (savedState) {
+    blackListedState.forEach((blackListedKey) => {
+      delete savedState[blackListedKey];
+    });
+  }
+
+  return savedState;
 }
 
-const blackListedState = ['authorization', 'signup', 'toasts'];
 export function saveState(state) {
   let savedState = {};
   Object.keys(state).forEach((key) => {
