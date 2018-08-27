@@ -1,6 +1,6 @@
 import { createAction, createApiAction } from '../../../util/createAction';
-import { authorizationActions } from '../authorization';
-import { signupActions } from '../signup';
+import { setWalletSuccess } from '../signup/actions';
+import { authorizeUser } from '../authorization/actions';
 import { getJSON, postData, delayed } from '../../../backend';
 import {
   SET_PROCESSING_BALANCE,
@@ -11,9 +11,6 @@ import {
   SET_ETH_BALANCE_SUCCESS,
   API_FETCH_BALANCE
 } from './types';
-
-const { authorizeUser } = authorizationActions;
-const { setWalletSuccess } = signupActions;
 
 export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });
