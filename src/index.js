@@ -8,19 +8,35 @@ import { ConnectedRouter } from 'react-router-redux';
 import App from './components/app';
 import { storeFactory, saveState } from './state/store';
 
+if (window.Raven) {
+  window.Raven.config(
+    process.env.SENTRY_DSN,
+  ).install();
+}
+
 const history = createHistory();
 const store = storeFactory(undefined, history);
 
 store.subscribe(() => saveState(store.getState()));
 
-ReactDOM.render(
-  (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
-    </Provider>
+function initApp() {
+  ReactDOM.render(
+    (
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </Provider>
 
-  ),
-  document.getElementById('root'),
-);
+    ),
+    document.getElementById('root'),
+  );
+}
+
+if (window.Raven) {
+  window.Raven.context(function () {
+    initApp();
+  });
+} else {
+  initApp();
+}
