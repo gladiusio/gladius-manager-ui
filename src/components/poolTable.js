@@ -273,7 +273,11 @@ export class BasePoolTable extends Component {
           <div className="col-2">
             <span className="font-italic">
               <span className="text-muted">Showing</span><br/>
-              { pools.length === totalPools ? 'all pools' : pools.length + ' pools' }
+              {
+                pools.length === totalPools ?
+                  'all pools' :
+                  `${pools.length} of ${totalPools} pools`
+              }
             </span>
           </div>
           <div className="col-10 text-right">
