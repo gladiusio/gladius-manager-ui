@@ -4,6 +4,11 @@
     "react",
     "stage-0"
   ],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  },
   "plugins": [
     "transform-class-properties",
     "transform-decorators",

@@ -12,3 +12,4 @@ export const SET_GLA_BALANCE_SUCCESS = nameAction(namespace, 'SET_GLA_BALANCE_SU
 export const SET_ETH_BALANCE_SUCCESS = nameAction(namespace, 'SET_ETH_BALANCE_SUCCESS');
 
 export const API_FETCH_BALANCE = nameAction(namespace, 'API_FETCH_BALANCE');
+export const API_CREATE_WALLET = nameAction(namespace, 'API_CREATE_WALLET');
