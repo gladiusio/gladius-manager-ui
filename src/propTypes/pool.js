@@ -6,9 +6,9 @@ export default PropTypes.shape({
   address: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
-  rating: PropTypes.string.isRequired,
-  nodeCount: PropTypes.string.isRequired,
-  maxBandwidth: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
+  nodeCount: PropTypes.number.isRequired,
+  maxBandwidth: PropTypes.string,
   speed: shapePropType,
   price: pricePropType,
 });
