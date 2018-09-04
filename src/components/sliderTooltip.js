@@ -41,6 +41,12 @@ export default class SliderTooltip extends Component {
   }
 
   render() {
+    let [min, max] = this.state.values;
+    if (max > this.props.max) {
+      max = this.props.max;
+    }
+    const values = [min, max];
+
     return (
       <Tooltip.TooltipContent
         onSubmit={this.apply}
@@ -49,12 +55,12 @@ export default class SliderTooltip extends Component {
         cancelText=""
       >
         <div className={bem()}>
-          {this.props.descriptionRenderer(this.state.values)}
+          {this.props.descriptionRenderer(values)}
           <Rheostat
             className={bem('slider')}
             min={this.props.min}
             max={this.props.max}
-            values={this.state.values}
+            values={values}
             onValuesUpdated={this.onValuesUpdated}
           />
         </div>

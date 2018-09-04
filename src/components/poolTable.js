@@ -13,9 +13,10 @@ import RatingTooltip from './ratingTooltip';
 import SliderTooltip from './sliderTooltip';
 import SpeedGradient from './speedGradient';
 import poolPropType from '../propTypes/pool';
-import { poolsActions, poolsSelectors } from '../state/ducks/pools';
+import { poolsActions, poolsSelectors, poolsConstants } from '../state/ducks/pools';
 import bemify from '../util/bemify';
 
+const { MAX_NODE_FILTER, MAX_EARNINGS_FILTER } = poolsConstants;
 const {
   handleSort,
   getAllPools,
@@ -65,18 +66,24 @@ export class BasePoolTable extends Component {
       <SliderTooltip
         values={this.props.earningsFilter}
         min={0}
-        max={100}
+        max={MAX_EARNINGS_FILTER}
         onApply={this.getOnApply(hide, this.props.setEarningsFilter)}
-        descriptionRenderer={([lo, hi]) => (
-          <div>
-            <p className="mr-2">
-              {lo} GLA/GB - {hi} GLA/GB
-            </p>
-            <p className="mr-2 text-muted">
-              The average price is 50 GLA/GB
-            </p>
-          </div>
-        )}
+        descriptionRenderer={([lo, hi]) => {
+          if (hi >= MAX_EARNINGS_FILTER) {
+            hi = `${MAX_EARNINGS_FILTER}+`
+          }
+
+          return (
+            <div>
+              <p className="mr-2">
+                {lo} GLA/GB - {hi} GLA/GB
+              </p>
+              <p className="mr-2 text-muted">
+                The average price is 50 GLA/GB
+              </p>
+            </div>
+          );
+        }}
       />
     );
   }
@@ -85,12 +92,19 @@ export class BasePoolTable extends Component {
     return (
       <SliderTooltip
         values={this.props.nodeCountFilter}
+        max={MAX_NODE_FILTER}
         onApply={this.getOnApply(hide, this.props.setNodeCountFilter)}
-        descriptionRenderer={([lo, hi]) => (
-          <p className="mr-2">
-            {lo} - {hi} nodes
-          </p>
-        )}
+        descriptionRenderer={([lo, hi]) => {
+          if (hi >= MAX_NODE_FILTER) {
+            hi = `${MAX_NODE_FILTER}+`;
+          }
+
+          return (
+            <p className="mr-2">
+              {lo} - {hi} nodes
+            </p>
+          );
+        }}
       />
     );
   }

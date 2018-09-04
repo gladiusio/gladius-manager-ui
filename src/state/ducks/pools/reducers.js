@@ -10,6 +10,8 @@ import {
   SET_EARNINGS_FILTER
 } from './types';
 
+import { MAX_NODE_FILTER, MAX_EARNINGS_FILTER } from './constants';
+
 function reduceSortPools(state, payload) {
   const { sortDirection, sortColumn } = state;
   const { col } = payload;
@@ -57,16 +59,26 @@ function reduceSetRatingFilter(state, payload) {
 }
 
 function reduceSetNodeCountFilter(state, payload) {
+  let filter = payload.nodeCountFilter.slice();
+  if (filter[1] >= MAX_NODE_FILTER) {
+    filter[1] = Number.POSITIVE_INFINITY;
+  }
+
   return {
     ...state,
-    nodeCountFilter: payload.nodeCountFilter,
+    nodeCountFilter: filter,
   };
 }
 
 function reduceSetEarningsFilter(state, payload) {
+  let filter = payload.earningsFilter.slice();
+  if (filter[1] >= MAX_EARNINGS_FILTER) {
+    filter[1] = Number.POSITIVE_INFINITY;
+  }
+
   return {
     ...state,
-    earningsFilter: payload.earningsFilter,
+    earningsFilter: filter,
   };
 }
 
@@ -77,8 +89,8 @@ function getInitialState() {
     sortColumn: null,
     locationFilter: [],
     ratingFilter: 0,
-    nodeCountFilter: [0, 100],
-    earningsFilter: [0, 100]
+    nodeCountFilter: [0, Number.POSITIVE_INFINITY],
+    earningsFilter: [0, Number.POSITIVE_INFINITY]
   };
 }
 
