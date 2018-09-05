@@ -177,6 +177,7 @@ export function BaseExpectedUsage({
 
 BaseExpectedUsage.defaultProps = {
   onSubmit: () => {},
+  initialValues: {},
 };
 
 BaseExpectedUsage.propTypes = {
@@ -194,11 +195,10 @@ BaseExpectedUsage.propTypes = {
 };
 
 const selector = formValueSelector('expectedUsage');
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   let { expectedUsage, form } = state;
-
   return {
-    initialValues: expectedUsage,
+    initialValues: Object.assign(expectedUsage, ownProps.initialValues),
     disableTimeDropdown: selector(state, 'allDayUptime'),
     allDayValue: expectedUsage.allDayUptime,
     uptimeStartValue: expectedUsage.uptimeStart,

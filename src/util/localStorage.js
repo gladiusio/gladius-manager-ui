@@ -8,3 +8,7 @@ export const getOrDefault = (key, defaultValue) => {
     ? defaultValue
     : JSON.parse(value);
 };
+
+export const removeItem = (key) => {
+  return localStorage.removeItem(key);
+};

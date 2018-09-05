@@ -26,3 +26,12 @@ export function isAccepted(application) {
   return application && application.profile.approved &&
     !application.profile.pending;
 }
+
+export function getFirstProfile(applications) {
+  const firstApplication = applications.applications[0];
+  if (!firstApplication) {
+    return null;
+  }
+
+  return firstApplication.profile;
+}
