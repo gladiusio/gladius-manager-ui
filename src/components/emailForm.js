@@ -127,12 +127,11 @@ BaseEmailForm = reduxForm({
   }),
 })(BaseEmailForm);
 
-
 function mapStateToProps(state, ownProps) {
   let { account } = state;
 
   return {
-    initialValues: { email: account.email, name: account.name },
+    initialValues: Object.assign(account, ownProps.initialValues),
     className: ownProps.className,
   };
 }

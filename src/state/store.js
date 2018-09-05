@@ -5,29 +5,9 @@ import * as reducers from './reducers';
 import * as ls from '../util/localStorage';
 import { apiService } from './middlewares';
 
+// Clear out old cache
 const stateKey = 'state-1';
-const blackListedState = ['authorization', 'signup', 'toasts', 'pools'];
-
-function loadState() {
-  let savedState = ls.getOrDefault(stateKey);
-  if (savedState) {
-    blackListedState.forEach((blackListedKey) => {
-      delete savedState[blackListedKey];
-    });
-  }
-
-  return savedState;
-}
-
-export function saveState(state) {
-  let savedState = {};
-  Object.keys(state).forEach((key) => {
-    if (blackListedState.indexOf(key) === -1) {
-      savedState[key] = state[key];
-    }
-  });
-  ls.putJSON(stateKey, savedState);
-}
+ls.removeItem(stateKey);
 
 // eslint-disable-next-line no-underscore-dangle
 const devtoolsInstalled = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -35,7 +15,7 @@ const composeEnhancers = process.env.NODE_ENV !== 'production' && devtoolsInstal
   // eslint-disable-next-line no-underscore-dangle
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   : compose;
-export const storeFactory = (state = loadState(), history) => createStore(
+export const storeFactory = (state = {}, history) => createStore(
   combineReducers(reducers),
   state,
   composeEnhancers(applyMiddleware(apiService, thunk, routerMiddleware(history))),

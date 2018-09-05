@@ -19,6 +19,9 @@ import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNam
 import { accountActions, accountSelectors } from '../../state/ducks/account';
 import { expectedUsageActions, expectedUsageSelectors } from '../../state/ducks/expectedUsage';
 import { signupActions } from '../../state/ducks/signup';
+import {
+  applicationsSelectors
+} from '../../state/ducks/applications';
 
 const {
   createApplications,
@@ -27,6 +30,8 @@ const {
   getNodeInfo,
 } = accountActions;
 const { setExpectedUsage } = expectedUsageActions;
+const { getExpectedUsage } = expectedUsageSelectors;
+const { getFirstProfile } = applicationsSelectors;
 const { toggleSelectedPool } = signupActions;
 const bem = bemify('marketplace');
 
@@ -62,6 +67,8 @@ export class BaseMarketplace extends Component {
   render() {
     const {
       applyToPools,
+      initialUsageValues,
+      initialEmailValues,
       loading,
       poolIds,
       selectPool,
@@ -126,9 +133,13 @@ export class BaseMarketplace extends Component {
                   className="col-12"
                   showLabels
                   hideInfo
+                  initialValues={initialEmailValues}
                   onSubmit={setEmailAddressAndName}
                 />
-                <ExpectedUsage onSubmit={setExpectedUsage} />
+                <ExpectedUsage
+                  initialValues={initialUsageValues}
+                  onSubmit={setExpectedUsage}
+                />
               </Card>
             </section>
             <div key="bottom" className="fixed-bottom row justify-content-end pb-5 pr-5">
@@ -167,10 +178,14 @@ BaseMarketplace.propTypes = {
 };
 
 function mapStateToProps(state) {
+  let { applications, expectedUsage } = state;
+  const firstProfile = getFirstProfile(applications);
   return {
     poolIds: state.signup.poolIds,
     loading: state.account.applyPoolLoading,
     validInfo: isValid('expectedUsage')(state) && isValid('emailAddress')(state),
+    initialUsageValues: getExpectedUsage(firstProfile),
+    initialEmailValues: firstProfile
   };
 }
 

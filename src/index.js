@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
 import App from './components/app';
-import { storeFactory, saveState } from './state/store';
+import { storeFactory } from './state/store';
 
 if (window.Raven) {
   window.Raven.config(
@@ -16,8 +16,6 @@ if (window.Raven) {
 
 const history = createHistory();
 const store = storeFactory(undefined, history);
-
-store.subscribe(() => saveState(store.getState()));
 
 function initApp() {
   ReactDOM.render(
