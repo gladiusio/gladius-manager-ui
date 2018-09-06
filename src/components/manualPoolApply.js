@@ -39,7 +39,6 @@ class ManualPoolApply extends Component {
   render() {
     const {
       className,
-      onSubmit,
       inputClass,
       buttonText,
       placeholder,

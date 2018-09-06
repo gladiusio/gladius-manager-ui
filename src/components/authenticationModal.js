@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, Component } from 'react';
+import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 
 import Input from './input';
@@ -19,7 +20,7 @@ const bem = bemify('type-to-confirm-modal');
 class AuthenticationModal extends Component {
   onSubmit = ({passphraseValue}) => {
     this.setState({loading: true});
-    this.props.authorizeUser(passphraseValue).then(() => {
+    return this.props.authorizeUser(passphraseValue).then(() => {
       this.props.addToast({
         success: true,
         text: 'You have successfully unlocked your wallet!'
@@ -27,6 +28,9 @@ class AuthenticationModal extends Component {
       this.setState({loading: false});
     }, () => {
       this.setState({loading: false});
+      throw new SubmissionError({
+        passphraseValue: 'Unlock failed. Are you sure the passphrase is correct?'
+      });
     });
   };
 
