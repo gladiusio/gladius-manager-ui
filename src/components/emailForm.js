@@ -125,13 +125,14 @@ BaseEmailForm = reduxForm({
     email: isEmailAddress(email) ? undefined : 'Please enter a valid email',
     name: name ? undefined : 'Please enter a valid name',
   }),
+  enableReinitialize: true,
 })(BaseEmailForm);
 
 function mapStateToProps(state, ownProps) {
   let { account } = state;
 
   return {
-    initialValues: Object.assign(account, ownProps.initialValues),
+    initialValues: Object.assign({}, account, ownProps.initialValues),
     className: ownProps.className,
   };
 }
