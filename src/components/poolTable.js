@@ -57,6 +57,14 @@ export class BasePoolTable extends Component {
 
   componentWillMount() {
     this.props.getAllPools();
+    this.requestInterval = setInterval(() => {
+      this.props.getAllPools();
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.requestInterval);
+    this.requestInterval = null;
   }
 
   getOnApply(hide, action) {
