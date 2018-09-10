@@ -5,12 +5,12 @@ export default {
   "response": {
     pools: [
       {
-        "address":"0x7663fEE3390C93f4e09a52F7C09680Af7C6591Es",
+        "address":"0x3BbEbCe4e6E3E6DFBe70415102e457e4EE2903e1",
         "data": {
           "name": "Gladius Pool A",
           "location": "NYC - United States",
-          "rating": "3.5",
-          "nodeCount": "20",
+          "rating": 5,
+          "nodeCount": 20,
           "maxBandwidth": "10",
         }
       },
@@ -19,8 +19,8 @@ export default {
         "data": {
           "name": "Gladius Pool Z",
           "location": "NYC - United States",
-          "rating": "2",
-          "nodeCount": "20",
+          "rating": 2,
+          "nodeCount": 20,
           "maxBandwidth": "10",
 
           // modified
@@ -34,8 +34,8 @@ export default {
         "data": {
           "name": "Gladius Pool M",
           "location": "NYC - United States",
-          "rating": "1",
-          "nodeCount": "20",
+          "rating": 1,
+          "nodeCount": 20,
           "maxBandwidth": "10",
 
           // modified
@@ -49,8 +49,8 @@ export default {
         "data": {
           "name": "Gladius Pool R",
           "location": "NYC - United States",
-          "rating": "3",
-          "nodeCount": "20",
+          "rating": 3,
+          "nodeCount": 20,
           "maxBandwidth": "10",
 
           "status": "rejected",

@@ -20,9 +20,13 @@ import { accountActions, accountSelectors } from '../../state/ducks/account';
 import { expectedUsageActions, expectedUsageSelectors } from '../../state/ducks/expectedUsage';
 import { signupActions } from '../../state/ducks/signup';
 import {
+  applicationsActions,
   applicationsSelectors
 } from '../../state/ducks/applications';
 
+const {
+  getApplications,
+} = applicationsActions;
 const {
   createApplications,
   setUserNodeData,
@@ -43,6 +47,17 @@ export class BaseMarketplace extends Component {
     this.applyManually = this.applyManually.bind(this);
     this.saveInfo = this.saveInfo.bind(this);
     this.applicationRef = React.createRef();
+  }
+
+  componentWillMount() {
+    this.props.getApplications();
+    this.requestInterval = setInterval(() => {
+      this.props.getApplications();
+    }, 4000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.requestInterval);
   }
 
   saveInfo() {
@@ -125,7 +140,7 @@ export class BaseMarketplace extends Component {
                 Application Information
               </h2>
               <h5 className={classnames(onboardingSubhead, 'mb-5 text-center')}>
-                This info was saved from a previous application.<br/>
+                We got this information from your previous application.<br/>
                 If you update fields, your info will be saved after applying to another pool.
               </h5>
               <Card className="mb-4">
@@ -204,6 +219,7 @@ function mapDispatchToProps(dispatch) {
       return dispatch(setUserNodeData());
     },
     selectPool: (poolId) => dispatch(toggleSelectedPool(poolId)),
+    getApplications: () => dispatch(getApplications()),
     dispatch,
   };
 }

@@ -198,7 +198,7 @@ const selector = formValueSelector('expectedUsage');
 function mapStateToProps(state, ownProps) {
   let { expectedUsage, form } = state;
   return {
-    initialValues: Object.assign(expectedUsage, ownProps.initialValues),
+    initialValues: Object.assign({}, expectedUsage, ownProps.initialValues),
     disableTimeDropdown: selector(state, 'allDayUptime'),
     allDayValue: expectedUsage.allDayUptime,
     uptimeStartValue: expectedUsage.uptimeStart,
@@ -225,7 +225,8 @@ BaseExpectedUsage = reduxForm({
   validate: ({ bio, estimatedSpeed }) => ({
     bio: bio ? undefined : 'Please enter a bio',
     estimatedSpeed: estimatedSpeed !== undefined ? undefined : 'Please enter an estimated upload speed',
-  })
+  }),
+  enableReinitialize: true,
 })(BaseExpectedUsage);
 
 BaseExpectedUsage = connect(

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+
 import StarRating from './starRating';
 import BigRadioButton from './bigRadioButton';
 import Card from './card';
+import TooltipWrapper from './tooltipWrapper';
 import Table from './shared/table';
 import Tooltip from './shared/tooltip/tooltip';
 import FakeDropdown from './fakeDropdown';
@@ -14,6 +16,7 @@ import SliderTooltip from './sliderTooltip';
 import SpeedGradient from './speedGradient';
 import poolPropType from '../propTypes/pool';
 import { poolsActions, poolsSelectors, poolsConstants } from '../state/ducks/pools';
+import { applicationsSelectors } from '../state/ducks/applications';
 import bemify from '../util/bemify';
 
 const { MAX_NODE_FILTER, MAX_EARNINGS_FILTER } = poolsConstants;
@@ -25,6 +28,7 @@ const {
   setNodeCountFilter,
   setEarningsFilter,
 } = poolsActions;
+const { getApplicationAddresses } = applicationsSelectors
 const { filterPools } = poolsSelectors;
 const bem = bemify('pool-table');
 
@@ -43,6 +47,7 @@ export class BasePoolTable extends Component {
       'renderRatingTooltip',
       'renderLocationTooltip',
       'renderRow',
+      'renderCheckbox'
     ];
 
     methods.forEach((method) => {
@@ -142,23 +147,52 @@ export class BasePoolTable extends Component {
     return '—';
   }
 
-  renderRow(p) {
-    const { allowSelection, poolIds } = this.props;
-    let isSelected = poolIds.indexOf(p.address) > -1;
-    let checkbox = null;
-    if (allowSelection) {
+  renderCheckbox(pool, isSelected) {
+    if (!this.props.allowSelection) {
+      return null;
+    }
+
+    const hasApplied = this.props.poolsAppliedTo[pool.address];
+    let checkbox;
+    if (!hasApplied) {
       checkbox = (
-        <Table.Cell
-          className="py-4 text-center"
-          onClick={() => this.props.onRowClick(p.address)}
-        >
-          <BigRadioButton
-            isCheckbox
-            on={isSelected}
-          />
-        </Table.Cell>
+        <BigRadioButton
+          isCheckbox
+          onClick={() => this.props.onRowClick(pool.address)}
+          on={isSelected}
+        />
+      );
+    } else {
+      checkbox = (
+        <img
+          src="./assets/images/icon-info.svg"
+        />
       );
     }
+
+    return (
+      <Table.Cell
+        className="py-4 text-center"
+      >
+        <TooltipWrapper
+          className={classnames(bem('tooltip'), 'ml-2')}
+          content="You've already applied to this pool."
+          disabled={!hasApplied}
+          tooltipStyle={{
+            width: '120px',
+            maxWidth: '242px',
+            top: '-70px',
+            left: '-52px',
+        }}>
+          {checkbox}
+        </TooltipWrapper>
+      </Table.Cell>
+    );
+  }
+
+  renderRow(p) {
+    const { poolIds } = this.props;
+    let isSelected = poolIds.indexOf(p.address) > -1;
 
     return (
       <Table.Row
@@ -169,7 +203,7 @@ export class BasePoolTable extends Component {
           })
         }
       >
-        {checkbox}
+        {this.renderCheckbox(p, isSelected)}
         <Table.Cell>{p.name || '—'}</Table.Cell>
         <Table.Cell>{p.location || '—'}</Table.Cell>
         <Table.Cell><StarRating rating={p.rating} /></Table.Cell>
@@ -363,6 +397,7 @@ function mapStateToProps(state, ownProps) {
   );
 
   return {
+    poolsAppliedTo: getApplicationAddresses(state.applications),
     poolIds: state.signup.poolIds,
     pools,
     totalPools: availablePools.length,

@@ -28,10 +28,27 @@ export function isAccepted(application) {
 }
 
 export function getFirstProfile(applications) {
+  if (!applications) {
+    return null;
+  }
+
   const firstApplication = applications.applications[0];
   if (!firstApplication) {
     return null;
   }
 
   return firstApplication.profile;
+}
+
+export function getApplicationAddresses(applicationsState) {
+  const applications = (applicationsState && applicationsState.applications) || [];
+  const addresses = {};
+
+  applications.forEach((application) => {
+    if (application.pool && application.pool.address) {
+      addresses[application.pool.address] = true;
+    }
+  });
+
+  return addresses;
 }
