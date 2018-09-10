@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "bootstrap-scss": "4.0.0",
     "classnames": "2.2.5",
     "create-react-class": "^15.6.3",
     "domain-name-parser": "^2.3.0",
