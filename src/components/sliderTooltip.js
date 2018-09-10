@@ -19,9 +19,9 @@ export default class SliderTooltip extends Component {
     this.apply = this.apply.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  componentDidMount() {
     this.setState({
-      values: props.values,
+      values: this.props.values,
     });
   }
 

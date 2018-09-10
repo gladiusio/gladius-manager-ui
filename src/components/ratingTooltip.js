@@ -20,9 +20,9 @@ export default class RatingTooltip extends Component {
     this.clear = this.clear.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  componentDidMount() {
     this.setState({
-      minRating: props.minRating,
+      minRating: this.props.minRating,
     });
   }
 
