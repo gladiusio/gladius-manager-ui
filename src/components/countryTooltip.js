@@ -27,9 +27,9 @@ class CountryTooltip extends Component {
     this.clear = this.clear.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  componentDidMount() {
     this.setState({
-      selected: props.selected,
+      selected: this.props.selected,
     });
   }
 
