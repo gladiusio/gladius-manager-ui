@@ -10,16 +10,6 @@ import BigRadioButton from './bigRadioButton';
 import TimeDropdown from './timeDropdown';
 import ComingSoon from './comingSoon';
 
-import { expectedUsageActions } from '../state/ducks/expectedUsage';
-
-const {
-  setStorageAmount,
-  setEstimatedSpeed,
-  setBio,
-  setUptimeStart,
-  setUptimeEnd,
-  toggleAllDayUptime,
-} = expectedUsageActions;
 const bem = bemify('expectedUsage');
 
 // TODO: show storage?
@@ -84,12 +74,6 @@ export function BaseExpectedUsage({
   bio,
   storageAmount,
   estimatedSpeed,
-  setStorageAmount,
-  setEstimatedSpeed,
-  setUptimeStart,
-  setUptimeEnd,
-  setBio,
-  toggleAllDayUptime,
 }) {
   let storageSlider = null;
   if (useStorage) {
@@ -190,7 +174,6 @@ BaseExpectedUsage.propTypes = {
   setEstimatedSpeed: PropTypes.func,
   setUptimeStart: PropTypes.func,
   setUptimeEnd: PropTypes.func,
-  setBio: PropTypes.func,
   toggleAllDayUptime: PropTypes.func,
 };
 
@@ -209,17 +192,6 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setEstimatedSpeed: speed => dispatch(setEstimatedSpeed(speed)),
-    setStorageAmount: storageAmount => dispatch(setStorageAmount(storageAmount)),
-    setUptimeStart: uptimeStart => dispatch(setUptimeStart(uptimeStart)),
-    setUptimeEnd: uptimeEnd => dispatch(setUptimeEnd(uptimeEnd)),
-    setBio: textEvent => dispatch(setBio(textEvent.target.value)),
-    toggleAllDayUptime: () => dispatch(toggleAllDayUptime()),
-  };
-}
-
 BaseExpectedUsage = reduxForm({
   form: 'expectedUsage',
   validate: ({ bio, estimatedSpeed }) => ({
@@ -230,8 +202,7 @@ BaseExpectedUsage = reduxForm({
 })(BaseExpectedUsage);
 
 BaseExpectedUsage = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(BaseExpectedUsage);
 
 export default BaseExpectedUsage;
