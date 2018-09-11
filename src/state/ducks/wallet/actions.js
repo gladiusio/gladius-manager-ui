@@ -9,7 +9,8 @@ import {
   SET_GLA_BALANCE_LOADING,
   SET_GLA_BALANCE_SUCCESS,
   SET_ETH_BALANCE_SUCCESS,
-  API_FETCH_BALANCE
+  API_FETCH_BALANCE,
+  API_CREATE_WALLET
 } from './types';
 
 export function setWalletAddress(address) {
@@ -34,7 +35,7 @@ export function setEthBalanceSuccess(ethBalance) {
 
 export function createWallet(passphrase) {
   return async (dispatch) => {
-    return await dispatch(createApiAction(API_FETCH_BALANCE, {}, {
+    return await dispatch(createApiAction(API_CREATE_WALLET, {}, {
       path: '/keystore/account/create',
       method: 'POST',
       body: { passphrase },

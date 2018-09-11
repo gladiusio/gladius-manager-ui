@@ -18,15 +18,15 @@ export function fetchTransactions(walletAddress) {
 }
 
 export function getAllTransactionsError(error) {
-  return async dispatch => dispatch(createAction(GET_ALL_TRANSACTIONS_ERROR, {
+  return createAction(GET_ALL_TRANSACTIONS_ERROR, {
     error,
-  }));
+  });
 }
 
 export function getAllTransactionsSuccess(transactions) {
-  return async dispatch => dispatch(createAction(GET_ALL_TRANSACTIONS_SUCCESS, {
+  return createAction(GET_ALL_TRANSACTIONS_SUCCESS, {
     transactions,
-  }));
+  });
 }
 
 export function setFilterType(type) {
