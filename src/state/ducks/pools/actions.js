@@ -53,9 +53,9 @@ export function getAllPoolsError(error) {
 }
 
 export function getAllPoolsSuccess(pools) {
-  return async dispatch => dispatch(createAction(GET_ALL_POOLS_SUCCESS, {
+  return createAction(GET_ALL_POOLS_SUCCESS, {
     pools,
-  }));
+  });
 }
 
 export function handleSort(col) {
