@@ -24,15 +24,15 @@ export function getAllApplicationsError(error) {
 }
 
 export function getAllApplicationsSuccess(applications) {
-  return async dispatch => dispatch(createAction(GET_ALL_APPLICATIONS_SUCCESS, {
+  return createAction(GET_ALL_APPLICATIONS_SUCCESS, {
     applications,
-  }));
+  });
 }
 
 export function setViewingApplication(application) {
-  return async dispatch => dispatch(createAction(SET_VIEWING_APPLICATION, {
+  return createAction(SET_VIEWING_APPLICATION, {
     application,
-  }));
+  });
 }
 
 export function getApplications() {

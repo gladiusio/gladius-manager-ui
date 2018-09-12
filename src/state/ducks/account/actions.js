@@ -85,21 +85,6 @@ export function setApplicationLoading(applyPoolLoading) {
   return createAction(SET_APPLY_POOL_LOADING, { applyPoolLoading });
 }
 
-export function setNodeData(nodeAddress, passphrase, body) {
-  return async (dispatch) => {
-    return await dispatch(createApiAction(API_SET_NODE_DATA, {}, {
-      path: `/node/${nodeAddress}/data`,
-      method: 'POST',
-      body,
-      headers: { 'X-Authorization': passphrase },
-    }));
-  };
-}
-
-export function getNode(walletAddress) {
-  return getJSON(`${process.env.CONTROL_API}/node/`);
-}
-
 export function createApplications(poolIds) {
   return async (dispatch, getState) => {
     const { account, expectedUsage } = getState();
@@ -162,71 +147,5 @@ export function createApplications(poolIds) {
       dispatch(setApplicationSuccess(poolIds));
       resolve();
     });
-  }
-}
-
-export function setUserNodeData() {
-  return async (dispatch, getState) => {
-    const { account, expectedUsage, wallet } = getState();
-    const { email, name, passphraseValue, nodeAddress, ip } = account;
-    const { walletAddress } = wallet;
-    const {
-      storageAmount,
-      estimatedSpeed,
-      bio,
-      uptimeStart,
-      uptimeEnd,
-      allDayUptime,
-    } = expectedUsage;
-
-    return new Promise(async (resolve, reject) => {
-      const setNode = await dispatch(setNodeData(nodeAddress, passphraseValue, {
-        name,
-        email,
-        passphrase: passphraseValue,
-        storageAmount,
-        estimatedSpeed,
-        bio,
-        uptimeStart,
-        uptimeEnd,
-        allDayUptime,
-        ip,
-      }));
-
-      if (setNode.error) {
-        return reject();
-      }
-
-      await waitForTransaction(setNode.txHash.value);
-      resolve();
-    });
-  }
-}
-
-export function getNodeInfo() {
-  return async (dispatch, getState) => {
-    const { walletAddress } = getState().wallet;
-    const nodeRequest = await getNode(walletAddress);
-
-    return new Promise((resolve, reject) => {
-      if (nodeRequest.error) {
-        reject(nodeRequest.error);
-      }
-
-      const nodeAddress = nodeRequest.response.address;
-      const nodeData = nodeRequest.response.data;
-      if (nodeData) {
-        if (nodeData.email && nodeData.name) {
-          dispatch(setAccountCreated(true));
-          dispatch(setEmailAddressAndName(nodeData.email, nodeData.name));
-        }
-
-        if (nodeData.ip) {
-          dispatch(setIPAddress(nodeData.ip));
-        }
-      }
-      dispatch(setNodeAddress(nodeAddress));
-      resolve(nodeAddress);
-    })
   }
 }
