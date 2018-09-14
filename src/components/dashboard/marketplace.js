@@ -29,9 +29,7 @@ const {
 } = applicationsActions;
 const {
   createApplications,
-  setUserNodeData,
   setEmailAddressAndName,
-  getNodeInfo,
 } = accountActions;
 const { setExpectedUsage } = expectedUsageActions;
 const { getExpectedUsage } = expectedUsageSelectors;
@@ -214,9 +212,6 @@ function mapDispatchToProps(dispatch) {
     },
     setExpectedUsage: (expectedUsage) => {
       dispatch(setExpectedUsage(expectedUsage));
-    },
-    setNodeData: () => {
-      return dispatch(setUserNodeData());
     },
     selectPool: (poolId) => dispatch(toggleSelectedPool(poolId)),
     getApplications: () => dispatch(getApplications()),
