@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { accountActions, accountSelectors } from '../../state/ducks/account';
 import { walletActions } from '../../state/ducks/wallet';
 import Card from '../card';
-import ExpectedUsage from '../expectedUsage';
 import PassphraseForm from '../passphraseForm';
 import ExternalSubmitButton from '../externalSubmitButton';
 import { toastActions } from '../../state/ducks/toasts';
