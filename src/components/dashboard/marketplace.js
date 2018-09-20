@@ -191,7 +191,7 @@ BaseMarketplace.propTypes = {
 };
 
 function mapStateToProps(state) {
-  let { applications, expectedUsage } = state;
+  let { applications } = state;
   const firstProfile = getFirstProfile(applications);
   return {
     poolIds: state.signup.poolIds,

@@ -9,8 +9,17 @@ import bemify from '../util/bemify';
 import BigRadioButton from './bigRadioButton';
 import TimeDropdown from './timeDropdown';
 import ComingSoon from './comingSoon';
+import { expectedUsageSelectors } from '../state/ducks/expectedUsage';
 
 const bem = bemify('expectedUsage');
+const {
+  getBio,
+  getEstimatedSpeed,
+  getAllDayUptime,
+  getUptimeStart,
+  getUptimeEnd,
+  getStorageAmount
+} = expectedUsageSelectors;
 
 // TODO: show storage?
 const useStorage = false;
@@ -183,12 +192,12 @@ function mapStateToProps(state, ownProps) {
   return {
     initialValues: Object.assign({}, expectedUsage, ownProps.initialValues),
     disableTimeDropdown: selector(state, 'allDayUptime'),
-    allDayValue: expectedUsage.allDayUptime,
-    uptimeStartValue: expectedUsage.uptimeStart,
-    uptimeEndValue: expectedUsage.uptimeEnd,
-    bio: expectedUsage.bio,
-    storageAmount: expectedUsage.storageAmount,
-    estimatedSpeed: form.expectedUsage && form.expectedUsage.values.estimatedSpeed,
+    allDayValue: getAllDayUptime(state),
+    uptimeStartValue: getUptimeStart(state),
+    uptimeEndValue: getUptimeEnd(state),
+    bio: getBio(state),
+    storageAmount: getStorageAmount(state),
+    estimatedSpeed: selector(state, 'estimatedSpeed'),
   };
 }
 

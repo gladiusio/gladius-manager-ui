@@ -15,3 +15,27 @@ export function getExpectedUsage(obj) {
 
   return expectedUsage;
 }
+
+export function getBio(state) {
+  return state.expectedUsage.bio;
+}
+
+export function getEstimatedSpeed(state) {
+  return state.expectedUsage.estimatedSpeed;
+}
+
+export function getAllDayUptime(state) {
+  return state.expectedUsage.allDayUptime;
+}
+
+export function getUptimeStart(state) {
+  return state.expectedUsage.uptimeStart;
+}
+
+export function getUptimeEnd(state) {
+  return state.expectedUsage.uptimeEnd;
+}
+
+export function getStorageAmount(state) {
+  return state.expectedUsage.storageAmount;
+}
