@@ -4,6 +4,7 @@ import { getJSON, postData, delayed } from '../../../backend';
 import { toastActions } from '../toasts';
 import { signupActions } from '../signup';
 import { poolsActions } from '../pools';
+import { expectedUsageSelectors } from '../expectedUsage';
 import {
   SET_EMAIL_ADDRESS,
   SET_EMAIL_ADDRESS_SUCCESS,
@@ -24,6 +25,7 @@ import {
 const { setApplicationSuccess } = signupActions;
 const { addToast } = toastActions;
 const { applyToPool } = poolsActions;
+const { getBio, getEstimatedSpeed } = expectedUsageSelectors;
 
 export function setEmailAddressFailure(error) {
   return createAction(SET_EMAIL_ADDRESS_FAILURE, null, error);
@@ -87,15 +89,15 @@ export function setApplicationLoading(applyPoolLoading) {
 
 export function createApplications(poolIds) {
   return async (dispatch, getState) => {
-    const { account, expectedUsage } = getState();
+    const state = getState();
+    const { account } = state;
+
     const {
       email,
       name
     } = account;
-    const {
-      bio,
-      estimatedSpeed,
-    } = expectedUsage;
+    const bio = getBio(state);
+    const estimatedSpeed = getEstimatedSpeed(state);
 
     async function applyToPools(poolIds) {
       const result = { success: [], error: [] };
