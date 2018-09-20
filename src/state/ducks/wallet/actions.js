@@ -1,6 +1,7 @@
 import { createAction, createApiAction } from '../../../util/createAction';
 import { setWalletSuccess } from '../signup/actions';
 import { authorizeUser } from '../authorization/actions';
+import { accountSelectors } from '../account';
 import { getJSON, postData, delayed } from '../../../backend';
 import {
   SET_PROCESSING_BALANCE,
@@ -12,6 +13,12 @@ import {
   API_FETCH_BALANCE,
   API_CREATE_WALLET
 } from './types';
+
+const {
+  getEmail,
+  getName,
+  getPassphrase
+} = accountSelectors;
 
 export function setWalletAddress(address) {
   return createAction(SET_WALLET_ADDRESS, { address });
@@ -71,8 +78,10 @@ export function createUserWallet() {
       dispatch(setWalletSuccess(true));
     }
 
-    const { account } = getState();
-    const { email, name, passphraseValue } = account;
+    const state = getState();
+    const email = getEmail(state);
+    const name = getName(state);
+    const passphraseValue = getPassphrase(state);
 
     return new Promise(async (resolve, reject) => {
       dispatch(setWalletIsLoading(true));

@@ -13,11 +13,7 @@ import {
   SET_NAME_SUCCESS,
   SET_NAME_FAILURE,
   SET_PASSPHRASE,
-  SET_NODE_ADDRESS,
   SET_IP_ADDRESS,
-  SET_ACCOUNT_LOADING,
-  SET_ACCOUNT_CREATED,
-  SET_ACCOUNT_INFO_SAVED,
   SET_APPLY_POOL_LOADING,
   API_SET_NODE_DATA,
 } from './types';
@@ -65,22 +61,6 @@ export function setPassphrase(passphrase) {
 
 export function setIPAddress(ipData) {
   return createAction(SET_IP_ADDRESS, { ip: ipData.ip });
-}
-
-export function setAccountLoading(accountCreationLoading) {
-  return createAction(SET_ACCOUNT_LOADING, { accountCreationLoading });
-}
-
-export function setAccountCreated(accountCreated) {
-  return createAction(SET_ACCOUNT_CREATED, { accountCreated });
-}
-
-export function setAccountInfoSaved(accountInfoSaved) {
-  return createAction(SET_ACCOUNT_INFO_SAVED, { accountInfoSaved });
-}
-
-export function setNodeAddress(nodeAddress) {
-  return createAction(SET_NODE_ADDRESS, { nodeAddress });
 }
 
 export function setApplicationLoading(applyPoolLoading) {

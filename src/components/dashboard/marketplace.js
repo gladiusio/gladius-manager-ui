@@ -35,6 +35,7 @@ const { setExpectedUsage } = expectedUsageActions;
 const { getExpectedUsage } = expectedUsageSelectors;
 const { getFirstProfile } = applicationsSelectors;
 const { toggleSelectedPool } = signupActions;
+const { getApplyPoolLoading } = accountSelectors;
 const bem = bemify('marketplace');
 
 export class BaseMarketplace extends Component {
@@ -195,7 +196,7 @@ function mapStateToProps(state) {
   const firstProfile = getFirstProfile(applications);
   return {
     poolIds: state.signup.poolIds,
-    loading: state.account.applyPoolLoading,
+    loading: getApplyPoolLoading(state),
     validInfo: isValid('expectedUsage')(state) && isValid('emailAddress')(state),
     initialUsageValues: getExpectedUsage(firstProfile),
     initialEmailValues: firstProfile
