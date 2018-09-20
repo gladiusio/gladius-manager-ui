@@ -6,11 +6,7 @@ import {
   SET_NAME_SUCCESS,
   SET_NAME_FAILURE,
   SET_PASSPHRASE,
-  SET_NODE_ADDRESS,
   SET_IP_ADDRESS,
-  SET_ACCOUNT_LOADING,
-  SET_ACCOUNT_CREATED,
-  SET_ACCOUNT_INFO_SAVED,
   SET_APPLY_POOL_LOADING,
 } from './types';
 
@@ -51,30 +47,10 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         passphraseValue: action.payload.passphraseValue,
       };
-    case SET_NODE_ADDRESS:
-      return {
-        ...state,
-        nodeAddress: action.payload.nodeAddress,
-      };
     case SET_IP_ADDRESS:
       return {
         ...state,
         ip: action.payload.ip,
-      };
-    case SET_ACCOUNT_LOADING:
-      return {
-        ...state,
-        accountCreationLoading: action.payload.accountCreationLoading,
-      };
-    case SET_ACCOUNT_CREATED:
-      return {
-        ...state,
-        accountCreated: action.payload.accountCreated,
-      };
-    case SET_ACCOUNT_INFO_SAVED:
-      return {
-        ...state,
-        accountInfoSaved: action.payload.accountInfoSaved,
       };
     case SET_APPLY_POOL_LOADING:
       return {

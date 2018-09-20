@@ -5,7 +5,9 @@ import classnames from 'classnames';
 
 import bemify from '../util/bemify';
 import Input from './input';
+import { accountSelectors } from '../state/ducks/account';
 
+const { getIp } = accountSelectors;
 const bem = bemify('ip');
 
 const IPAddressField = ({ input, type }) => (
@@ -51,10 +53,8 @@ BaseIPAddressForm = reduxForm({
 })(BaseIPAddressForm);
 
 function mapStateToProps(state) {
-  let { account } = state;
-
   return {
-    initialValues: { ip: account.ip },
+    initialValues: { ip: getIp(state) },
   };
 }
 

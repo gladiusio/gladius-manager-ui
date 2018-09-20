@@ -67,7 +67,7 @@ BaseSignup.propTypes = {
   onboardingStepIndexByPath: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
-function mapStateToProps({ account, signup }) {
+function mapStateToProps({ signup }) {
   return {
     currentOnboardingStepIndex: signup.currentStep.index,
     onboardingStepIndexByPath: signup.steps.byPath,
