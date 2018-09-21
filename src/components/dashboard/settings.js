@@ -7,7 +7,7 @@ import { submit } from 'redux-form';
 
 import { accountActions } from '../../state/ducks/account';
 import { expectedUsageActions } from '../../state/ducks/expectedUsage';
-import { walletActions } from '../../state/ducks/wallet';
+import { walletActions, walletSelectors } from '../../state/ducks/wallet';
 import { toastActions } from '../../state/ducks/toasts';
 import Card from '../card';
 import IPAddressForm from '../ipAddressForm';
@@ -26,6 +26,7 @@ const {
   getNodeInfo,
 } = accountActions;
 const { fetchGLABalance } = walletActions;
+const { getGlaBalance } = walletSelectors;
 const { setExpectedUsage } = expectedUsageActions;
 const { addToast } = toastActions;
 const bem = bemify('settings');
@@ -151,7 +152,7 @@ BaseSettings.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    glaBalance: state.wallet.glaBalance,
+    glaBalance: getGlaBalance(state),
   };
 }
 

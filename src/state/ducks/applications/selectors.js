@@ -1,15 +1,15 @@
-export function getPendingApplications(applications) {
-  applications = applications || [];
+export function getPendingApplications(state) {
+  let applications = state.applications.applications || [];
   return applications.filter(isPending);
 }
 
-export function getAcceptedApplications(applications) {
-  applications = applications || [];
+export function getAcceptedApplications(state) {
+  let applications = state.applications.applications || [];
   return applications.filter(isAccepted);
 }
 
-export function getRejectedApplications(applications) {
-  applications = applications || [];
+export function getRejectedApplications(state) {
+  let applications = state.applications.applications || [];
   return applications.filter(isRejected);
 }
 
@@ -27,12 +27,16 @@ export function isAccepted(application) {
     !application.profile.pending;
 }
 
-export function getFirstProfile(applications) {
-  if (!applications) {
+export function getViewingApplication(state) {
+  return state.applications.viewingApplication;
+}
+
+export function getFirstProfile(state) {
+  if (!state || !state.applications || !state.applications.applications) {
     return null;
   }
 
-  const firstApplication = applications.applications[0];
+  const firstApplication = state.applications.applications[0];
   if (!firstApplication) {
     return null;
   }
@@ -40,8 +44,8 @@ export function getFirstProfile(applications) {
   return firstApplication.profile;
 }
 
-export function getApplicationAddresses(applicationsState) {
-  const applications = (applicationsState && applicationsState.applications) || [];
+export function getApplicationAddresses(state) {
+  const applications = (state.applications && state.applications.applications) || [];
   const addresses = {};
 
   applications.forEach((application) => {

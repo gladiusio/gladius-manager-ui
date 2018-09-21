@@ -3,6 +3,7 @@ import { setWalletSuccess } from '../signup/actions';
 import { authorizeUser } from '../authorization/actions';
 import { accountSelectors } from '../account';
 import { getJSON, postData, delayed } from '../../../backend';
+import { getWalletAddress } from './selectors';
 import {
   SET_PROCESSING_BALANCE,
   SET_WALLET_ADDRESS,
@@ -110,7 +111,7 @@ export function fetchGLABalance() {
       dispatch(setGlaBalanceSuccess(glaBalance));
     }
 
-    const { walletAddress } = getState().wallet;
+    const walletAddress = getWalletAddress(getState());
 
     dispatch(setGlaBalanceIsLoading(true));
     requestBalance(walletAddress);
@@ -130,7 +131,7 @@ export function fetchETHBalance() {
       return dispatch(setEthBalanceSuccess(ethBalance));
     }
 
-    const { walletAddress } = getState().wallet;
+    const walletAddress = getWalletAddress(getState());
 
     return requestBalance(walletAddress);
   };

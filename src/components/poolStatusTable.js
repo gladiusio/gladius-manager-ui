@@ -18,6 +18,7 @@ const {
   getPendingApplications,
   getRejectedApplications,
   getAcceptedApplications,
+  getViewingApplication,
   isPending,
   isRejected,
   isAccepted
@@ -317,14 +318,13 @@ BasePoolStatusTable.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  const applications = state.applications.applications;
   return {
     applications: [
-      ...getAcceptedApplications(applications),
-      ...getPendingApplications(applications)
+      ...getAcceptedApplications(state),
+      ...getPendingApplications(state)
     ],
-    rejectedApplications: getRejectedApplications(applications),
-    viewingApplication: state.applications.viewingApplication,
+    rejectedApplications: getRejectedApplications(state),
+    viewingApplication: getViewingApplication(state),
   };
 }
 

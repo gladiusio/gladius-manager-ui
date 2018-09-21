@@ -17,6 +17,7 @@ import SpeedGradient from './speedGradient';
 import poolPropType from '../propTypes/pool';
 import { poolsActions, poolsSelectors, poolsConstants } from '../state/ducks/pools';
 import { applicationsSelectors } from '../state/ducks/applications';
+import { signupSelectors } from '../state/ducks/signup';
 import bemify from '../util/bemify';
 
 const { MAX_NODE_FILTER, MAX_EARNINGS_FILTER } = poolsConstants;
@@ -29,7 +30,17 @@ const {
   setEarningsFilter,
 } = poolsActions;
 const { getApplicationAddresses } = applicationsSelectors
-const { filterPools } = poolsSelectors;
+const {
+  getFilteredPools,
+  getPoolCount,
+  getPoolSortDirection,
+  getPoolSortColumn,
+  getPoolLocationFilter,
+  getPoolNodeCountFilter,
+  getPoolRatingFilter,
+  getPoolEarningsFilter,
+} = poolsSelectors;
+const { getSignupPoolIds } = signupSelectors;
 const bem = bemify('pool-table');
 
 export class BasePoolTable extends Component {
@@ -388,33 +399,17 @@ BasePoolTable.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  const {
-    locationFilter,
-    ratingFilter,
-    nodeCountFilter,
-    earningsFilter,
-    availablePools,
-  } = state.pools;
-  const pools = filterPools(
-    availablePools,
-    { locationFilter, ratingFilter, nodeCountFilter, earningsFilter },
-    {
-      sortDirection: state.pools.sortDirection,
-      sortColumn: state.pools.sortColumn,
-    }
-  );
-
   return {
-    poolsAppliedTo: getApplicationAddresses(state.applications),
-    poolIds: state.signup.poolIds,
-    pools,
-    totalPools: availablePools.length,
-    sortDirection: state.pools.sortDirection,
-    sortColumn: state.pools.sortColumn,
-    locationFilter,
-    nodeCountFilter,
-    ratingFilter,
-    earningsFilter,
+    poolsAppliedTo: getApplicationAddresses(state),
+    poolIds: getSignupPoolIds(state),
+    pools: getFilteredPools(state),
+    totalPools: getPoolCount(state),
+    sortDirection: getPoolSortDirection(state),
+    sortColumn: getPoolSortColumn(state),
+    locationFilter: getPoolLocationFilter(state),
+    nodeCountFilter: getPoolNodeCountFilter(state),
+    ratingFilter: getPoolRatingFilter(state),
+    earningsFilter: getPoolEarningsFilter(state),
     allowSelection: ownProps.allowSelection,
     onRowClick: ownProps.onRowClick,
   };

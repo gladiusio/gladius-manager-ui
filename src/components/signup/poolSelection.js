@@ -11,12 +11,13 @@ import ManualPoolApply from '../manualPoolApply';
 import bemify from '../../util/bemify';
 import noop from '../../util/noop';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
-import { signupActions } from '../../state/ducks/signup';
+import { signupActions, signupSelectors } from '../../state/ducks/signup';
 import { accountActions, accountSelectors } from '../../state/ducks/account';
 
 const { createApplications } = accountActions;
-const { toggleSelectedPool, nextSignupStep, prevSignupStep } = signupActions;
 const { getApplyPoolLoading } = accountSelectors;
+const { toggleSelectedPool, nextSignupStep, prevSignupStep } = signupActions;
+const { getAppliedToPool, getSignupPoolIds } = signupSelectors;
 const bem = bemify('pool-selection');
 
 export class BasePoolSelection extends Component {
@@ -113,8 +114,8 @@ BasePoolSelection.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    poolIds: state.signup.poolIds,
-    hasAppliedToPool: state.signup.appliedToPool,
+    poolIds: getSignupPoolIds(state),
+    hasAppliedToPool: getAppliedToPool(state),
     loading: getApplyPoolLoading(state),
   };
 }

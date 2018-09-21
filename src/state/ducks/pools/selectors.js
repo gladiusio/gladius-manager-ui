@@ -1,10 +1,6 @@
 import sortBy from 'lodash.sortby';
 
-export function filterPools(
-  pools,
-  filters,
-  sortInfo
-) {
+function filterPools(pools, filters, sortInfo) {
   if (!pools || pools.length === 0) {
     return [];
   }
@@ -36,4 +32,52 @@ export function filterPools(
   }
 
   return filteredPools;
+
+}
+
+export function getFilteredPools(state) {
+  const {
+    locationFilter,
+    ratingFilter,
+    nodeCountFilter,
+    earningsFilter,
+    availablePools,
+  } = state.pools;
+
+  return filterPools(
+    availablePools,
+    { locationFilter, ratingFilter, nodeCountFilter, earningsFilter },
+    {
+      sortDirection: state.pools.sortDirection,
+      sortColumn: state.pools.sortColumn,
+    }
+  );
+}
+
+export function getPoolCount(state) {
+  return state.pools.availablePools.length;
+}
+
+export function getPoolSortDirection(state) {
+  return state.pools.sortDirection;
+}
+
+export function getPoolSortColumn(state) {
+  return state.pools.sortColumn;
+}
+
+export function getPoolLocationFilter(state) {
+  return state.pools.locationFilter;
+}
+
+export function getPoolRatingFilter(state) {
+  return state.pools.ratingFilter;
+}
+
+export function getPoolNodeCountFilter(state) {
+  return state.pools.nodeCountFilter;
+}
+
+export function getPoolEarningsFilter(state) {
+  return state.pools.earningsFilter;
 }
