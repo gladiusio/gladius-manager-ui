@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { toastActions } from '../state/ducks/toasts';
+
+import { toastActions, toastSelectors } from '../state/ducks/toasts';
 import Toast from './shared/toast';
 import toastPropType from '../propTypes/toast';
 
 const { removeToast } = toastActions;
+const { getToasts } = toastSelectors;
 
 export function BaseToasts(props) {
   const {
@@ -53,7 +55,7 @@ BaseToasts.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    toasts: state.toasts,
+    toasts: getToasts(state),
   };
 }
 

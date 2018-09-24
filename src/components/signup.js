@@ -10,6 +10,9 @@ import PoolSelection from './signup/poolSelection';
 import LockedRoute from './lockedRoute';
 import MastheadContentSplit from './mastheadContentSplit';
 import Masthead from './masthead';
+import { signupSelectors } from '../state/ducks/signup';
+
+const { getSignupCurrentIndex, getSignupStepsPath } = signupSelectors;
 
 export function BaseSignup({
   currentOnboardingStepIndex,
@@ -67,10 +70,10 @@ BaseSignup.propTypes = {
   onboardingStepIndexByPath: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
-function mapStateToProps({ signup }) {
+function mapStateToProps(state) {
   return {
-    currentOnboardingStepIndex: signup.currentStep.index,
-    onboardingStepIndexByPath: signup.steps.byPath,
+    currentOnboardingStepIndex: getSignupCurrentIndex(state),
+    onboardingStepIndexByPath: getSignupStepsPath(state),
   };
 }
 

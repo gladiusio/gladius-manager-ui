@@ -5,19 +5,21 @@ import { isValid } from 'redux-form';
 import PropTypes from 'prop-types';
 
 import { accountActions, accountSelectors } from '../../state/ducks/account';
-import { walletActions } from '../../state/ducks/wallet';
+import { walletActions, walletSelectors } from '../../state/ducks/wallet';
 import Card from '../card';
 import PassphraseForm from '../passphraseForm';
 import ExternalSubmitButton from '../externalSubmitButton';
 import { toastActions } from '../../state/ducks/toasts';
-import { signupActions } from '../../state/ducks/signup';
+import { signupActions, signupSelectors } from '../../state/ducks/signup';
 import { onboardingField, onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import bemify from '../../util/bemify';
 
 const { setPassphrase } = accountActions;
 const { validatePassphrase } = accountSelectors;
 const { createUserWallet } = walletActions;
+const { getWalletLoading } = walletSelectors;
 const { nextSignupStep, prevSignupStep, setWalletSuccess } = signupActions;
+const { getWalletCreated } = signupSelectors;
 const { addToast } = toastActions;
 const bem = bemify('getSecure');
 
@@ -112,11 +114,9 @@ BaseGetSecurePage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { signup, wallet } = state;
-
   return {
-    isLoading: wallet.walletLoading,
-    walletCreated: signup.walletCreated,
+    isLoading: getWalletLoading(state),
+    walletCreated: getWalletCreated(state),
     validForm: isValid('passphrase')(state),
   };
 }

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
+
 import Masthead from '../masthead';
 import MastheadContentSplit from '../mastheadContentSplit';
 import DashboardHome from './dashboardHome';
@@ -11,7 +12,9 @@ import Settings from './settings';
 import WalletPage from './walletPage';
 import Navigation from './navigation';
 import bemify from '../../util/bemify';
+import { authorizationSelectors } from '../../state/ducks/authorization';
 
+const { getHasAccount } = authorizationSelectors;
 const bem = bemify('dashboard');
 
 function BaseDashboard({ hasAccount }) {
@@ -48,9 +51,9 @@ BaseDashboard.propTypes = {
   hasAccount: PropTypes.bool,
 };
 
-function mapStateToProps({ authorization }) {
+function mapStateToProps(state) {
   return {
-    hasAccount: authorization.hasAccount,
+    hasAccount: getHasAccount(state),
   };
 }
 

@@ -10,11 +10,12 @@ import AuthenticationForm from './authenticationForm';
 import ExternalSubmitButton from './externalSubmitButton';
 import noop from '../util/noop';
 import bemify from '../util/bemify';
-import { authorizationActions } from '../state/ducks/authorization';
+import { authorizationActions, authorizationSelectors } from '../state/ducks/authorization';
 import { toastActions } from '../state/ducks/toasts';
 
 const { addToast } = toastActions;
 const { authorizeUser } = authorizationActions;
+const { getIsUnauthorized } = authorizationSelectors;
 const bem = bemify('type-to-confirm-modal');
 
 class AuthenticationModal extends Component {
@@ -87,7 +88,7 @@ AuthenticationModal.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    isUnauthorized: state.authorization.isUnauthorized,
+    isUnauthorized: getIsUnauthorized(state),
   };
 }
 

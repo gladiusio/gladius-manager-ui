@@ -9,9 +9,10 @@ import Card from '../card';
 import WalletBalance from '../walletBalance';
 import CopyText from '../copyText';
 import bemify from '../../util/bemify';
-import { walletActions } from '../../state/ducks/wallet';
+import { walletActions, walletSelectors } from '../../state/ducks/wallet';
 
 const { fetchGLABalance, fetchETHBalance } = walletActions;
+const { getGlaBalance, getEthBalance, getWalletAddress } = walletSelectors;
 const bem = bemify('wallet-page');
 
 class BaseTransactions extends Component {
@@ -74,9 +75,9 @@ BaseTransactions.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    glaBalance: state.wallet.glaBalance,
-    ethBalance: state.wallet.ethBalance,
-    walletAddress: state.wallet.walletAddress,
+    glaBalance: getGlaBalance(state),
+    ethBalance: getEthBalance(state),
+    walletAddress: getWalletAddress(state),
   };
 }
 

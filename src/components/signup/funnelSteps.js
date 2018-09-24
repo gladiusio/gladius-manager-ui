@@ -3,8 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import classnames from 'classnames';
-import bemify from '../../util/bemify';
 
+import bemify from '../../util/bemify';
+import { signupSelectors } from '../../state/ducks/signup';
+
+const { getSignupSteps, getSignupCurrentIndex } = signupSelectors;
 const bem = bemify('funnel-steps');
 
 const stepClass = bem('step');
@@ -41,10 +44,10 @@ BaseFunnelSteps.propTypes = {
   onboardingSteps: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-function mapStateToProps({ signup }) {
+function mapStateToProps(state) {
   return {
-    currentOnboardingStepIndex: signup.currentStep.index,
-    onboardingSteps: signup.steps.all,
+    currentOnboardingStepIndex: getSignupCurrentIndex(state),
+    onboardingSteps: getSignupSteps(state),
   };
 }
 

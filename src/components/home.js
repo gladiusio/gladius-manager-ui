@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { accountActions } from '../state/ducks/account';
-import { authorizationActions } from '../state/ducks/authorization';
-import { applicationsActions } from '../state/ducks/applications';
+import { authorizationActions, authorizationSelectors } from '../state/ducks/authorization';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
@@ -15,7 +14,7 @@ import bemify from '../util/bemify';
 
 const { setEmailAddressAndName } = accountActions;
 const { getAccount } = authorizationActions;
-const { getApplications } = applicationsActions;
+const { getHasAccount, getIsUnauthorized } = authorizationSelectors;
 const bem = bemify('home');
 
 export class BaseHome extends Component {
@@ -68,10 +67,10 @@ BaseHome.propTypes = {
   setEmailAddressAndName: PropTypes.func.isRequired,
 };
 
-function mapStateToProps({ authorization }) {
+function mapStateToProps(state) {
   return {
-    onboardingDone: authorization.hasAccount,
-    isUnauthorized: authorization.isUnauthorized,
+    onboardingDone: getHasAccount(state),
+    isUnauthorized: getIsUnauthorized(state),
   };
 }
 

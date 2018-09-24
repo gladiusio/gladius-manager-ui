@@ -14,9 +14,10 @@ import Tab from '../shared/tab';
 import Card from '../card';
 import WalletBalance from '../walletBalance';
 import { formField } from '../../util/reduxForm';
-import { walletActions } from '../../state/ducks/wallet';
+import { walletActions, walletSelectors } from '../../state/ducks/wallet';
 
 const { fetchGLABalance } = walletActions;
+const { getGlaBalance } = walletSelectors;
 const bem = bemify('manage-balance');
 
 export class BaseManageBalance extends Component {
@@ -133,7 +134,7 @@ function mapStateToProps(state) {
   return {
     availableWallets: [],
     walletAddress: formField(),
-    walletBalance: state.wallet.glaBalance || 0,
+    walletBalance: getGlaBalance(state) || 0,
     processingBalance: {balance: 0, type: 'gla'},
   };
 }

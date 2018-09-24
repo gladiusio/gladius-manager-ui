@@ -18,7 +18,7 @@ import PoolTable from '../poolTable';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import { accountActions, accountSelectors } from '../../state/ducks/account';
 import { expectedUsageActions, expectedUsageSelectors } from '../../state/ducks/expectedUsage';
-import { signupActions } from '../../state/ducks/signup';
+import { signupActions, signupSelectors } from '../../state/ducks/signup';
 import {
   applicationsActions,
   applicationsSelectors
@@ -35,6 +35,7 @@ const { setExpectedUsage } = expectedUsageActions;
 const { getExpectedUsage } = expectedUsageSelectors;
 const { getFirstProfile } = applicationsSelectors;
 const { toggleSelectedPool } = signupActions;
+const { getSignupPoolIds } = signupSelectors;
 const { getApplyPoolLoading } = accountSelectors;
 const bem = bemify('marketplace');
 
@@ -192,10 +193,10 @@ BaseMarketplace.propTypes = {
 };
 
 function mapStateToProps(state) {
-  let { applications } = state;
-  const firstProfile = getFirstProfile(applications);
+  const firstProfile = getFirstProfile(state);
+
   return {
-    poolIds: state.signup.poolIds,
+    poolIds: getSignupPoolIds(state),
     loading: getApplyPoolLoading(state),
     validInfo: isValid('expectedUsage')(state) && isValid('emailAddress')(state),
     initialUsageValues: getExpectedUsage(firstProfile),

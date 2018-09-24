@@ -8,7 +8,7 @@ import Table from './shared/table';
 import Tooltip from './shared/tooltip/tooltip';
 import FakeDropdown from './fakeDropdown';
 import TooltipWrapper from './tooltipWrapper';
-import { transactionsActions } from '../state/ducks/transactions';
+import { transactionsActions, transactionsSelectors } from '../state/ducks/transactions';
 import transactionTypes from '../util/transactionTypes';
 import bemify from '../util/bemify';
 
@@ -17,6 +17,7 @@ const {
   getAllTransactions,
   setFilterType,
 } = transactionsActions;
+const { getTransactions, getTransactionsTypeFilter } = transactionsSelectors;
 
 export class BaseTransactionsTable extends Component {
   constructor(props) {
@@ -219,11 +220,10 @@ BaseTransactionsTable.propTypes = {
   getAllTransactions: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state, ownProps) {
-  const typeFilter = state.transactions.typeFilter;
+function mapStateToProps(state) {
   return {
-    transactions: state.transactions.transactions,
-    typeFilter,
+    transactions: getTransactions(state),
+    typeFilter: getTransactionsTypeFilter(state),
   };
 }
 
