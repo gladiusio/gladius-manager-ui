@@ -9,6 +9,7 @@ import Card from '../card';
 import WalletBalance from '../walletBalance';
 import CopyText from '../copyText';
 import bemify from '../../util/bemify';
+import { startPoll, endPoll } from '../../util/polling';
 import { walletActions, walletSelectors } from '../../state/ducks/wallet';
 
 const { fetchGLABalance, fetchETHBalance } = walletActions;
@@ -21,14 +22,11 @@ class BaseTransactions extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchBalance();
-    this.requestInteral = setInterval(() => {
-      this.props.fetchBalance();
-    }, 4000);
+    startPoll('fetchBalance', this.props.fetchBalance, 4000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.requestInteral);
+    endPoll('fetchBalance');
   }
 
   render() {

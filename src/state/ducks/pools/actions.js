@@ -1,5 +1,4 @@
 import { createAction, createApiAction } from '../../../util/createAction';
-import { delayed } from '../../../backend';
 import mockedPoolsResponse from '../../../mockedResponses/pools';
 import { signupActions } from '../signup';
 import {

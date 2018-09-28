@@ -25,7 +25,6 @@ function initApp() {
           <App />
         </ConnectedRouter>
       </Provider>
-
     ),
     document.getElementById('root'),
   );

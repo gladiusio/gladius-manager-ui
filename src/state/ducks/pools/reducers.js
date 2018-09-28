@@ -1,5 +1,3 @@
-import sortBy from 'lodash.sortby';
-
 import {
   SORT_POOLS,
   GET_ALL_POOLS_ERROR,

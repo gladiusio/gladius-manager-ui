@@ -4,6 +4,8 @@ import createAccount, { match as createAccountMatch } from './createAccount';
 import transactions, { match as transactionsMatch } from './transactions';
 import pools, { match as poolsMatch } from './pools';
 import keystoreAccount, { match as keystoreAccountMatch } from './keystoreAccount';
+import controldStatus, { match as controldStatusMatch } from './controldStatus';
+import networkdStatus, { match as networkdStatusMatch } from './networkdStatus';
 import defaultResponse from './default';
 
 const endpoints = [
@@ -13,6 +15,8 @@ const endpoints = [
   { match: transactionsMatch, response: transactions },
   { match: poolsMatch, response: pools },
   { match: keystoreAccountMatch, response: keystoreAccount },
+  { match: controldStatusMatch, response: controldStatus },
+  { match: networkdStatusMatch, response: networkdStatus },
 ];
 
 export function getMockedResponse(path) {
