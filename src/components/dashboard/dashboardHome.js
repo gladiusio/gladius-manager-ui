@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import StatusCard from '../statusCard';
@@ -11,11 +10,7 @@ import bemify from '../../util/bemify';
 
 const bem = bemify('dashboard-home');
 
-class BaseDashboardHome extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class BaseDashboardHome extends Component {
   render() {
     return (
       <div className={classnames(bem(), 'col-9 pt-5')}>
@@ -28,18 +23,3 @@ class BaseDashboardHome extends Component {
     );
   }
 }
-
-BaseDashboardHome.propTypes = {
-};
-
-function mapStateToProps(state) {
-  return {
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(null, null)(BaseDashboardHome);

@@ -11,6 +11,7 @@ import TooltipWrapper from './tooltipWrapper';
 import { transactionsActions, transactionsSelectors } from '../state/ducks/transactions';
 import transactionTypes from '../util/transactionTypes';
 import bemify from '../util/bemify';
+import { startPoll, endPoll } from '../util/polling';
 
 const bem = bemify('transactions-table');
 const {
@@ -26,14 +27,11 @@ export class BaseTransactionsTable extends Component {
   }
 
   componentWillMount() {
-    this.props.getAllTransactions();
-    this.requestInteral = setInterval(() => {
-      this.props.getAllTransactions();
-    }, 4000);
+    startPoll('getTransactionsTransactionsTable', this.props.getAllTransactions, 4000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.requestInteral);
+    endPoll('getTransactionsTransactionsTable');
   }
 
   onFilterClick(close, type) {

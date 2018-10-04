@@ -1,8 +1,8 @@
 import { createAction, nameAction } from '../../util/createAction';
+import serviceUrlMap from '../../util/serviceUrlMap';
 import { postData, delayed } from "../../backend";
 import { getMockedResponse } from '../../mockedResponses';
 
-const baseUrl = "http://localhost:3001/api";
 const mockData = process.env.MOCK_DATA === "true";
 const namespace = 'apiService';
 
@@ -23,7 +23,13 @@ const apiService = () => (next) => (action) => {
     return result;
   }
 
-  const { path, method = "GET", body, headers } = action.meta.apiService;
+  const {
+    path,
+    service = 'controld',
+    method = 'GET',
+    body,
+    headers
+  } = action.meta.apiService;
 
   if (!path) {
     throw new Error(`'path' not specified for async action ${ action.type }`);
@@ -33,7 +39,12 @@ const apiService = () => (next) => (action) => {
     return handleMockResponse(path);
   }
 
-  const url = `${baseUrl}${path}`;
+  let urlConstructor = serviceUrlMap[service];
+  if (!urlConstructor) {
+    urlConstructor = serviceUrlMap.controld;
+  }
+
+  const url = urlConstructor(path);
 
   return fetchAndCreateAction(url, body, headers, method, next);
 };

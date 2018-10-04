@@ -13,6 +13,7 @@ import IPAddressForm from '../ipAddressForm';
 import ManualPoolApply from '../manualPoolApply';
 import bemify from '../../util/bemify';
 import noop from '../../util/noop';
+import { startPoll, endPoll } from '../../util/polling';
 import externalFormSubmit from '../../util/externalFormSubmit';
 import PoolTable from '../poolTable';
 import { onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
@@ -50,14 +51,11 @@ export class BaseMarketplace extends Component {
   }
 
   componentWillMount() {
-    this.props.getApplications();
-    this.requestInterval = setInterval(() => {
-      this.props.getApplications();
-    }, 4000);
+    startPoll('getApplicationsMarketplace', this.props.getApplications, 4000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.requestInterval);
+    endPoll('getApplicationsMarketplace');
   }
 
   saveInfo() {

@@ -12,6 +12,7 @@ import {
   applicationsActions
 } from '../state/ducks/applications/';
 import bemify from '../util/bemify';
+import { startPoll, endPoll } from '../util/polling';
 
 const bem = bemify('pool-status-table');
 const {
@@ -40,14 +41,11 @@ export class BasePoolStatusTable extends Component {
   }
 
   componentWillMount() {
-    this.props.getApplications();
-    this.requestInterval = setInterval(() => {
-      this.props.getApplications();
-    }, 4000);
+    startPoll('getApplicationsPoolStatus', this.props.getApplications, 4000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.requestInterval);
+    endPoll('getApplicationsPoolStatus');
   }
 
   setShowRejected(show) {

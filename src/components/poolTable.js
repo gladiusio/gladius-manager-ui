@@ -19,6 +19,7 @@ import { poolsActions, poolsSelectors, poolsConstants } from '../state/ducks/poo
 import { applicationsSelectors } from '../state/ducks/applications';
 import { signupSelectors } from '../state/ducks/signup';
 import bemify from '../util/bemify';
+import { startPoll, endPoll } from '../util/polling';
 
 const { MAX_NODE_FILTER, MAX_EARNINGS_FILTER } = poolsConstants;
 const {
@@ -67,15 +68,11 @@ export class BasePoolTable extends Component {
   }
 
   componentWillMount() {
-    this.props.getAllPools();
-    this.requestInterval = setInterval(() => {
-      this.props.getAllPools();
-    }, 10000);
+    startPoll('getPoolsPoolTable', this.props.getAllPools, 10000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.requestInterval);
-    this.requestInterval = null;
+    endPoll('getPoolsPoolTable');
   }
 
   getOnApply(hide, action) {

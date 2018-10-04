@@ -5,21 +5,25 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { accountActions } from '../state/ducks/account';
+import { serviceInfoActions } from '../state/ducks/serviceInfo';
 import { authorizationActions, authorizationSelectors } from '../state/ducks/authorization';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
 import Masthead from './masthead';
 import EmailForm from './emailForm';
 import bemify from '../util/bemify';
+import { startPoll } from '../util/polling';
 
 const { setEmailAddressAndName } = accountActions;
 const { getAccount } = authorizationActions;
 const { getHasAccount, getIsUnauthorized } = authorizationSelectors;
+const { fetchServiceStatuses } = serviceInfoActions;
 const bem = bemify('home');
 
 export class BaseHome extends Component {
   componentDidMount() {
     this.props.getAccount();
+    startPoll('serviceStatus', this.props.getServiceStatuses, 10000);
   }
 
   componentDidUpdate() {
@@ -82,6 +86,9 @@ function mapDispatchToProps(dispatch) {
     getAccount: () => {
       return dispatch(getAccount());
     },
+    getServiceStatuses: () => {
+      return dispatch(fetchServiceStatuses());
+    }
   };
 }
 
