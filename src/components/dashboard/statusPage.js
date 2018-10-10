@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
 import StatusOverview from '../statusOverview';
 import ServiceLogsPage from '../serviceLogsPage';

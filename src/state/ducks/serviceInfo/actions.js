@@ -25,7 +25,6 @@ const connectionMap = {
 
 function getOnMessage(service, dispatch) {
   return (event) => {
-    console.log(event);
     const logs = event.data.split('\n');
     dispatch(appendToLogs(service, logs));
   };
