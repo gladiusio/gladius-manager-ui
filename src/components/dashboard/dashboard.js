@@ -9,6 +9,7 @@ import DashboardHome from './dashboardHome';
 import Marketplace from './marketplace';
 import ManageBalance from './manageBalance';
 import Settings from './settings';
+import StatusPage from './statusPage';
 import WalletPage from './walletPage';
 import Navigation from './navigation';
 import bemify from '../../util/bemify';
@@ -37,6 +38,7 @@ function BaseDashboard({ hasAccount }) {
             <Route path="/dashboard/home" component={DashboardHome} />
             <Route path="/dashboard/wallet" component={WalletPage} />
             <Route path="/dashboard/marketplace" component={Marketplace} />
+            <Route path="/dashboard/status" component={StatusPage} />
             <Route path="/dashboard/settings/balance" component={ManageBalance} />
             <Route path="/dashboard/settings" component={Settings} />
           </Switch>

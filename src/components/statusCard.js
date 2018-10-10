@@ -2,11 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import HalfCard from './halfCard';
 import TooltipWrapper from './tooltipWrapper';
+import { serviceInfoSelectors } from '../state/ducks/serviceInfo';
 import bemify from '../util/bemify';
 
+const { getAllServicesRunning } = serviceInfoSelectors;
 const bem = bemify('status-card');
 const ACTIVE = 'active';
 const PAUSED = 'paused';
@@ -14,11 +17,11 @@ const INACTIVE = 'inactive';
 
 const STATUS_DISPLAY = {
   [ACTIVE]: {
-    text: 'Connected',
+    text: 'All services running',
     icon: 'active',
   },
   [PAUSED]: {
-    text: 'Paused',
+    text: 'Something is wrong',
     icon: 'paused',
   },
   [INACTIVE]: {
@@ -41,13 +44,13 @@ class BaseStatusCard extends Component {
 
     return (
       <div className={classnames(bem('title'))}>
-        Node status
+        Status
       </div>
     );
   }
 
   renderStatusContent() {
-    const {status} = this.props;
+    const { status, showLink } = this.props;
     let text, icon;
 
     if (!status) {
@@ -59,6 +62,19 @@ class BaseStatusCard extends Component {
       icon = statusDisplay.icon;
     }
 
+    let link = null;
+    if (status === 'paused' && showLink) {
+      link = (
+        <Link
+          to="/dashboard/status"
+          className={classnames(bem('status-link'), 'text-muted')}
+        >
+          Go to status page
+          <img src="./assets/images/icon-arrow-small.svg" className="ml-2" />
+        </Link>
+      );
+    }
+
     return (
       <div>
         <div className={bem('icon')}>
@@ -67,6 +83,7 @@ class BaseStatusCard extends Component {
         <div className={bem('content')}>
           <h1>{text}</h1>
         </div>
+        {link}
       </div>
     );
   }
@@ -96,12 +113,8 @@ BaseStatusCard.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    status: getAllServicesRunning(state) ? 'active' : 'paused',
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect()(BaseStatusCard);
+export default connect(mapStateToProps)(BaseStatusCard);

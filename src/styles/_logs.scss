@@ -1,0 +1,19 @@
+.logs {
+  &__logs {
+    padding: 20px;
+    /*border: 1px solid black;*/
+    background: #1e272e;
+    border-radius: 10px;
+    font-family: monospace;
+    color: white;
+    height: 500px;
+    width: 100%;
+
+    overflow-y: scroll;
+    overflow-x: scroll;
+
+    div {
+      white-space: nowrap;
+    }
+  }
+}
