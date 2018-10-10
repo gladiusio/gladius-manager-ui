@@ -22,8 +22,8 @@ const bem = bemify('home');
 
 export class BaseHome extends Component {
   componentDidMount() {
-    this.props.getAccount();
     startPoll('serviceStatus', this.props.getServiceStatuses, 10000);
+    this.props.getAccount();
   }
 
   componentDidUpdate() {

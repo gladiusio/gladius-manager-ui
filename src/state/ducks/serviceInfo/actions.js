@@ -57,6 +57,9 @@ export function connectToServiceLogs(service) {
       `ws://localhost:7791/service/ws/logs/${service}`
     );
     connectionMap[service].onmessage = getOnMessage(service, dispatch);
+    connectionMap[service].onerror = () => {
+      dispatch(disconnectFromServiceLogs(service));
+    }
   };
 }
 
