@@ -15,7 +15,7 @@ function reduceSetTransactionType(state, payload) {
 function reduceGetAllTransactionsSuccess(state, payload) {
   return {
     ...state,
-    transactions: payload.transactions,
+    transactions: payload.transactions || [],
   };
 }
 

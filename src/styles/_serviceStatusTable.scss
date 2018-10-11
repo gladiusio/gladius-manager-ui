@@ -1,0 +1,13 @@
+.service-status-table {
+  th {
+    text-align: left;
+
+    &.service {
+      width: 50%;
+    }
+
+    &.logs {
+      width: 25%;
+    }
+  }
+}

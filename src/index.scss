@@ -26,6 +26,7 @@
 @import 'mastheadContentSplit';
 @import 'modal';
 @import 'navigation';
+@import 'logs';
 @import 'onboardingField';
 @import 'onboardingHead';
 @import 'onboardingSubhead';
@@ -33,12 +34,16 @@
 @import 'poolSelection';
 @import 'poolStatusTable';
 @import 'poolTable';
+@import 'portStatusTable';
 @import 'ratingTooltip';
+@import 'serviceLogsPage';
+@import 'serviceStatusTable';
 @import 'sliderTooltip';
 @import 'starRating';
 @import 'statusCard';
 @import 'table';
 @import 'timeDropdown';
+@import 'toggle';
 @import 'tooltip';
 @import 'transactionsTable';
 @import 'typeToConfirmModal';
@@ -69,6 +74,10 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.flex {
+  display: flex;
 }
 
 .form-group {

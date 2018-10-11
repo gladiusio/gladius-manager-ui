@@ -2,4 +2,30 @@
   .email-container  {
     min-width: 700px;
   }
+
+  &__loading-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  &__logo {
+    background: transparent;
+    background-image: url('./assets/images/logo.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 50px;
+    height: 35px;
+    font-weight: bold;
+    font-size: 19px;
+    text-align: right;
+    line-height: 35px;
+    margin: ($base * 1.5) 0 ($base * 1.5) 5px;
+    color: $gladius-font-color;
+    font-family: $gladius-font;
+  }
+
 }

@@ -1,0 +1,26 @@
+.toggle {
+  cursor: pointer;
+
+  &__toggle-container {
+    border-radius: 12px;
+    width: 44px;
+    height: 24px;
+    background: #e0e7f1;
+  }
+
+  &__container-on {
+    display: flex;
+    justify-content: flex-end;
+    background: #198cff;
+  }
+
+  &__toggle-switch {
+    width: 24px;
+    height: 24px;
+    box-shadow: 0 2px 2px 0 rgba(16, 36, 82, 0.08);
+    background-image: linear-gradient(to bottom, #ffffff, #f5f9fa);
+    border: solid 1px #a2b5d2;
+    border-radius: 12px;
+
+  }
+}

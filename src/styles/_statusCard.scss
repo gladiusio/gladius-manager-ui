@@ -16,3 +16,10 @@
   display: inline-block;
 }
 
+.status-card__status-link {
+  position: absolute;
+  bottom: 8px;
+  width: 130px;
+  right: 10px;
+  font-size: 12px;
+}

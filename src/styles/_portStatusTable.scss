@@ -1,0 +1,13 @@
+.port-status-table {
+  th {
+    text-align: left;
+
+    &.port {
+      width: 50%;
+    }
+
+    &.status {
+      width: 50%;
+    }
+  }
+}

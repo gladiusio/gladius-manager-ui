@@ -15,7 +15,7 @@ export default class BaseDashboardHome extends Component {
     return (
       <div className={classnames(bem(), 'col-9 pt-5')}>
         <div className="row justify-content-between">
-          <StatusCard className="col-6" />
+          <StatusCard className="col-6" showLink />
           <EarningsCard className="col-6" />
         </div>
         <PoolStatusTable className="mt-4" />
