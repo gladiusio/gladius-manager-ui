@@ -41,3 +41,16 @@ export function getLogs(state, service) {
 export function getServiceName(state, service) {
   return serviceNameMap[service];
 }
+
+export function getNonRunningServices(responses) {
+  const nonRunningServices = [];
+  responses.forEach((response) => {
+    Object.keys(response.response).forEach((service) => {
+      if (!response.response[service].running) {
+        nonRunningServices.push(service);
+      }
+    });
+  });
+
+  return nonRunningServices;
+}

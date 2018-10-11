@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { accountActions } from '../state/ducks/account';
-import { serviceInfoActions } from '../state/ducks/serviceInfo';
+import { serviceInfoActions, serviceInfoSelectors } from '../state/ducks/serviceInfo';
 import { authorizationActions, authorizationSelectors } from '../state/ducks/authorization';
 import MastheadContentSplit from './mastheadContentSplit';
 import historyPropType from '../propTypes/history';
@@ -17,13 +17,28 @@ import { startPoll } from '../util/polling';
 const { setEmailAddressAndName } = accountActions;
 const { getAccount } = authorizationActions;
 const { getHasAccount, getIsUnauthorized } = authorizationSelectors;
-const { fetchServiceStatuses } = serviceInfoActions;
+const { getNonRunningServices } = serviceInfoSelectors;
+const { fetchServiceStatuses, startServices } = serviceInfoActions;
 const bem = bemify('home');
 
 export class BaseHome extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      startedServices: false,
+    };
+  }
+
   componentDidMount() {
-    startPoll('serviceStatus', this.props.getServiceStatuses, 10000);
-    this.props.getAccount();
+    this.props.getServiceStatuses().then((statuses) => {
+      const servicesToStart = getNonRunningServices(statuses);
+      this.props.startServices(servicesToStart).then(() => {
+        startPoll('serviceStatus', this.props.getServiceStatuses, 10000);
+        this.setState({startedServices: true});
+        this.props.getAccount();
+      });
+    });
   }
 
   componentDidUpdate() {
@@ -47,9 +62,28 @@ export class BaseHome extends Component {
     );
   }
 
+  renderLoading() {
+    return (
+      <div className={classnames(bem('loading-container'))}>
+        <h1
+          className={classnames(
+            bem('logo'),
+            bem('logo', 'light')
+          )}
+        >
+        </h1>
+        <h4>Starting services...</h4>
+      </div>
+    );
+  }
+
   render() {
     if (this.props.onboardingDone) {
       return <Redirect to="/dashboard/home" />;
+    }
+
+    if (!this.state.startedServices) {
+      return this.renderLoading();
     }
 
     return (
@@ -88,7 +122,10 @@ function mapDispatchToProps(dispatch) {
     },
     getServiceStatuses: () => {
       return dispatch(fetchServiceStatuses());
-    }
+    },
+    startServices: (services) => {
+      return dispatch(startServices(services));
+    },
   };
 }
 

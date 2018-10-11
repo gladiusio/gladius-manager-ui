@@ -30,19 +30,26 @@ function getOnMessage(service, dispatch) {
   };
 }
 
-export function startServices() {
+export function startServices(services=['controld', 'networkd']) {
   return (dispatch) => {
+    if (!services || services.length === 0) {
+      return Promise.resolve();
+    }
+
     return dispatch(createApiAction(API_SET_TIMEOUT, {}, {
       service: 'guardian',
-      path: 'service/set_timeout',
+      path: '/service/set_timeout',
       method: 'POST',
       body: {
         timeout: 3
       }
     })).then(() => {
-      const controldStart = dispatch(setServiceRunState('controld', true));
-      const networkdStart = dispatch(setServiceRunState('networkd', true));
-      return Promise.all([controldStart, networkdStart]);
+      const startPromises = [];
+      services.forEach((service) => {
+        const serviceStart = dispatch(setServiceRunState(service, true));
+        startPromises.push(serviceStart);
+      });
+      return Promise.all(startPromises);
     });
   };
 }
@@ -78,7 +85,7 @@ export function setServiceRunState(service, runState) {
   return (dispatch) => {
     return dispatch(createApiAction(API_START_SERVICE, {}, {
       service: 'guardian',
-      path: `service/set_state/${service}`,
+      path: `/service/set_state/${service}`,
       method: 'PUT',
       body: {
         running: runState
@@ -104,6 +111,8 @@ export function fetchServiceStatuses() {
             dispatch(serviceDispatchMap[service](running));
           });
         });
+
+        return statusResponses;
       });
   }
 }
