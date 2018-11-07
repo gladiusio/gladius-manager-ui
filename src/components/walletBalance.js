@@ -9,15 +9,13 @@ const bem = bemify('wallet-balance');
 
 export default class WalletBalance extends PureComponent {
   static propTypes = {
-    processingBalance: PropTypes.shape({
-      balance: PropTypes.number.isRequired,
-      type: PropTypes.string.isRequired,
-    }),
-    walletBalance: PropTypes.number.isRequired,
+    glaBalance: PropTypes.number,
+    ethBalance: PropTypes.number,
   };
 
   static defaultProps = {
-    processingBalance: null,
+    glaBalance: 0,
+    ethBalance: 0,
   };
 
   renderProcessingBalance() {
@@ -99,7 +97,7 @@ export default class WalletBalance extends PureComponent {
         </span>
         <span className={bem('balance-top', 'content')}>
           <div className={bem('balance-top', 'current')}>
-            <p title={balance}>{balance}</p>
+            <p title={balance}>{balance.toLocaleString()}</p>
           </div>
           <div className={bem('balance', symbol)}>
             <p>{symbol}</p>

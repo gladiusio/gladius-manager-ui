@@ -106,7 +106,7 @@ export function fetchGLABalance() {
       if (request.error) {
         throw new Error('GLA fetch balance failed!');
       }
-      const glaBalance = request.response.value;
+      const glaBalance = request.response.formattedBalance.value;
 
       dispatch(setGlaBalanceSuccess(glaBalance));
     }
@@ -126,7 +126,7 @@ export function fetchETHBalance() {
       if (request.error) {
         throw new Error('ETH fetch balance failed!');
       }
-      const ethBalance = request.response.value;
+      const ethBalance = request.response.formattedBalance.value;
 
       return dispatch(setEthBalanceSuccess(ethBalance));
     }
