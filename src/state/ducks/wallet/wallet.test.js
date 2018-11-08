@@ -113,7 +113,7 @@ test('Wallet - fetchGLABalance', (t) => {
 
     t.same(
       await getAction(store, SET_GLA_BALANCE_SUCCESS),
-      { type: SET_GLA_BALANCE_SUCCESS, payload: { glaBalance: 200 } },
+      { type: SET_GLA_BALANCE_SUCCESS, payload: { glaBalance: 102150 } },
       'sets the balance from the response'
     );
     t.end();

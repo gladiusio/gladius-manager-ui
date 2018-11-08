@@ -1,4 +1,4 @@
 export const serviceNameMap = {
-  'controld': 'Controld',
-  'networkd': 'Networkd',
+  'controld': 'Network Gateway',
+  'networkd': 'Edge Daemon',
 };

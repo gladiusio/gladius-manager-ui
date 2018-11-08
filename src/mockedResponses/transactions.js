@@ -29,7 +29,7 @@ export default {
       "timeStamp": 1531159430,
     },
   ],
-  "endpoint": "/api/market/transactions"
+  "endpoint": "/api/market/transactions/gla"
 }
 
 export function match(path) {

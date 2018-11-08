@@ -11,10 +11,10 @@ import {
 
 const { getWalletAddress } = walletSelectors;
 
-export function fetchTransactions(walletAddress) {
+export function fetchTransactions(walletAddress, transactionType='gla') {
   return async (dispatch) => {
     return dispatch(createApiAction(API_FETCH_TRANSACTIONS, {}, {
-      path: `/account/${walletAddress}/transactions`,
+      path: `/account/${walletAddress}/transactions/${transactionType}`,
       method: 'POST',
     }));
   };

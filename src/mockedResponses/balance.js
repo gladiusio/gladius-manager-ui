@@ -1,10 +1,18 @@
 export default {
+  message: "null",
   success: true,
-  error: false,
+  error: "",
   response: {
-    value: 200,
-    symbol: 'gla',
-  }
+    value: 10215000000000,
+    balanceType: 1,
+    formattedBalance: {
+      value: 102150,
+      symbol: "GLA",
+      name: "Gladius"
+    }
+  },
+  txHash: null,
+  endpoint: "/api/account/0x481a92f2c9d5e88932dcc731deb1e6d376b3a07c/balance/gla"
 }
 
 export function match(path) {
