@@ -49,7 +49,7 @@ test('Transactions - getAllTransactions', (t) => {
     t.same(
       await getAction(store, API_FETCH_TRANSACTIONS),
       createApiAction(API_FETCH_TRANSACTIONS, {}, {
-        path: '/account/mytestaddress/transactions',
+        path: '/account/mytestaddress/transactions/gla',
         method: 'POST',
       }),
       'makes the api request'
