@@ -55,6 +55,8 @@ module.exports = {
     ],
   },
 
+  target: 'electron-main',
+
   plugins: [
     htmlConfig,
     svgCopyConfig,

@@ -6,6 +6,7 @@ import Signup from './signup';
 import Dashboard from './dashboard/dashboard';
 import Toasts from './toasts';
 import AuthenticationModal from './authenticationModal';
+import OutdatedVersionModal from './outdatedVersionModal';
 
 export default function App() {
   /*
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/dashboard" component={Dashboard} />
     </Switch>,
     <Toasts key="app-toasts"></Toasts>,
-    <AuthenticationModal key="auth"></AuthenticationModal>
+    <AuthenticationModal key="auth"></AuthenticationModal>,
+    <OutdatedVersionModal key="outdated-version"></OutdatedVersionModal>
   ];
 }
