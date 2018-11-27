@@ -14,7 +14,7 @@ export function getAllServicesRunning(state) {
 
 export function getServiceStatuses(state) {
   return [
-    {name: serviceNameMap.networkGateway, status: getNetworkGatewayRunning(state) ? 'running' : 'down', id: 'networkGateway' },
+    {name: serviceNameMap.networkGateway, status: getNetworkGatewayRunning(state) ? 'running' : 'down', id: 'network-gateway' },
     {name: serviceNameMap.edged, status: getEdgedRunning(state) ? 'running' : 'down', id: 'edged' },
   ];
 }
