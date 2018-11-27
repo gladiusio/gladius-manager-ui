@@ -25,7 +25,7 @@ const apiService = () => (next) => (action) => {
 
   const {
     path,
-    service = 'controld',
+    service = 'networkGateway',
     method = 'GET',
     body,
     headers

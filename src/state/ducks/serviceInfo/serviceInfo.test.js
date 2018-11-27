@@ -67,19 +67,19 @@ test('ServiceInfo - fetchServiceStatuses', (t) => {
     t.same(
       await getAction(store, API_CONTROLD_STATUS),
       createApiAction(API_CONTROLD_STATUS, {}, {
-        path: '/service/stats/controld',
+        path: '/service/stats/network-gateway',
         service: 'guardian',
       }),
-      'makes the api request for controld status'
+      'makes the api request for network-gateway status'
     );
 
     t.same(
       await getAction(store, API_NETWORKD_STATUS),
       createApiAction(API_NETWORKD_STATUS, {}, {
-        path: '/service/stats/networkd',
+        path: '/service/stats/edged',
         service: 'guardian',
       }),
-      'makes the api request for networkd status'
+      'makes the api request for edged status'
     );
 
     t.end();

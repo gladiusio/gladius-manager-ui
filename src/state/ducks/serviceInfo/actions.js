@@ -14,13 +14,13 @@ import {
 } from './types';
 
 const serviceDispatchMap = {
-  controld: setControldRunning,
-  networkd: setNetworkdRunning,
+  "network-gateway": setControldRunning,
+  "edged": setNetworkdRunning,
 };
 
 const connectionMap = {
-  controld: null,
-  networkd: null
+  networkGateway: null,
+  edged: null
 };
 
 function getOnMessage(service, dispatch) {
@@ -30,7 +30,7 @@ function getOnMessage(service, dispatch) {
   };
 }
 
-export function startServices(services=['controld', 'networkd']) {
+export function startServices(services=['networkGateway', 'edged']) {
   return (dispatch) => {
     if (!services || services.length === 0) {
       return Promise.resolve();
@@ -107,7 +107,7 @@ export function fetchServiceStatuses() {
           }
 
           Object.keys(statusResponse.response).forEach((service) => {
-            const running = statusResponse.response[service].running;
+            const running = statusResponse.response[service].running
             dispatch(serviceDispatchMap[service](running));
           });
         });
@@ -137,7 +137,7 @@ export function fetchControldStatus() {
   return (dispatch) => {
     return dispatch(createApiAction(API_CONTROLD_STATUS, {}, {
       service: 'guardian',
-      path: '/service/stats/controld',
+      path: '/service/stats/network-gateway',
     }));
   }
 }
@@ -146,7 +146,7 @@ export function fetchNetworkdStatus() {
   return (dispatch) => {
     return dispatch(createApiAction(API_NETWORKD_STATUS, {}, {
       service: 'guardian',
-      path: '/service/stats/networkd',
+      path: '/service/stats/edged',
     }));
   }
 }

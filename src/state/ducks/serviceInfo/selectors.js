@@ -14,8 +14,8 @@ export function getAllServicesRunning(state) {
 
 export function getServiceStatuses(state) {
   return [
-    {name: serviceNameMap.controld, status: getControldRunning(state) ? 'running' : 'down', id: 'controld' },
-    {name: serviceNameMap.networkd, status: getNetworkdRunning(state) ? 'running' : 'down', id: 'networkd' },
+    {name: serviceNameMap.networkGateway, status: getControldRunning(state) ? 'running' : 'down', id: 'networkGateway' },
+    {name: serviceNameMap.edged, status: getNetworkdRunning(state) ? 'running' : 'down', id: 'edged' },
   ];
 }
 

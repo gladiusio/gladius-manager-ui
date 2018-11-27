@@ -3,7 +3,7 @@ export default {
   "success": true,
   "error": "",
   "response": {
-    "controld": {
+    "network-gateway": {
       "running": true,
       "pid": 23742,
       "environment_vars": [
@@ -12,7 +12,7 @@ export default {
       "executable_location": "/usr/local/bin/gladius-controld"
     }
   },
-  "endpoint": "/service/stats/controld"
+  "endpoint": "/service/stats/network-gateway"
 }
 
 export function match(path) {
@@ -20,5 +20,5 @@ export function match(path) {
     return false;
   }
 
-  return path === '/service/stats/controld';
+  return path === '/service/stats/network-gateway';
 }
