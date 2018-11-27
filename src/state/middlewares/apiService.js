@@ -6,15 +6,15 @@ import { getMockedResponse } from '../../mockedResponses';
 const mockData = process.env.MOCK_DATA === "true";
 const namespace = 'apiService';
 
-function getStatusCodeType(statusCode) {
-  return nameAction(namespace, `STATUS_CODE_${statusCode}`);
+function getStatusCodeType(statusCode, service) {
+  return nameAction(namespace, `${service.toUpperCase()}_STATUS_CODE_${statusCode}`);
 }
 
-export const API_STATUS_CODE_UNAUTHORIZED = getStatusCodeType(405);
-export const API_STATUS_CODE_NO_WALLET = getStatusCodeType(400);
+export const API_STATUS_CODE_UNAUTHORIZED = getStatusCodeType(405, 'networkGateway');
+export const API_STATUS_CODE_NO_WALLET = getStatusCodeType(400, 'networkGateway');
 
-function createStatusCodeAction(statusCode, response) {
-  return createAction(getStatusCodeType(statusCode), { response });
+function createStatusCodeAction(statusCode, response, service) {
+  return createAction(getStatusCodeType(statusCode, service), { response });
 }
 
 const apiService = () => (next) => (action) => {
@@ -46,12 +46,12 @@ const apiService = () => (next) => (action) => {
 
   const url = urlConstructor(path);
 
-  return fetchAndCreateAction(url, body, headers, method, next);
+  return fetchAndCreateAction(url, body, headers, method, next, service);
 };
 
 export default apiService;
 
-function fetchAndCreateAction(url, body, headers = {}, method = 'POST', next) {
+function fetchAndCreateAction(url, body, headers = {}, method = 'POST', next, service) {
   return window.fetch(url, {
     body: JSON.stringify(body),
     headers,
@@ -61,7 +61,7 @@ function fetchAndCreateAction(url, body, headers = {}, method = 'POST', next) {
     const responseJson = res.json();
 
     if (status && responseJson) {
-      next(createStatusCodeAction(status, responseJson));
+      next(createStatusCodeAction(status, responseJson, service));
     }
 
     return responseJson;

@@ -5,12 +5,16 @@ import {
   SET_EDGED_RUNNING,
   SET_SHOW_ADVANCED,
   SET_SERVICE_LOGS,
+  SET_OUTDATED_VERSION,
+  SET_DISMISS_OUTDATED,
+  SET_STARTED_SERVICES,
   APPEND_SERVICE_LOGS,
   API_NETWORK_GATEWAY_STATUS,
   API_EDGED_STATUS,
   API_START_SERVICE,
   API_SET_TIMEOUT,
-  API_FETCH_LOGS
+  API_FETCH_LOGS,
+  API_FETCH_OUTDATED_VERSION,
 } from './types';
 
 const serviceDispatchMap = {
@@ -30,7 +34,7 @@ function getOnMessage(service, dispatch) {
   };
 }
 
-export function startServices(services=['networkGateway', 'edged']) {
+export function startServices(services=['network-gateway', 'edged']) {
   return (dispatch) => {
     if (!services || services.length === 0) {
       return Promise.resolve();
@@ -50,6 +54,11 @@ export function startServices(services=['networkGateway', 'edged']) {
         startPromises.push(serviceStart);
       });
       return Promise.all(startPromises);
+    }).then((...args) => {
+      dispatch(setStartedServices(true));
+      Promise.resolve(...args);
+    }, (...args) => {
+      Promise.reject(...args);
     });
   };
 }
@@ -117,6 +126,26 @@ export function fetchServiceStatuses() {
   }
 }
 
+export function checkIfOutdated() {
+  return (dispatch) => {
+    return dispatch(fetchOutdatedServices())
+      .then((responseInfo) => {
+        if (!responseInfo.success) {
+          return;
+        }
+
+        let outdated = false;
+        Object.keys(responseInfo.response).forEach((service) => {
+          if (responseInfo.response[service] != 0) {
+            outdated = true;
+          }
+        });
+
+        dispatch(setOutdatedVersion(outdated));
+      });
+  }
+}
+
 export function fetchStartingLogs() {
   return (dispatch) => {
     return dispatch(fetchLogs())
@@ -160,6 +189,15 @@ export function fetchLogs() {
   }
 }
 
+export function fetchOutdatedServices(service="all") {
+  return (dispatch) => {
+    return dispatch(createApiAction(API_FETCH_OUTDATED_VERSION, {}, {
+      service: 'guardian',
+      path: `/service/version/${service}`,
+    }));
+  }
+}
+
 export function setLogs(service, logs) {
   return createAction(SET_SERVICE_LOGS, {
     service,
@@ -190,4 +228,16 @@ export function setShowAdvanced(showAdvanced) {
   return createAction(SET_SHOW_ADVANCED, {
     showAdvanced,
   });
+}
+
+export function setOutdatedVersion(isOutdated) {
+  return createAction(SET_OUTDATED_VERSION, isOutdated);
+}
+
+export function dismissOutdated(dismiss=true) {
+  return createAction(SET_DISMISS_OUTDATED, dismiss);
+}
+
+export function setStartedServices(startedServices=true) {
+  return createAction(SET_STARTED_SERVICES, startedServices);
 }

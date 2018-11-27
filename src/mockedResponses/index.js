@@ -6,6 +6,7 @@ import pools, { match as poolsMatch } from './pools';
 import keystoreAccount, { match as keystoreAccountMatch } from './keystoreAccount';
 import networkGatewayStatus, { match as networkGatewayStatusMatch } from './networkGatewayStatus';
 import edgedStatus, { match as edgedStatusMatch } from './edgedStatus';
+import versions, { match as versionsMatch } from './versions';
 import defaultResponse from './default';
 
 const endpoints = [
@@ -17,6 +18,7 @@ const endpoints = [
   { match: keystoreAccountMatch, response: keystoreAccount },
   { match: networkGatewayStatusMatch, response: networkGatewayStatus },
   { match: edgedStatusMatch, response: edgedStatus },
+  { match: versionsMatch, response: versions },
 ];
 
 export function getMockedResponse(path) {

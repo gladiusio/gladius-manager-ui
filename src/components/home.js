@@ -17,28 +17,25 @@ import { startPoll } from '../util/polling';
 const { setEmailAddressAndName } = accountActions;
 const { getAccount } = authorizationActions;
 const { getHasAccount, getIsUnauthorized } = authorizationSelectors;
-const { getNonRunningServices } = serviceInfoSelectors;
+const { getNonRunningServices, getStartedServices } = serviceInfoSelectors;
 const { fetchServiceStatuses, startServices } = serviceInfoActions;
 const bem = bemify('home');
 
 export class BaseHome extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      startedServices: false,
-    };
   }
 
   componentDidMount() {
-    this.props.getServiceStatuses().then((statuses) => {
-      const servicesToStart = getNonRunningServices(statuses);
-      this.props.startServices(servicesToStart).then(() => {
-        startPoll('serviceStatus', this.props.getServiceStatuses, 10000);
-        this.setState({startedServices: true});
-        this.props.getAccount();
+    if (!this.props.startedServices) {
+      this.props.getServiceStatuses().then((statuses) => {
+        const servicesToStart = getNonRunningServices(statuses);
+        this.props.startServices(servicesToStart).then(() => {
+          startPoll('serviceStatus', this.props.getServiceStatuses, 30000);
+          this.props.getAccount();
+        });
       });
-    });
+    }
   }
 
   componentDidUpdate() {
@@ -82,7 +79,7 @@ export class BaseHome extends Component {
       return <Redirect to="/dashboard/home" />;
     }
 
-    if (!this.state.startedServices) {
+    if (!this.props.startedServices) {
       return this.renderLoading();
     }
 
@@ -109,6 +106,7 @@ function mapStateToProps(state) {
   return {
     onboardingDone: getHasAccount(state),
     isUnauthorized: getIsUnauthorized(state),
+    startedServices: getStartedServices(state),
   };
 }
 
