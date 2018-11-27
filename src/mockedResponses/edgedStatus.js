@@ -3,16 +3,16 @@ export default {
   "success": true,
   "error": "",
   "response": {
-    "controld": {
+    "edged": {
       "running": true,
-      "pid": 23742,
+      "pid": 45907,
       "environment_vars": [
-        "GLADIUSBASE=/home/user/.config/gladius"
+        "GLADIUSBASE=/home/user/.gladius"
       ],
-      "executable_location": "/usr/local/bin/gladius-controld"
+      "executable_location": "/usr/local/bin/gladius-edged"
     }
   },
-  "endpoint": "/service/stats/controld"
+  "endpoint": "/service/stats/edged"
 }
 
 export function match(path) {
@@ -20,5 +20,5 @@ export function match(path) {
     return false;
   }
 
-  return path === '/service/stats/controld';
+  return path === '/service/stats/network-gateway';
 }

@@ -1,21 +1,21 @@
 import { serviceNameMap } from './constants';
 
-export function getControldRunning(state) {
-  return state.serviceInfo.controldRunning;
+export function getNetworkGatewayRunning(state) {
+  return state.serviceInfo.networkGatewayRunning;
 }
 
-export function getNetworkdRunning(state) {
-  return state.serviceInfo.networkdRunning;
+export function getEdgedRunning(state) {
+  return state.serviceInfo.edgedRunning;
 }
 
 export function getAllServicesRunning(state) {
-  return getControldRunning(state) && getNetworkdRunning(state);
+  return getNetworkGatewayRunning(state) && getEdgedRunning(state);
 }
 
 export function getServiceStatuses(state) {
   return [
-    {name: serviceNameMap.controld, status: getControldRunning(state) ? 'running' : 'down', id: 'controld' },
-    {name: serviceNameMap.networkd, status: getNetworkdRunning(state) ? 'running' : 'down', id: 'networkd' },
+    {name: serviceNameMap.networkGateway, status: getNetworkGatewayRunning(state) ? 'running' : 'down', id: 'networkGateway' },
+    {name: serviceNameMap.edged, status: getEdgedRunning(state) ? 'running' : 'down', id: 'edged' },
   ];
 }
 

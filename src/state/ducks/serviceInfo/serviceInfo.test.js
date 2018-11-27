@@ -6,56 +6,56 @@ import createTestAction from '../../../testUtils/createTestAction';
 import mockStore from '../../../testUtils/mockStore';
 import getAction from '../../../testUtils/getAction';
 import { createApiAction } from '../../../util/createAction';
-import controldStatus from '../../../mockedResponses/controldStatus';
-import networkdStatus from '../../../mockedResponses/networkdStatus';
+import networkGatewayStatus from '../../../mockedResponses/networkGatewayStatus';
+import edgedStatus from '../../../mockedResponses/edgedStatus';
 import {
-  SET_CONTROLD_RUNNING,
-  SET_NETWORKD_RUNNING,
-  API_CONTROLD_STATUS,
-  API_NETWORKD_STATUS,
+  SET_NETWORK_GATEWAY_RUNNING,
+  SET_EDGED_RUNNING,
+  API_NETWORK_GATEWAY_STATUS,
+  API_EDGED_STATUS,
 } from './types';
 
 test('reducer defaults', (t) => {
   const state = reducer();
 
-  t.equals(state.controldRunning, false);
-  t.equals(state.networkdRunning, false);
+  t.equals(state.networkGatewayRunning, false);
+  t.equals(state.edgedRunning, false);
   t.end();
 });
 
-test('ServiceInfo - setControldRunning', (t) => {
+test('ServiceInfo - setNetworkGatewayRunning', (t) => {
   let state = reducer();
   state = reducer(
     state,
-    createTestAction(serviceInfoActions.setControldRunning(true))
+    createTestAction(serviceInfoActions.setNetworkGatewayRunning(true))
   );
 
-  t.strictEqual(state.controldRunning, true, 'sets the controld running to true');
+  t.strictEqual(state.networkGatewayRunning, true, 'sets the network gateway running to true');
 
   state = reducer(
     state,
-    createTestAction(serviceInfoActions.setControldRunning(false))
+    createTestAction(serviceInfoActions.setNetworkGatewayRunning(false))
   );
 
-  t.strictEqual(state.controldRunning, false, 'sets the controld running to false');
+  t.strictEqual(state.networkGatewayRunning, false, 'sets the network gateway running to false');
   t.end();
 });
 
-test('ServiceInfo - setNetworkdRunning', (t) => {
+test('ServiceInfo - setEdgedRunning', (t) => {
   let state = reducer();
   state = reducer(
     state,
-    createTestAction(serviceInfoActions.setNetworkdRunning(true))
+    createTestAction(serviceInfoActions.setEdgedRunning(true))
   );
 
-  t.strictEqual(state.networkdRunning, true, 'sets the networkd running to true');
+  t.strictEqual(state.edgedRunning, true, 'sets the edged running to true');
 
   state = reducer(
     state,
-    createTestAction(serviceInfoActions.setNetworkdRunning(false))
+    createTestAction(serviceInfoActions.setEdgedRunning(false))
   );
 
-  t.strictEqual(state.networkdRunning, false, 'sets the networkd running to false');
+  t.strictEqual(state.edgedRunning, false, 'sets the edged running to false');
   t.end();
 });
 
@@ -65,21 +65,21 @@ test('ServiceInfo - fetchServiceStatuses', (t) => {
 
   store.dispatch(serviceInfoActions.fetchServiceStatuses()).then(async () => {
     t.same(
-      await getAction(store, API_CONTROLD_STATUS),
-      createApiAction(API_CONTROLD_STATUS, {}, {
-        path: '/service/stats/controld',
+      await getAction(store, API_NETWORK_GATEWAY_STATUS),
+      createApiAction(API_NETWORK_GATEWAY_STATUS, {}, {
+        path: '/service/stats/network-gateway',
         service: 'guardian',
       }),
-      'makes the api request for controld status'
+      'makes the api request for network-gateway status'
     );
 
     t.same(
-      await getAction(store, API_NETWORKD_STATUS),
-      createApiAction(API_NETWORKD_STATUS, {}, {
-        path: '/service/stats/networkd',
+      await getAction(store, API_EDGED_STATUS),
+      createApiAction(API_EDGED_STATUS, {}, {
+        path: '/service/stats/edged',
         service: 'guardian',
       }),
-      'makes the api request for networkd status'
+      'makes the api request for edged status'
     );
 
     t.end();

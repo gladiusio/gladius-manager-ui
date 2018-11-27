@@ -3,16 +3,16 @@ export default {
   "success": true,
   "error": "",
   "response": {
-    "networkd": {
+    "network-gateway": {
       "running": true,
-      "pid": 45907,
+      "pid": 23742,
       "environment_vars": [
         "GLADIUSBASE=/home/user/.config/gladius"
       ],
-      "executable_location": "/usr/local/bin/gladius-networkd"
+      "executable_location": "/usr/local/bin/gladius-network-gateway"
     }
   },
-  "endpoint": "/service/stats/networkd"
+  "endpoint": "/service/stats/network-gateway"
 }
 
 export function match(path) {
@@ -20,5 +20,5 @@ export function match(path) {
     return false;
   }
 
-  return path === '/service/stats/networkd';
+  return path === '/service/stats/network-gateway';
 }
