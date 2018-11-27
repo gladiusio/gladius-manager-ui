@@ -1,7 +1,7 @@
 const base = 'http://localhost:';
 
 export default {
-  controld: (path) => {
+  networkGateway: (path) => {
     return `${base}3001/api${path}`;
   },
   guardian: (path) => {

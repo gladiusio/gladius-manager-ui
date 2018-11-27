@@ -41,7 +41,7 @@ const apiService = () => (next) => (action) => {
 
   let urlConstructor = serviceUrlMap[service];
   if (!urlConstructor) {
-    urlConstructor = serviceUrlMap.controld;
+    urlConstructor = serviceUrlMap.networkGateway;
   }
 
   const url = urlConstructor(path);

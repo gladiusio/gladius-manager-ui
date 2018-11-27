@@ -1,6 +1,6 @@
 import {
-  SET_CONTROLD_RUNNING,
-  SET_NETWORKD_RUNNING,
+  SET_NETWORK_GATEWAY_RUNNING,
+  SET_EDGED_RUNNING,
   SET_SHOW_ADVANCED,
   SET_SERVICE_LOGS,
   APPEND_SERVICE_LOGS,
@@ -8,27 +8,27 @@ import {
 
 function getInitialState() {
   return {
-    controldRunning: false,
-    networkdRunning: false,
+    networkGatewayRunning: false,
+    edgedRunning: false,
     showAdvanced: false,
     logs: {
-      controld: [],
-      networkd: [],
+      networkGateway: [],
+      edged: [],
     }
   };
 }
 
 export default function serviceInfoReducer(state = getInitialState(), action = {}) {
   switch (action.type) {
-    case SET_CONTROLD_RUNNING:
+    case SET_NETWORK_GATEWAY_RUNNING:
       return {
         ...state,
-        controldRunning: action.payload.running,
+        networkGatewayRunning: action.payload.running,
       };
-    case SET_NETWORKD_RUNNING:
+    case SET_EDGED_RUNNING:
       return {
         ...state,
-        networkdRunning: action.payload.running,
+        edgedRunning: action.payload.running,
       };
     case SET_SHOW_ADVANCED:
       return {

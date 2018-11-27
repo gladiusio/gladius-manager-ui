@@ -1,21 +1,21 @@
 import { createAction, createApiAction } from '../../../util/createAction';
 
 import {
-  SET_CONTROLD_RUNNING,
-  SET_NETWORKD_RUNNING,
+  SET_NETWORK_GATEWAY_RUNNING,
+  SET_EDGED_RUNNING,
   SET_SHOW_ADVANCED,
   SET_SERVICE_LOGS,
   APPEND_SERVICE_LOGS,
-  API_CONTROLD_STATUS,
-  API_NETWORKD_STATUS,
+  API_NETWORK_GATEWAY_STATUS,
+  API_EDGED_STATUS,
   API_START_SERVICE,
   API_SET_TIMEOUT,
   API_FETCH_LOGS
 } from './types';
 
 const serviceDispatchMap = {
-  "network-gateway": setControldRunning,
-  "edged": setNetworkdRunning,
+  "network-gateway": setNetworkGatewayRunning,
+  "edged": setEdgedRunning,
 };
 
 const connectionMap = {
@@ -96,10 +96,10 @@ export function setServiceRunState(service, runState) {
 
 export function fetchServiceStatuses() {
   return (dispatch) => {
-    const controldFetch = dispatch(fetchControldStatus());
-    const networkdFetch = dispatch(fetchNetworkdStatus());
+    const networkGatewayFetch = dispatch(fetchNetworkGatewayStatus());
+    const edgedFetch = dispatch(fetchEdgedStatus());
 
-    return Promise.all([controldFetch, networkdFetch])
+    return Promise.all([networkGatewayFetch, edgedFetch])
       .then((statusResponses) => {
         statusResponses.forEach((statusResponse) => {
           if (!statusResponse.success) {
@@ -133,18 +133,18 @@ export function fetchStartingLogs() {
   }
 }
 
-export function fetchControldStatus() {
+export function fetchNetworkGatewayStatus() {
   return (dispatch) => {
-    return dispatch(createApiAction(API_CONTROLD_STATUS, {}, {
+    return dispatch(createApiAction(API_NETWORK_GATEWAY_STATUS, {}, {
       service: 'guardian',
       path: '/service/stats/network-gateway',
     }));
   }
 }
 
-export function fetchNetworkdStatus() {
+export function fetchEdgedStatus() {
   return (dispatch) => {
-    return dispatch(createApiAction(API_NETWORKD_STATUS, {}, {
+    return dispatch(createApiAction(API_EDGED_STATUS, {}, {
       service: 'guardian',
       path: '/service/stats/edged',
     }));
@@ -174,14 +174,14 @@ export function appendToLogs(service, logs) {
   });
 }
 
-export function setControldRunning(running) {
-  return createAction(SET_CONTROLD_RUNNING, {
+export function setNetworkGatewayRunning(running) {
+  return createAction(SET_NETWORK_GATEWAY_RUNNING, {
     running,
   });
 }
 
-export function setNetworkdRunning(running) {
-  return createAction(SET_NETWORKD_RUNNING, {
+export function setEdgedRunning(running) {
+  return createAction(SET_EDGED_RUNNING, {
     running,
   });
 }

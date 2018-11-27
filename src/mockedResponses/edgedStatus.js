@@ -9,7 +9,7 @@ export default {
       "environment_vars": [
         "GLADIUSBASE=/home/user/.gladius"
       ],
-      "executable_location": "/usr/local/bin/gladius-networkd"
+      "executable_location": "/usr/local/bin/gladius-edged"
     }
   },
   "endpoint": "/service/stats/edged"

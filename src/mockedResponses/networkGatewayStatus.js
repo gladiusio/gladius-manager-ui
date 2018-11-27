@@ -9,7 +9,7 @@ export default {
       "environment_vars": [
         "GLADIUSBASE=/home/user/.config/gladius"
       ],
-      "executable_location": "/usr/local/bin/gladius-controld"
+      "executable_location": "/usr/local/bin/gladius-network-gateway"
     }
   },
   "endpoint": "/service/stats/network-gateway"
