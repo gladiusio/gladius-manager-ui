@@ -7,6 +7,7 @@ import {
   SET_SERVICE_LOGS,
   SET_OUTDATED_VERSION,
   SET_DISMISS_OUTDATED,
+  SET_STARTED_SERVICES,
   APPEND_SERVICE_LOGS,
   API_NETWORK_GATEWAY_STATUS,
   API_EDGED_STATUS,
@@ -33,7 +34,7 @@ function getOnMessage(service, dispatch) {
   };
 }
 
-export function startServices(services=['networkGateway', 'edged']) {
+export function startServices(services=['network-gateway', 'edged']) {
   return (dispatch) => {
     if (!services || services.length === 0) {
       return Promise.resolve();
@@ -53,6 +54,11 @@ export function startServices(services=['networkGateway', 'edged']) {
         startPromises.push(serviceStart);
       });
       return Promise.all(startPromises);
+    }).then((...args) => {
+      dispatch(setStartedServices(true));
+      Promise.resolve(...args);
+    }, (...args) => {
+      Promise.reject(...args);
     });
   };
 }
@@ -230,4 +236,8 @@ export function setOutdatedVersion(isOutdated) {
 
 export function dismissOutdated(dismiss=true) {
   return createAction(SET_DISMISS_OUTDATED, dismiss);
+}
+
+export function setStartedServices(startedServices=true) {
+  return createAction(SET_STARTED_SERVICES, startedServices);
 }

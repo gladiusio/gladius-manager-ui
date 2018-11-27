@@ -5,6 +5,7 @@ import {
   SET_SERVICE_LOGS,
   SET_OUTDATED_VERSION,
   SET_DISMISS_OUTDATED,
+  SET_STARTED_SERVICES,
   APPEND_SERVICE_LOGS,
 } from './types';
 
@@ -19,6 +20,7 @@ function getInitialState() {
     },
     outdatedVersion: false,
     dismissOutdated: false,
+    startedServices: false,
   };
 }
 
@@ -56,6 +58,11 @@ export default function serviceInfoReducer(state = getInitialState(), action = {
       return {
         ...state,
         dismissOutdated: action.payload,
+      };
+    case SET_STARTED_SERVICES:
+      return {
+        ...state,
+        startedServices: action.payload,
       };
     case APPEND_SERVICE_LOGS:
       const { service, logs } = action.payload;

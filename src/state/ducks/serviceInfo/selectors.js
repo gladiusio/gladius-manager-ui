@@ -58,3 +58,7 @@ export function getNonRunningServices(responses) {
 export function getIsOutdatedVersion(state) {
   return state.serviceInfo.outdatedVersion && !state.serviceInfo.dismissOutdated;
 }
+
+export function getStartedServices(state) {
+  return state.serviceInfo.startedServices;
+}
