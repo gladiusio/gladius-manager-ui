@@ -91,7 +91,7 @@
     "package-mac": "electron-packager . Gladius --platform=darwin --arch=x64 --icon=\"img/icon/AppIcon.icns\" --ignore=\"build\" --out=\"build/release/macos\" --appname=\"Gladius\" --overwrite",
     "package-win": "flatten-packages; npm install electron-packager; electron-packager . gladius-electron --platform=\"win32\" --arch=\"x64\" --ignore=\"build\" --out=\"build/release/windows\" --overwrite",
     "package-linux": "electron-packager . Gladius --platform=\"linux\" --arch=\"x64\" --ignore=\"build\" --out=\"build/release/linux\" --overwrite",
-    "package": "npm run clean; npm run build; npm run package-win; npm run package-mac;npm run package-linux"
+    "package": "npm run clean; npm run js:build; npm run build; npm run package-win; npm run package-mac;npm run package-linux"
   },
   "author": "",
   "license": "ISC"
