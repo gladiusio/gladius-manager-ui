@@ -46,7 +46,7 @@ export function startServices(services=['network-gateway', 'edged']) {
       path: '/service/set_timeout',
       method: 'POST',
       body: {
-        timeout: 1
+        timeout: 3
       }
     })).then(() => {
       const startPromises = [];
