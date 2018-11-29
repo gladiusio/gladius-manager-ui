@@ -37,6 +37,7 @@ function getOnMessage(service, dispatch) {
 export function startServices(services=['network-gateway', 'edged']) {
   return (dispatch) => {
     if (!services || services.length === 0) {
+      dispatch(setStartedServices(true));
       return Promise.resolve();
     }
 
