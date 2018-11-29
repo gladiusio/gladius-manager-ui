@@ -11,6 +11,7 @@ import PassphraseForm from '../passphraseForm';
 import ExternalSubmitButton from '../externalSubmitButton';
 import { toastActions } from '../../state/ducks/toasts';
 import { signupActions, signupSelectors } from '../../state/ducks/signup';
+import { authorizationActions } from '../../state/ducks/authorization';
 import { onboardingField, onboardingSecondaryHead, onboardingSubhead } from '../../sharedClassNames';
 import bemify from '../../util/bemify';
 
@@ -19,6 +20,7 @@ const { validatePassphrase } = accountSelectors;
 const { createUserWallet } = walletActions;
 const { getWalletLoading } = walletSelectors;
 const { nextSignupStep, prevSignupStep, setWalletSuccess } = signupActions;
+const { getAccount } = authorizationActions;
 const { getWalletCreated } = signupSelectors;
 const { addToast } = toastActions;
 const bem = bemify('getSecure');
@@ -130,6 +132,8 @@ function mapDispatchToProps(dispatch) {
           text: 'There was a problem creating your wallet. Please try again.',
           warning: true
         }));
+      }).then(() => {
+        dispatch(getAccount());
       });
     },
     resetWallet: () => {

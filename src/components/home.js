@@ -27,6 +27,7 @@ export class BaseHome extends Component {
   }
 
   componentDidMount() {
+    this.props.getAccount();
     if (!this.props.startedServices) {
       this.props.getServiceStatuses().then((statuses) => {
         const servicesToStart = getNonRunningServices(statuses);
