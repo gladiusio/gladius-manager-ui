@@ -29,7 +29,7 @@ if (platform == 'darwin') {
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 1200,
+    width: 1250,
     height: 800,
     icon: iconPath
   })
